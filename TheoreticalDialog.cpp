@@ -102,9 +102,45 @@ void CTheoreticalDialog::UpdateUI()
 	mCableFreeLength = theory->GetCableFreeLength();
 	mCableCaiNumber = theory->GetCableCaiAffectNumber();
 
-	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetMethod()->GetConcreteThickness();
-	mQiThickness = CArcProjectBuilder::GetInstance()->GetMethod()->GetQiThickness();
+	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
+	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
+
 	UpdateData(FALSE);
+}
+
+void CTheoreticalDialog::UpdateThickness()
+{
+	//UpdateData(TRUE);
+	//mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
+	//mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
+	//UpdateData(FALSE);
+}
+
+void CTheoreticalDialog::CheckThickness()
+{
+	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+	switch (pArc->GetZhihuWay())
+	{
+	case 1:
+		pArc->SetConcreteThickness(0);
+		pArc->SetQiThickness(0);
+		break;
+	case 2:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	case 3:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(0);
+		break;
+	case 4:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	default:
+		break;
+	
+	}
 }
 
 void CTheoreticalDialog::DoDataExchange(CDataExchange* pDX)
@@ -185,6 +221,7 @@ void SetExpertValue() {
 	topBolt->setPitch(theory->GetBoltPitch());
 	leftBolt->setLength(theory->GetBangBoltLength() * tmp);
 	leftBolt->setALength(theory->GetTopBoltALength() * tmp);
+	leftBolt->setPitch(theory->GetBoltPitch());
 
 	cable->setDiameter(theory->GetCableDiameter());
 	cable->setALength(theory->GetCableALength() * tmp);
@@ -343,6 +380,7 @@ void CTheoreticalDialog::OnBnClickedButtonTheorySavepm()
 		// 将理论计算得到的值传给专家界面
 
 		SetExpertValue();
+		CheckThickness();
 		pmLeagal = true;
 
 		//MessageBox(_T("本页参数保存成功"));

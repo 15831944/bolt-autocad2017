@@ -160,8 +160,7 @@ void CMethodChooseDialog::OnBnClickedOk()
 void CMethodChooseDialog::OnBnClickedButtonTunnelDialog()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialogEx::OnOK();
-
+	ShowWindow(SW_HIDE);
 	DialogManager::GetInstance().ShowTunnelChooseDlg();
 }
 

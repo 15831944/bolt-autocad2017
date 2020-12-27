@@ -83,14 +83,27 @@ void CTunnelChooseDialog::SetZhihuWay(int flag) {
 	{
 	case 1:
 		mRadioDefaultWay.SetCheck(TRUE);
+		mRadioBoltConcreteWay.SetCheck(FALSE);
+		mRadioJetConcreteWay.SetCheck(FALSE);
+		mRadioConcreteQiWay.SetCheck(FALSE);
 		break;
 	case 2:
+		mRadioDefaultWay.SetCheck(FALSE);
 		mRadioBoltConcreteWay.SetCheck(TRUE);
+		mRadioJetConcreteWay.SetCheck(FALSE);
+		mRadioConcreteQiWay.SetCheck(FALSE);
 		break;
 	case 3:
+
+		mRadioDefaultWay.SetCheck(FALSE);
+		mRadioBoltConcreteWay.SetCheck(FALSE);
 		mRadioJetConcreteWay.SetCheck(TRUE);
+		mRadioConcreteQiWay.SetCheck(FALSE);
 		break;
 	case 4:
+		mRadioDefaultWay.SetCheck(FALSE);
+		mRadioBoltConcreteWay.SetCheck(FALSE);
+		mRadioJetConcreteWay.SetCheck(FALSE);
 		mRadioConcreteQiWay.SetCheck(TRUE);
 		break;
 	default:

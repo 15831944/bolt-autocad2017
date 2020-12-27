@@ -70,6 +70,8 @@ void CExperienceDialog::UpdateUI()
 	UpdateData(FALSE);
 }
 
+
+
 void CExperienceDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -132,6 +134,7 @@ void SetProExpertValue() {
 	cable->setNumber(exp->GetCableNumber());
 	cable->setPitch(exp->GetCablePitch());
 	cable->setSpace(exp->GetCableSpace());
+
 };
 
 void CExperienceDialog::OnBnClickedOk()
@@ -142,7 +145,6 @@ void CExperienceDialog::OnBnClickedOk()
 
 	if (pmLeagal == true) {
 		ShowWindow(SW_HIDE);
-
 		DialogManager::GetInstance().ShowResultDlg();
 	}
 
@@ -189,19 +191,57 @@ void CExperienceDialog::OnMoving(UINT fwSide, LPRECT lpRect)
 	// TODO: 在此处添加消息处理程序代码
 }
 
+void CExperienceDialog::CheckThickness() {
+	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+	switch (pArc->GetZhihuWay())
+	{
+	case 1:
+		pArc->SetConcreteThickness(0);
+		pArc->SetQiThickness(0);
+		break;
+	case 2:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	case 3:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(0);
+		break;
+	case 4:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	default:
+		break;
+	}
+}
 
 void CExperienceDialog::OnBnClickedButtonExpSavepm()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
 
-
 	UpdateData(TRUE);
+
+
+	std::vector<double> mVecValue = {
+		mBoltLength, mBoltShuLegnth, mBoltSpace, mBoltPitch,
+		mBoltDiameter, mBoltDeisgnNumber, mBoltAttach, mBoltShuLegnth, 
+		mCableLength, mCableDiameter, mCableSpace, mCablePitch, mCableAttach,
+		mCableShuLength
+	};
+
 	if (DataChecker::HasZeroOrNegativeValue(mVecValue) == true) {
 		MessageBox(_T("参数不能含有0或负数"));
 	}
 	else {
 
+		CProExpMethodFactory * factory = new CProExpMethodFactory();
+		CMethod * method = factory->createMethod();
+
+		// 静态转型
+		CProExpMethod * project = static_cast<CProExpMethod *>(method);
+		CArcProjectBuilder::GetInstance()->SetMethod(project);
 		CProExpMethod * exp = CArcProjectBuilder::GetInstance()->GetExpMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
@@ -215,6 +255,7 @@ void CExperienceDialog::OnBnClickedButtonExpSavepm()
 		exp->SetBoltDesignNumber(mBoltDeisgnNumber);
 		exp->SetBoltAttach(mBoltAttach);
 		exp->SetBoltShuLength(mBoltShuLegnth);
+		exp->SetBoltDiameter(mBoltDiameter);
 		exp->SetCableLength(mCableLength);
 		exp->SetCableDiameter(mCableDiameter);
 		exp->SetCableAttach(mCableAttach);
@@ -227,11 +268,16 @@ void CExperienceDialog::OnBnClickedButtonExpSavepm()
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
 
 		CArcProjectBuilder::GetInstance()->SetCalMethodSaveToInstance(TRUE);
-
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(TRUE);
 		SetProExpertValue();
-
+		// 将界面中的厚度值赋值给Arc巷道
+		CheckThickness();
+		DialogManager::GetInstance().setHasCalculated(true);
 		pmLeagal = true;
 		MessageBox(_T("本页参数保存成功"));
 
-	}
+	};
+
+
+
 }

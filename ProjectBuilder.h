@@ -124,9 +124,10 @@ public:
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	}
-	virtual bool SaveMethodToFile() { 
-		return SaveTheoryMethod() || SaveExpMethod() || SaveLooseRangeMethod();
-	};
+	//virtual bool SaveMethodToFile() { 
+
+	//	return SaveTheoryMethod() && SaveExpMethod() && SaveLooseRangeMethod();
+	//};
 	virtual bool SaveTunnelFlagToFile() {
 		return false;
 	};
@@ -219,10 +220,12 @@ public:
 		 SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		 if (rc < 0) return false; // 若加载文件出错，返回false
 
-		 mProjectIni.SetLongValue(strExpMethod, strBoltNumber, project->GetBoltNumber());
+		 //mProjectIni.SetLongValue(strExpMethod, strBoltNumber, project->GetBoltNumber());
 		 mProjectIni.SetLongValue(strExpMethod, strCableNumber, project->GetCableNumber());
 		 mProjectIni.SetLongValue(strExpMethod, strStoneType, project->GetStoneType());
 		 mProjectIni.SetDoubleValue(strExpMethod, strBoltLength, project->GetBoltLength());
+		 mProjectIni.SetDoubleValue(strExpMethod, strBoltSpace, project->GetBoltSpace());
+		 mProjectIni.SetDoubleValue(strExpMethod, strBoltPitch, project->GetBoltPitch());
 		 mProjectIni.SetDoubleValue(strExpMethod, strBoltDiameter, project->GetBoltDiameter());
 		 mProjectIni.SetDoubleValue(strExpMethod, strBoltDesignNumber, project->GetBoltDesignNumber());
 		 mProjectIni.SetDoubleValue(strExpMethod, strBoltAttach, project->GetBoltAttach());
@@ -230,9 +233,10 @@ public:
 		 mProjectIni.SetDoubleValue(strExpMethod, strCableLength, project->GetCableLength());
 		 mProjectIni.SetDoubleValue(strExpMethod, strCableSpace, project->GetCableSpace());
 		 mProjectIni.SetDoubleValue(strExpMethod, strCablePitch, project->GetCablePitch());
+		 mProjectIni.SetDoubleValue(strExpMethod, strCableDiameter, project->GetCableDiameter());
 		 mProjectIni.SetDoubleValue(strExpMethod, strCableAttach, project->GetCableAttach());
 		 mProjectIni.SetDoubleValue(strExpMethod, strCableShuLength, project->GetCableShuLength());
-		 mProjectIni.SetDoubleValue(strExpMethod, strCableBreakForce, project->GetCableBreakPower());
+
 
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
@@ -501,8 +505,8 @@ public:
 			theory->SetCablePitch(mProjectIni.GetDoubleValue(strSec, strCablePitch));
 			theory->SetCableFreeLength(mProjectIni.GetDoubleValue(strSec, strCableFreeNumber));
 			
-			method->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			method->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 
 			break;
 		case 2:
@@ -526,8 +530,9 @@ public:
 			project->SetCableNumber(mProjectIni.GetLongValue(strExp, strCableNumber));
 			project->SetCableAttach(mProjectIni.GetDoubleValue(strExp, strCableAttach));
 			project->SetCableShuLength(mProjectIni.GetDoubleValue(strExp, strCableShuLength)); 
-			method->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			method->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
 		case 3:
 			factory = new CLooseRangeMethodFactory();
@@ -545,16 +550,16 @@ public:
 			default:
 				break;
 			}
-			method->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			method->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 
 			break;
 		case 4:
 			factory = new CTheroyMethodFactory();
 			method = factory->createMethod();
 
-			method->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			method->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
 		default:
 
@@ -650,34 +655,36 @@ public:
 
 		bool res = true;
 
-			res = SaveBoltToFile(CString("TopBolt"), mArcTunnel->GetTopBolt());
-			if (res == false) return res;
+		res = SaveBoltToFile(CString("TopBolt"), mArcTunnel->GetTopBolt());
+		if (res == false) return res;
 
-			res =  SaveBoltToFile(CString("LeftBolt"), mArcTunnel->GetLeftBolt());
-			if (res == false) return res;
+		res =  SaveBoltToFile(CString("LeftBolt"), mArcTunnel->GetLeftBolt());
+		if (res == false) return res;
 		
-			res = SaveBoltToFile(CString("RightBolt"), mArcTunnel->GetRightBolt());
-			if (res == false) return res;
+		res = SaveBoltToFile(CString("RightBolt"), mArcTunnel->GetRightBolt());
+		if (res == false) return res;
 
-			res = SaveCableToFile(mArcTunnel->GetCable());
-			if (res == false) return res;
+		res = SaveCableToFile(mArcTunnel->GetCable());
+		if (res == false) return res;
 
-			CString strThickness("Thickness");
-			CString strConcreteThickness("ConcreteThickness");
-			CString strQiThickness("QiThickness");
+		CString strThickness("Thickness");
+		CString strConcreteThickness("ConcreteThickness");
+		CString strQiThickness("QiThickness");
 
-			switch (mArcTunnel->GetCalMethod())
-			{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				mProjectIni.SetLongValue(strThickness, strConcreteThickness, method->GetConcreteThickness());
-				mProjectIni.SetLongValue(strThickness, strConcreteThickness, method->GetQiThickness());
-				break;
-			default:
-				break;
-			}
+
+		switch (mArcTunnel->GetZhihuWay())
+		{
+		case 2:
+		case 3:
+		case 4:
+			mProjectIni.SetLongValue(strThickness, strConcreteThickness, mArcTunnel->GetConcreteThickness());
+			mProjectIni.SetLongValue(strThickness, strQiThickness, mArcTunnel->GetQiThickness());
+			mProjectIni.SaveFile(fileUrl);
+			res = true;
+			break;
+		default:
+			break;
+		}
 		return res;
 	};
 

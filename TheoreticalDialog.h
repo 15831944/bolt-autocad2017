@@ -10,6 +10,8 @@ public:
 	CTheoreticalDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CTheoreticalDialog();
 	void UpdateUI();
+	void UpdateThickness();
+	void CheckThickness();
 	afx_msg void OnBnClickedButtonAverage();
 	afx_msg void OnBnClickedButtonBackMethodChooseDialog();
 	afx_msg void OnBnClickedOk();

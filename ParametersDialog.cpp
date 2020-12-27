@@ -440,7 +440,7 @@ void CParametersDialog::OnBnClickedCheckTopBolt()
 void CParametersDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-//	CDialogEx::OnOK();
+	CDialogEx::OnOK();
 	OnBnClickedButtonSavePm();
 
 	//if (MessageBox(_T("是否保存当前参数？"), NULL, MB_YESNO) == IDYES)
@@ -480,10 +480,11 @@ void CParametersDialog::OnBnClickedOk()
 // 从文件中获取 Cable 和 Bolt 信息，并展示到对话框中
 void CParametersDialog::SetMfcBoltCableFormIni() {
 
-	CBolt * bTop = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopBolt();
-	CBolt * bLeft= CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftBolt();
-	CBolt * bRight = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetRightBolt();
-	CCable * cable = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetCable();
+	CArcTunnel *pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+	CBolt * bTop = pArc->GetTopBolt();
+	CBolt * bLeft= pArc->GetLeftBolt();
+	CBolt * bRight =pArc->GetRightBolt();
+	CCable * cable = pArc->GetCable();
 	
 	if (mCheckTopBolt.GetCheck() == TRUE)
 	{
@@ -555,12 +556,12 @@ void CParametersDialog::SetMfcBoltCableFormIni() {
 		mEdtCableShuMaterial.SetWindowText(cable->getShuMaterial());
 	}
 
-	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	if (pArc->GetZhihuWay() > 1)
 	{
 		mEdtConcreteThickness.SetWindowText(MFCUtil::dtostr(
-			CArcProjectBuilder::GetInstance()->GetMethod()->GetConcreteThickness()));
+			pArc->GetConcreteThickness()));
 		mEdtQiThickness.SetWindowText(MFCUtil::dtostr(
-			CArcProjectBuilder::GetInstance()->GetMethod()->GetQiThickness()));
+			pArc->GetQiThickness()));
 	}
 
 }
@@ -648,14 +649,14 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 
 			if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
 			{
-				CMethod * method = new CTheoryCalMethod();
+				//CMethod * method = new CTheoryCalMethod();
 
 				CString strQi, strConcrete;
 				mEdtConcreteThickness.GetWindowText(strConcrete);
 				mEdtQiThickness.GetWindowText(strQi);
-				method->SetQiThickness(_ttoi(strQi));
-				method->SetConcreteThickness(_ttoi(strConcrete));
-				CArcProjectBuilder::GetInstance()->SetMethod(method);
+				CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetQiThickness(_ttoi(strQi));
+				CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetConcreteThickness(_ttoi(strConcrete));
+				//CArcProjectBuilder::GetInstance()->SetMethod(method);
 			}
 
 			MessageBox(_T("本页参数已保存"));
@@ -671,7 +672,7 @@ void CParametersDialog::OnOK()
 	if (MFCUtil::VectorHasEmpty(mVectorEdtTopBolt) || MFCUtil::VectorHasEmpty(mVectorEdtLeftBolt)
 		||MFCUtil::VectorHasEmpty(mVectorEdtRightBolt) || MFCUtil::VectorHasEmpty(mVectorCable))
 	{
-		MessageBox(_T("不能含有非空参数"));
+		MessageBox(_T("不能含有空参数"));
 	}
 	else { 
 		// 点击绘图，将所有参数保存到 autocad 路径下的 \ini\brige.ini 文件中，
