@@ -4,6 +4,7 @@
 #include "LooseRangeDialog.h"
 #include "ParametersDialog.h"
 #include "MFCUtil.h"
+#include "afxwin.h"
 
 // CMethodChooseDialog ¶Ô»°¿ò
 
@@ -39,4 +40,6 @@ protected:
 public:
 	afx_msg void OnBnClickedButtonTunnelDialog();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+private:
+	CButton mRadioBalanceMethod;
 };

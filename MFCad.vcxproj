@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AverageDialog.h" />
+    <ClInclude Include="BalanceMethodDialog.h" />
     <ClInclude Include="CADService.h" />
     <ClInclude Include="CalMethod.h" />
     <ClInclude Include="ConfigFileUtil.h" />
@@ -222,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AverageDialog.cpp" />
+    <ClCompile Include="BalanceMethodDialog.cpp" />
     <ClCompile Include="ExperienceDialog.cpp" />
     <ClCompile Include="FileUtil.cpp" />
     <ClCompile Include="LooseRangeDialog.cpp" />

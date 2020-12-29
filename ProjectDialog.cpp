@@ -140,6 +140,9 @@ BOOL CProjectDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_FOLDER));
+	SetIcon(hIcon, FALSE);
+
 	mComboPaperSize.AddString(_T("A1"));
 	mComboPaperSize.AddString(_T("A2"));
 	mComboPaperSize.AddString(_T("A3"));

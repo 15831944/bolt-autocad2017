@@ -273,3 +273,4 @@ public:
 	bool GetNormalToArc() { return isNormalToArc; };
 	double GetHeight() const { return (arcHeight + wallHeight); };
 };
+

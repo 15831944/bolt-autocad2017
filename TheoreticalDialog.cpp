@@ -105,7 +105,7 @@ void CTheoreticalDialog::UpdateUI()
 	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
 	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
 
-	UpdateData(FALSE);
+	UpdateData(FALSE);	
 }
 
 void CTheoreticalDialog::UpdateThickness()
@@ -280,6 +280,9 @@ BOOL CTheoreticalDialog::OnInitDialog()
 	SetWindowPos(0, (GetSystemMetrics(SM_CXSCREEN) / 2) - (dlg.Width() / 2),
 		(GetSystemMetrics(SM_CYSCREEN) / 2) - (dlg.Height() / 2), dlg.Width(), dlg.Height(),
 		SW_SHOW);
+
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_FOLDER));
+	SetIcon(hIcon, FALSE);
 
 	std::cout << "init theory dialog\n";
 

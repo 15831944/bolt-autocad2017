@@ -6,6 +6,7 @@
 #include "ExperienceDialog.h"
 #include "LooseRangeDialog.h"
 #include "ParametersDialog.h"
+#include "BalanceMethodDialog.h"
 class DialogManager
 {
 public:
@@ -33,6 +34,7 @@ public:
 		delete mExpDlg;
 		delete mLooseDlg;
 		delete mResultDlg;
+		delete mBalanceDlg;
 	};
 
 	void ShowProjectDialog() {
@@ -106,6 +108,17 @@ public:
 		mLooseDlg->ShowWindow(SW_HIDE);
 	};
 
+	void ShowBalanceDlg() {
+		//if (hasCurrentFile == true)
+		//{
+		//	mBalanceDlg->UpdateUI();
+		//}
+		mBalanceDlg->ShowWindow(SW_SHOW);
+	};
+	void HideBalanceDlg() {
+		mBalanceDlg->ShowWindow(SW_HIDE);
+	};
+
 	
 
 	void ShowResultDlg() {
@@ -153,6 +166,9 @@ private:
 		mLooseDlg->Create(IDD_LOOSE_RANGE_DIALOG, 0);
 		mResultDlg = new CParametersDialog();
 		mResultDlg->Create(IDD_PARAMETERS_DIALOG, 0);
+
+		mBalanceDlg = new CBalanceMethodDialog();
+		mBalanceDlg->Create(IDD_BALANCE_METHOD_DIALOG, 0);
 	}
 
 	CProjectDialog *mProjectDlg;
@@ -162,6 +178,7 @@ private:
 	CExperienceDialog *mExpDlg;
 	CLooseRangeDialog *mLooseDlg;
 	CParametersDialog *mResultDlg;
+	CBalanceMethodDialog *mBalanceDlg;
 
 	bool hasCurrentFile = false;
 	bool hasCalculated = false;

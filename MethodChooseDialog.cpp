@@ -31,6 +31,7 @@ void CMethodChooseDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO_LOOSE_RANGE_DESIGN, mRadioLooseRange);
 	DDX_Control(pDX, IDC_RADIO_EXPERT_DECISION, mRadioExpert);
 	DDX_Control(pDX, IDC_STATIC_CHOOSE_METHOD, mMethodChooseTitle);
+	DDX_Control(pDX, IDC_RADIO_BALANCE_METHOD, mRadioBalanceMethod);
 }
 
 
@@ -58,6 +59,8 @@ BOOL CMethodChooseDialog::OnInitDialog()
 	SetWindowPos(0, (GetSystemMetrics(SM_CXSCREEN) / 2) - (dlg.Width() / 2),
 		(GetSystemMetrics(SM_CYSCREEN) / 2) - (dlg.Height() / 2), dlg.Width(), dlg.Height(),
 		SW_SHOW);
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_FOLDER));
+	SetIcon(hIcon, FALSE);
 
 	// 设置标题字体
 	mMethodChooseTitle.SetFont(MFCUtil::GetTitleFont());
@@ -90,6 +93,10 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(TRUE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(4);
 		break;
+	case 5:
+		mRadioBalanceMethod.SetCheck(TRUE);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(5);
+		break;
 	default:
 		break;
 	}
@@ -104,6 +111,7 @@ int CMethodChooseDialog::GetMethodFlag() {
 	}
 	if (mRadioLooseRange.GetCheck() == TRUE) return 3;
 	if (mRadioExpert.GetCheck() == TRUE) return 4;
+	if (mRadioBalanceMethod.GetCheck() == TRUE) return 5;
 	return 0;
 }
 
@@ -133,6 +141,7 @@ void CMethodChooseDialog::OnBnClickedOk()
 	int pExperienceState = mRadioExperience.GetCheck();
 	int pLooseState = mRadioLooseRange.GetCheck();
 	int pExpertState = mRadioExpert.GetCheck();
+	int pBalanceMethod = mRadioBalanceMethod.GetCheck();
 
 	std::cout << "method choose clicked ok\n";
 
@@ -150,6 +159,9 @@ void CMethodChooseDialog::OnBnClickedOk()
 	}
 	if (pExpertState != 0) {
 		DialogManager::GetInstance().ShowResultDlg();
+	}
+	if (pBalanceMethod != 0) {
+		DialogManager::GetInstance().ShowBalanceDlg();
 	}
 
 	ShowWindow(SW_HIDE);

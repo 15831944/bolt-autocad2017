@@ -213,6 +213,9 @@ BOOL CThreeTunnelDlg::OnInitDialog()
 		(GetSystemMetrics(SM_CYSCREEN) / 2) - (dlg.Height() / 2), dlg.Width(), dlg.Height(),
 		SW_SHOW);
 
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_FOLDER));
+	SetIcon(hIcon, FALSE);
+
 	mRadioDefaultWay.SetCheck(TRUE);
 	mArcTunnelOption.SetCheck(TRUE);
 	setOptionDisabled();
