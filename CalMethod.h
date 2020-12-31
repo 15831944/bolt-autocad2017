@@ -303,6 +303,34 @@ public:
 
 };
 
+class CBalanceMethod : public CMethod {
+private:
+	
+	double mAvgGravity; //底层平均重力密度
+	double mMaiDepth; 
+	double mCoalHardNumber_Fy;// 煤层硬度系数
+	double mCoalThickness;// 煤层厚度
+	double mCaiEffectNumber;
+	double mInnerFriction;
+	double mStableNumber; // 待锚岩层稳定性系数
+	double mStoneHardNumber;//锚固岩层硬度
+	double mCoalAngle; //煤岩倾角
+	double mBoltOutLength; //锚杆外露长度
+	double mBoltSpace;
+	double mBoltYieldNumber; // 锚杆屈服强度
+	double mBoltStablePower; // 锚固力
+	double mBoltSafeNumber;
+	double mTopAvgGravity;
+	int mBoltNumber; // 锚杆数量
+	double mCableOutLength;
+	double mCableStoneHeight;
+	double mCableALength;
+	double mMinBreakLoader; //最低破坏荷载
+	double mCableSafeNumber;
+public:
+
+};
+
 class CMethodFactory {
 public:
 	CMethodFactory() {  };
