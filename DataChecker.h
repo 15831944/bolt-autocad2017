@@ -24,8 +24,6 @@ public:
 	static bool HasZeroOrNegativeValue(std::vector<double> num) {
 
 		for (auto i : num) {
-
-			std::cout << i << std::endl;
 			if (i <= 0) {
 				return true;
 			}

@@ -99,7 +99,7 @@ void CProjectDialog::OnBnClickedOk()
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
 	if (MFCUtil::VectorHasEmpty(mVectorProject) == true) {
-		MessageBox(_T("不能含有非空值"));
+		MessageBox(_T("不能含有空值"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
 	else {
 		// 检查设计日期和审查日期

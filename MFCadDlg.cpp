@@ -322,7 +322,7 @@ void CMFCadDlg::OnOpenProject()
 	// TODO: 在此添加命令处理程序代码
 
 	if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == false) {
-		if (IDYES == MessageBox(_T("当前工程尚未保存，是否直接打开？"), 0, MB_YESNO | MB_SYSTEMMODAL)) {
+		if (IDYES == MessageBox(_T("当前工程尚未保存，是否直接打开？"), _T("打开"), MB_YESNO | MB_ICONQUESTION)) {
 			ConcreteOpenProject();
 		}
 	}
@@ -347,11 +347,11 @@ void CMFCadDlg::OnSaveProject()
 			&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
 			) {
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
-			MessageBox(_T("保存工程信息成功"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存工程信息成功"), _T("成功"), MB_OK);
 		}
 		else {
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
-			MessageBox(_T("保存工程信息失败，参数可能不完善"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存工程信息失败，参数可能不完善"), _T("失败"), MB_ICONERROR | MB_OK);
 		}
 	}
 }
@@ -371,7 +371,7 @@ void CMFCadDlg::OnProjectInformation()
 	if (CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty() &&
 		(CArcProjectBuilder::GetInstance()->GetProjectSaveToInstance() == FALSE)
 		) {
-		MessageBox(_T("当前无工程打开"), 0, MB_SYSTEMMODAL);
+		MessageBox(_T("当前无工程打开"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
 	else {
 		DialogManager::GetInstance().ShowProjectDialog();
@@ -387,14 +387,14 @@ void CMFCadDlg::OnCancel()
 	
 	if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == FALSE) {
 		if (CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
-			if (IDYES == MessageBox(_T("当前工程尚未保存，仍要退出吗？"), 0, MB_YESNO | MB_SYSTEMMODAL))
+			if (IDYES == MessageBox(_T("当前工程尚未保存，仍要退出吗？"), _T("退出"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2))
 			{
 				CDialogEx::OnCancel();
 			}
 		}
 		else {
 			// 打开文件后
-			switch (MessageBox(_T("是否保存当前修改到文件？"), 0, MB_YESNOCANCEL | MB_SYSTEMMODAL))
+			switch (MessageBox(_T("是否保存当前修改到文件？"), _T("退出"), MB_YESNOCANCEL | MB_ICONQUESTION ))
 			{
 			case IDYES:
 				if ((CArcProjectBuilder::GetInstance()->SaveProjectToFile() == true)
@@ -403,11 +403,11 @@ void CMFCadDlg::OnCancel()
 					&& (CArcProjectBuilder::GetInstance()->SaveArcTunnelInfoToFile() == true)
 					&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
 					) {
-					MessageBox(_T("保存工程信息成功"), 0, MB_SYSTEMMODAL);
+					MessageBox(_T("保存工程信息成功"), _T("成功"), MB_OK);
 					CDialogEx::OnCancel();
 				}
 				else {
-					MessageBox(_T("保存工程信息失败"), 0, MB_SYSTEMMODAL);
+					MessageBox(_T("保存工程信息失败"), _T("失败"), MB_ICONERROR | MB_OK);
 				}
 				break;
 			case IDNO:
@@ -422,7 +422,8 @@ void CMFCadDlg::OnCancel()
 	}
 	else
 	{
-		if (IDYES == MessageBox(_T("确定退出本软件吗？"), 0, MB_YESNO | MB_SYSTEMMODAL))
+		
+		if (IDYES == MessageBox( _T("确定退出本软件吗？"), _T("退出") , MB_ICONQUESTION | MB_YESNO ))
 		{
 			CDialogEx::OnCancel();
 		}

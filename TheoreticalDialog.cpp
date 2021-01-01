@@ -332,17 +332,11 @@ void CTheoreticalDialog::OnBnClickedButtonTheorySavepm()
 	}
 	else {
 
-		//CArcProjectBuilder::GetInstance()->BuildMethod();
-		std::cout << "build theory method\n";
-
 		CTheroyMethodFactory * factory = new CTheroyMethodFactory();
 		CMethod * method = factory->createMethod();
 
-		std::cout << "theory factory init\n";
-
 		// ¾²Ì¬×ªÐÍ
 		CTheoryCalMethod* theory1 = static_cast<CTheoryCalMethod *>(method);
-
 		CArcProjectBuilder::GetInstance()->SetMethod(theory1);
 
 		CTheoryCalMethod * theory = CArcProjectBuilder::GetInstance()->GetTheoryMethod();

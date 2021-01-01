@@ -39,10 +39,8 @@ private:
 
 	// 煤岩平均重度
 	double mAvgGrivity;
-
 	// 巷道埋深
 	double mDepth;
-
 	// 岩石坚固系数
 	double mStoneStrongNumber = 1.7;
 	// 树脂药卷长度
@@ -68,5 +66,4 @@ private:
 	// 内摩擦角
 	double mInnerFirction;
 
-	
 };

@@ -5,6 +5,7 @@
 #include "MFCad.h"
 #include "BalanceMethodDialog.h"
 #include "afxdialogex.h"
+#include "DataChecker.h"
 #include "DialogManager.h"
 
 
@@ -131,9 +132,34 @@ BOOL CBalanceMethodDialog::OnInitDialog()
 void CBalanceMethodDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
+
+	std::vector<double> mVecValue = { mGroundAvgGravity, mMaiDepth,
+		mCoalHardNumber, mCoalThickness, mCaiEffectNumber, mInnerFriction,
+		mCableSafeNumber,mBoltOutLength, mBoltPower, mBoltSafeNumber,
+		mBoltSpace,mBoltYieldNumber,
+		mCableAlength,mCableOutLength,mCoalFriction,mMinBreakPower,
+		mCableStoneHeight,mStoneToughNumber,mStableNumber,
+		mTopAvgGravity
+	};
+
+	if (DataChecker::HasZeroOrNegativeValue(mVecValue) == true) {
+		MessageBox(_T("参数必须大于0"));
+		pmLeagal = false;
+	}
+	else {
+		CBalanceMethodFactory * factory = new CBalanceMethodFactory();
+		CMethod * method = factory->createMethod();
+
+		// 静态转型
+		CBalanceMethod* BalanceMethod = static_cast<CBalanceMethod *>(method);
+		CArcProjectBuilder::GetInstance()->SetMethod(BalanceMethod);
+
+
+	}
 	ShowWindow(SW_HIDE);
 	DialogManager::GetInstance().ShowResultDlg();
 }
+
 
 
 void CBalanceMethodDialog::OnBnClickedButtonPredialog()
