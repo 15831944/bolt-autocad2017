@@ -51,6 +51,6 @@ private:
 	double mTopAvgGravity;
 	double mConcreteThickness;
 	double mQiThickness;
-	 
+	bool pmLeagal = false;
 
 };

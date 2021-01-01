@@ -327,49 +327,103 @@ private:
 	double mCableALength;
 	double mMinBreakLoader; //最低破坏荷载
 	double mCableSafeNumber;
+
+	double GetBangBreakDepth() {
+		double Kcx = 2.5;
+		double div_top = Kcx * mAvgGravity * mMaiDepth * mCaiEffectNumber;
+		double div_bottom = pow(10, 4) * mCoalHardNumber_Fy;
+		double sub1 = div_top / div_bottom - 1;
+		double tan_fai = tan(MFCUtil::AngleToArc((90 - mInnerFriction) * 0.5));
+		return sub1 * mCoalThickness * tan_fai;
+	};
+
+	double GetTopBreakDepth() {
+		double C = GetBangBreakDepth();
+		double div_top = (a + C) * cos(MFCUtil::AngleToArc(mCoalAngle));
+		double div_bottom = mStableNumber * mStoneHardNumber;
+		return div_top / div_bottom;
+	};
 public:
 	void SetAvgGravity(double t) { mAvgGravity = t; };
 	double GetAvgGravity() const { return mAvgGravity; };
 	void SetMaiDepth(double t) { mMaiDepth = t; };
 	double GetMaiDepth() const { return mMaiDepth; };
 	void SetCoalHardNumber_Fy(double t) { mCoalHardNumber_Fy = t; };
-	double SetCoalHardNumber_Fy() const { return mCoalHardNumber_Fy; };
+	double GetCoalHardNumber_Fy() const { return mCoalHardNumber_Fy; };
 	void SetCoalThickness(double t) { mCoalThickness = t; };
-	double SetCoalThickness() const { return mCoalThickness; };
+	double GetCoalThickness() const { return mCoalThickness; };
 	void SetCaiEffectNumber(double t) { mCaiEffectNumber = t; };
-	double SetCaiEffectNumber() const { return mCaiEffectNumber; };
+	double GetCaiEffectNumber() const { return mCaiEffectNumber; };
 	void SetInnerFriction(double t) { mInnerFriction = t; };
-	double SetInnerFriction() const { return mInnerFriction; };
+	double GetInnerFriction() const { return mInnerFriction; };
 	void SetStableNumber(double t) { mStableNumber = t; };
-	double SetStableNumber() const { return mStableNumber; };
+	double GetStableNumber() const { return mStableNumber; };
 	void SetStoneHardNumber(double t) { mStoneHardNumber = t; };
-	double SetStoneHardNumber() const { return mStoneHardNumber; };
+	double GetStoneHardNumber() const { return mStoneHardNumber; };
 	void SetCoalAngle(double t) { mCoalAngle = t; };
-	double SetCoalAngle() const { return mCoalAngle; };
+	double GetCoalAngle() const { return mCoalAngle; };
 	void SetBoltOutLength(double t) { mBoltOutLength = t; };
-	double SetBoltOutLength() const { return mBoltOutLength; };
+	double GetBoltOutLength() const { return mBoltOutLength; };
 	void SetBoltSpace(double t) { mBoltSpace = t; };
-	double SetBoltSpace() const { return mBoltSpace; };
+	double GetBoltSpace() const { return mBoltSpace; };
 	void SetBoltYieldNumber(double t) { mBoltYieldNumber = t; };
-	double SetBoltYieldNumber() const { return mBoltYieldNumber; };
+	double GetBoltYieldNumber() const { return mBoltYieldNumber; };
 	void SetBoltStablePower(double t) { mBoltStablePower = t; };
-	double SetBoltStablePower() const { return mBoltStablePower; };
+	double GetBoltStablePower() const { return mBoltStablePower; };
 	void SetBoltSafeNumber(double t) { mBoltSafeNumber = t; };
-	double SetBoltSafeNumber() const { return mBoltSafeNumber; };
+	double GetBoltSafeNumber() const { return mBoltSafeNumber; };
 	void SetTopAvgGravity(double t) { mTopAvgGravity = t; };
-	double SetTopAvgGravity() const { return mTopAvgGravity; };
+	double GetTopAvgGravity() const { return mTopAvgGravity; };
 	void SetBoltNumber(int t) { mBoltNumber = t; };
-	int SetBoltNumber() const { return mBoltNumber; };
+	int GetBoltNumber() const { return mBoltNumber; };
 	void SetCableOutLength(double t) { mCableOutLength = t; };
-	double SetCableOutLength() const { return mCableOutLength; };
+	double GetCableOutLength() const { return mCableOutLength; };
 	void SetCableStoneHeight(double t) { mCableStoneHeight = t; };
-	double SetCableStoneHeight() const { return mCableStoneHeight; };
+	double GetCableStoneHeight() const { return mCableStoneHeight; };
 	void SetCableALength(double t) { mCableALength = t; };
-	double SetCableALength() const { return mCableALength; };
+	double GetCableALength() const { return mCableALength; };
 	void SetMinBreakLoader(double t) { mMinBreakLoader = t; };
-	double SetMinBreakLoader() const { return mMinBreakLoader; };
+	double GetMinBreakLoader() const { return mMinBreakLoader; };
 	void SetCableSafeNumber(double t) { mCableSafeNumber = t; };
-	double SetCableSafeNumber() const { return mCableSafeNumber; };
+	double GetCableSafeNumber() const { return mCableSafeNumber; };
+
+	// 获取顶部锚杆的根数
+	int GetTopBoltNumber() {
+		return mBoltNumber;
+	};
+
+	// 获取顶部锚杆的长度
+	double GetTopBoltLength() {
+		return GetTopBreakDepth() + mBoltOutLength;
+	};
+
+	double GetBangBoltLength() {
+		return GetBangBreakDepth() + mBoltOutLength;
+	};
+
+	double GetBoltPitch() {
+		double b = GetTopBreakDepth();
+		double div_top = mBoltStablePower * mBoltNumber;
+		double div_bottom = 2 * mBoltSafeNumber * mTopAvgGravity * a * b;
+		return div_top / div_bottom;
+	};
+
+	double GetBoltDiameter() {
+		double pi = asin(0.5) * 6;
+		double d = sqrt((4 * mBoltStablePower) / (pi * mBoltYieldNumber));
+		return d;
+	};
+
+	// 返回结果以 m 为单位
+	double GetCableLength() {
+		return mCableOutLength + mCableALength + mCableStoneHeight;
+	};
+
+	double GetCableSpaceAndPitch() {
+		double width = a * 2;
+		double S = (mMinBreakLoader * 3) / (4 * pow(width, 2) * mAvgGravity * mCableSafeNumber);
+		return S;
+	};
 };
 
 class CMethodFactory {
@@ -404,5 +458,14 @@ public:
 	~CLooseRangeMethodFactory() {};
 	CMethod* createMethod() {
 		return new CLooseRangeMethod();
+	};
+};
+
+class CBalanceMethodFactory : public CMethodFactory {
+public:
+	CBalanceMethodFactory() {};
+	~CBalanceMethodFactory() {};
+	CMethod* createMethod() {
+		return new CBalanceMethod();
 	};
 };
