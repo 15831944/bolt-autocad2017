@@ -103,12 +103,12 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 }
 
 int CMethodChooseDialog::GetMethodFlag() {
-	if (mRadioTheoretical.GetCheck() == TRUE) {
+	if (mRadioTheoretical.GetCheck() == TRUE) 
 		return 1;
-	}
-	if (mRadioExperience.GetCheck() == TRUE) {
+	
+	if (mRadioExperience.GetCheck() == TRUE) 
 		return 2;
-	}
+
 	if (mRadioLooseRange.GetCheck() == TRUE) return 3;
 	if (mRadioExpert.GetCheck() == TRUE) return 4;
 	if (mRadioBalanceMethod.GetCheck() == TRUE) return 5;

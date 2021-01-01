@@ -328,7 +328,48 @@ private:
 	double mMinBreakLoader; //×îµÍÆÆ»µºÉÔØ
 	double mCableSafeNumber;
 public:
-
+	void SetAvgGravity(double t) { mAvgGravity = t; };
+	double GetAvgGravity() const { return mAvgGravity; };
+	void SetMaiDepth(double t) { mMaiDepth = t; };
+	double GetMaiDepth() const { return mMaiDepth; };
+	void SetCoalHardNumber_Fy(double t) { mCoalHardNumber_Fy = t; };
+	double SetCoalHardNumber_Fy() const { return mCoalHardNumber_Fy; };
+	void SetCoalThickness(double t) { mCoalThickness = t; };
+	double SetCoalThickness() const { return mCoalThickness; };
+	void SetCaiEffectNumber(double t) { mCaiEffectNumber = t; };
+	double SetCaiEffectNumber() const { return mCaiEffectNumber; };
+	void SetInnerFriction(double t) { mInnerFriction = t; };
+	double SetInnerFriction() const { return mInnerFriction; };
+	void SetStableNumber(double t) { mStableNumber = t; };
+	double SetStableNumber() const { return mStableNumber; };
+	void SetStoneHardNumber(double t) { mStoneHardNumber = t; };
+	double SetStoneHardNumber() const { return mStoneHardNumber; };
+	void SetCoalAngle(double t) { mCoalAngle = t; };
+	double SetCoalAngle() const { return mCoalAngle; };
+	void SetBoltOutLength(double t) { mBoltOutLength = t; };
+	double SetBoltOutLength() const { return mBoltOutLength; };
+	void SetBoltSpace(double t) { mBoltSpace = t; };
+	double SetBoltSpace() const { return mBoltSpace; };
+	void SetBoltYieldNumber(double t) { mBoltYieldNumber = t; };
+	double SetBoltYieldNumber() const { return mBoltYieldNumber; };
+	void SetBoltStablePower(double t) { mBoltStablePower = t; };
+	double SetBoltStablePower() const { return mBoltStablePower; };
+	void SetBoltSafeNumber(double t) { mBoltSafeNumber = t; };
+	double SetBoltSafeNumber() const { return mBoltSafeNumber; };
+	void SetTopAvgGravity(double t) { mTopAvgGravity = t; };
+	double SetTopAvgGravity() const { return mTopAvgGravity; };
+	void SetBoltNumber(int t) { mBoltNumber = t; };
+	int SetBoltNumber() const { return mBoltNumber; };
+	void SetCableOutLength(double t) { mCableOutLength = t; };
+	double SetCableOutLength() const { return mCableOutLength; };
+	void SetCableStoneHeight(double t) { mCableStoneHeight = t; };
+	double SetCableStoneHeight() const { return mCableStoneHeight; };
+	void SetCableALength(double t) { mCableALength = t; };
+	double SetCableALength() const { return mCableALength; };
+	void SetMinBreakLoader(double t) { mMinBreakLoader = t; };
+	double SetMinBreakLoader() const { return mMinBreakLoader; };
+	void SetCableSafeNumber(double t) { mCableSafeNumber = t; };
+	double SetCableSafeNumber() const { return mCableSafeNumber; };
 };
 
 class CMethodFactory {

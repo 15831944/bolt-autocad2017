@@ -27,4 +27,30 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 
+private:
+	double mGroundAvgGravity;
+	double mMaiDepth;
+	double mCoalHardNumber;
+	double mCoalThickness;
+	double mCaiEffectNumber;
+	double mInnerFriction;
+	double mCableSafeNumber;
+	int mBoltNumber;
+	double mBoltOutLength;
+	double mBoltPower;
+	double mBoltSafeNumber;
+	double mBoltSpace;
+	double mBoltYieldNumber;
+	double mCableAlength;
+	double mCableOutLength;
+	double mCoalFriction;
+	double mMinBreakPower;
+	double mCableStoneHeight;
+	double mStoneToughNumber;
+	double mStableNumber;
+	double mTopAvgGravity;
+	double mConcreteThickness;
+	double mQiThickness;
+	 
+
 };
