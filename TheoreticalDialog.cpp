@@ -327,7 +327,7 @@ void CTheoreticalDialog::OnBnClickedButtonTheorySavepm()
 
 	if (DataChecker::HasZeroOrNegativeValue(mVecValue) == true) {
 		
-		MessageBox(_T("参数必须大于等于0"));
+		MessageBox(_T("参数必须大于0"), _T("警告"), MB_ICONWARNING | MB_OK);
 		pmLeagal = false;
 	}
 	else {
@@ -383,6 +383,5 @@ void CTheoreticalDialog::OnBnClickedButtonTheorySavepm()
 		//MessageBox(_T("本页参数保存成功"));
 		
 	}
-
 
 }

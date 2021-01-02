@@ -13,6 +13,20 @@ public:
 	int GetZhihuWayBtn();
 	void UpdateUI();
 
+	afx_msg void OnBnClickedCheckBoltAngle();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedRadioRectangle();
+	afx_msg void OnBnClickedRadioArc();
+	afx_msg void OnBnClickedRadioTrapzoid();
+	afx_msg void OnBnClickedChooseCancel();
+	afx_msg void OnBnClickedChooseOk();
+	void SuccessToMethodChooseDlg();
+	void TunnelSavepm();
+	void ArcTunnelSavepm();
+	void RecTunnelSavepm();
+	void TrapTunelSavepm();
+	void OnBnClickedButtonProjectDialog();
+
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_THREE_TUNNEL_DIALOG };
@@ -60,18 +74,6 @@ private:
 
 	void InitButtonEdtArray();
 	void setOptionDisabled();
-
 	void SetZhihuWay(int flag);
 
-public:
-	afx_msg void OnBnClickedCheckBoltAngle();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedRadioRectangle();
-	afx_msg void OnBnClickedRadioArc();
-	afx_msg void OnBnClickedRadioTrapzoid();
-	afx_msg void OnBnClickedChooseCancel();
-	afx_msg void OnBnClickedChooseOk();
-	void SuccessToMethodChooseDlg();
-	void TunnelSavepm();
-	void OnBnClickedButtonProjectDialog();
 };

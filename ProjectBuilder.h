@@ -15,6 +15,7 @@ protected:
 	CTheoryCalMethod * theory;
 	CProExpMethod * project;
 	CLooseRangeMethod * loose;
+	CBalanceMethod * balance;
 
 	BOOL IsSavedToFile = TRUE;
 	BOOL IsProjectSaveToInstance = FALSE;
@@ -40,6 +41,7 @@ public:
 	CTheoryCalMethod * GetTheoryMethod() const { return theory; };
 	CProExpMethod * GetExpMethod() const { return project; };
 	CLooseRangeMethod * GetLooseMethod() const { return loose; };
+	CBalanceMethod * GetBalanceMethod() const { return balance; };
 	void SetMethod(CMethod * m) {
 		method = m;
 	}
@@ -132,7 +134,7 @@ public:
 		return false;
 	};
 	virtual bool SaveParametersToFile() { return false; };
-	 bool SaveTheoryMethod() {
+	bool SaveTheoryMethod() {
 		CSimpleIni mProjectIni;
 		CString strTheoryMethod("TheoryMethod");
 
@@ -190,7 +192,7 @@ public:
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	};
-	 bool SaveExpMethod() { 
+	bool SaveExpMethod() { 
 	 
 		 CSimpleIni mProjectIni;
 		 CString strExpMethod("ExperienceMethod");
@@ -241,10 +243,9 @@ public:
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
 	 };
-	 bool SaveLooseRangeMethod() { 
+	bool SaveLooseRangeMethod() { 
 	 
 		 CString strLooseRangeMethod("LooseRangeMethod");
-
 
 		 CString strMeasureWay("MeasureWay");
 		 CString strLooseRange("LooseRange");
@@ -260,15 +261,68 @@ public:
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
 	 };
+	bool SaveBalanceMethod() {
+		 CString strBalanceMethod("BalanceMethod");
+
+		 CString mGroundAvgGravity("GroundAvgGravity") ;
+		 CString mMaiDepth("MaiDepth");
+		 CString mCoalHardNumber("CoalHardNumber");
+		 CString mCoalThickness("CoalThickness");
+		 CString mCaiEffectNumber("CaiEffectNumber");
+		 CString mInnerFriction("InnerFriction");
+		 CString mCableSafeNumber("CableSafeNumber");
+		 CString mBoltNumber("BoltNumber");
+		 CString mBoltOutLength("BoltOutLength");
+		 CString mBoltPower("BoltPower");
+		 CString mBoltSafeNumber("BoltSafeNumber");
+		 CString mBoltSpace("BoltSpace");
+		 CString mBoltYieldNumber("BoltYieldNumber");
+		 CString mCableAlength("CableAlength");
+		 CString mCableOutLength("CableOutLength");
+		 CString mCoalFriction("CoalFriction");
+		 CString mMinBreakPower("MinBreakPower");
+		 CString mCableStoneHeight("CableStoneHeight");
+		 CString mStoneToughNumber("StoneToughNumber");
+		 CString mStableNumber("StableNumber");
+		 CString mTopAvgGravity("TopAvgGravity");
+		 CSimpleIni mProjectIni;
+
+		 SI_Error rc = mProjectIni.LoadFile(fileUrl);
+		 if (rc < 0) return false; // 若加载文件出错，返回false
+
+		 mProjectIni.SetLongValue(strBalanceMethod, mBoltNumber, balance->GetBoltNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mGroundAvgGravity, balance->GetAvgGravity());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mInnerFriction, balance->GetInnerFriction());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCoalFriction, balance->GetCoalAngle());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mMaiDepth, balance->GetMaiDepth());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCoalHardNumber, balance->GetCoalHardNumber_Fy());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCoalThickness, balance->GetCoalThickness());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCaiEffectNumber, balance->GetCaiEffectNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltSafeNumber, balance->GetBoltSafeNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCableSafeNumber, balance->GetCableSafeNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltPower, balance->GetBoltStablePower());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltSpace, balance->GetBoltSpace());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltYieldNumber, balance->GetBoltYieldNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCableAlength, balance->GetCableALength());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCableOutLength, balance->GetCableOutLength());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mCableStoneHeight, balance->GetCableStoneHeight());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mMinBreakPower, balance->GetMinBreakLoader());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mStoneToughNumber, balance->GetStoneHardNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mStableNumber, balance->GetStableNumber());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mTopAvgGravity, balance->GetTopAvgGravity());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltOutLength, balance->GetBoltOutLength());
+		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
+		 return rc2 < 0 ? false : true;
+	 };
 	
 	CProjectBuilder()
 	{
 		//pProject = new CTunnelProject();
-	}
+	};
 
 	~CProjectBuilder()
 	{
-	}
+	};
 };
 
 class CArcProjectBuilder : public CProjectBuilder {
@@ -280,12 +334,14 @@ public:
 	theory = new CTheoryCalMethod();
 	project = new CProExpMethod();
 	loose = new CLooseRangeMethod();
+	balance = new CBalanceMethod();
 	};
 	~CArcProjectBuilder() { delete mArcTunnel; 
 	delete mTunnelProject;
 	delete theory;
 	delete project;
 	delete loose;
+	delete balance;
 	};
 	static CArcProjectBuilder * GetInstance() {
 		static CArcProjectBuilder instance;
@@ -472,6 +528,29 @@ public:
 		CString strThickness("Thickness");
 		CString strConcreteThickness("ConcreteThickness");
 		CString strQiThickness("QiThickness");
+
+		CString strBalanceMethod("BalanceMethod");
+		CString mGroundAvgGravity("GroundAvgGravity");
+		CString mMaiDepth("MaiDepth");
+		CString mCoalHardNumber("CoalHardNumber");
+		CString mCoalThickness("CoalThickness");
+		CString mCaiEffectNumber("CaiEffectNumber");
+		CString mInnerFriction("InnerFriction");
+		CString mCableSafeNumber("CableSafeNumber");
+		CString mBoltNumber("BoltNumber");
+		CString mBoltOutLength("BoltOutLength");
+		CString mBoltPower("BoltPower");
+		CString mBoltSafeNumber("BoltSafeNumber");
+		CString mBoltSpace("BoltSpace");
+		CString mBoltYieldNumber("BoltYieldNumber");
+		CString mCableAlength("CableAlength");
+		CString mCableOutLength("CableOutLength");
+		CString mCoalFriction("CoalFriction");
+		CString mMinBreakPower("MinBreakPower");
+		CString mCableStoneHeight("CableStoneHeight");
+		CString mStoneToughNumber("StoneToughNumber");
+		CString mStableNumber("StableNumber");
+		CString mTopAvgGravity("TopAvgGravity");
 		switch (mArcTunnel->GetCalMethod())
 		{
 		case 1:
@@ -557,12 +636,41 @@ public:
 		case 4:
 			factory = new CTheroyMethodFactory();
 			method = factory->createMethod();
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			break;
+		case 5:
+			factory = new CBalanceMethodFactory();
+			method = factory->createMethod();
 
+			balance = static_cast<CBalanceMethod *>(method);
+			balance->SetAvgGravity(mProjectIni.GetDoubleValue(strBalanceMethod, mGroundAvgGravity));
+			balance->SetMaiDepth(mProjectIni.GetDoubleValue(strBalanceMethod, mMaiDepth));
+			balance->SetCoalHardNumber_Fy(mProjectIni.GetDoubleValue(strBalanceMethod, mCoalHardNumber));
+			balance->SetInnerFriction(mProjectIni.GetDoubleValue(strBalanceMethod, mInnerFriction));
+			balance->SetCoalAngle(mProjectIni.GetDoubleValue(strBalanceMethod, mCoalFriction));
+			balance->SetCaiEffectNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mCaiEffectNumber));
+			balance->SetCoalThickness(mProjectIni.GetDoubleValue(strBalanceMethod, mCoalThickness));
+			balance->SetStableNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mStableNumber));
+			balance->SetStoneHardNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mStoneToughNumber));
+			balance->SetBoltOutLength(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltOutLength));
+			balance->SetBoltSpace(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltSpace));
+			// 锚固力
+			balance->SetBoltStablePower(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltPower));
+			balance->SetBoltSafeNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltSafeNumber));
+			balance->SetBoltYieldNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltYieldNumber));
+			balance->SetTopAvgGravity(mProjectIni.GetDoubleValue(strBalanceMethod, mTopAvgGravity));
+			balance->SetBoltNumber(mProjectIni.GetLongValue(strBalanceMethod, mBoltNumber));
+			balance->SetCableALength(mProjectIni.GetDoubleValue(strBalanceMethod, mCableAlength));
+			balance->SetCableOutLength(mProjectIni.GetDoubleValue(strBalanceMethod, mCableOutLength));
+			balance->SetCableStoneHeight(mProjectIni.GetDoubleValue(strBalanceMethod, mCableStoneHeight));
+			balance->SetMinBreakLoader(mProjectIni.GetDoubleValue(strBalanceMethod, mMinBreakPower));
+			balance->SetCableSafeNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mCableSafeNumber));
+			
 			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
 			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
 		default:
-
 			break;
 		}
 
@@ -671,7 +779,6 @@ public:
 		CString strConcreteThickness("ConcreteThickness");
 		CString strQiThickness("QiThickness");
 
-
 		switch (mArcTunnel->GetZhihuWay())
 		{
 		case 2:
@@ -751,6 +858,8 @@ public:
 			return SaveLooseRangeMethod();
 		case 4:
 			return true;
+		case 5:
+			return SaveBalanceMethod();
 		default:
 			return false;
 		}
@@ -787,4 +896,58 @@ public:
 		
 	};
 
+};
+
+class CRectProjectBuilder : public CProjectBuilder {
+private:
+	CRectTunnel * mRectTunnel;
+public:
+	CRectProjectBuilder() {
+		mRectTunnel = new CRectTunnel();
+		mTunnelProject = new CTunnelProject();
+		theory = new CTheoryCalMethod();
+		project = new CProExpMethod();
+		loose = new CLooseRangeMethod();
+		balance = new CBalanceMethod();
+	};
+	~CRectProjectBuilder() {
+		delete mRectTunnel;
+		delete mTunnelProject;
+		delete theory;
+		delete project;
+		delete loose;
+		delete balance;
+	};
+	static CRectProjectBuilder * GetInstance() {
+		static CRectProjectBuilder instance;
+		return &instance;
+	};
+
+};
+
+
+class CTrapProjectBuilder : public CProjectBuilder {
+private:
+	CTrapTunnel * mTrapTunnel;
+public:
+	CTrapProjectBuilder() {
+		mTrapTunnel = new CTrapTunnel();
+		mTunnelProject = new CTunnelProject();
+		theory = new CTheoryCalMethod();
+		project = new CProExpMethod();
+		loose = new CLooseRangeMethod();
+		balance = new CBalanceMethod();
+	};
+	~CTrapProjectBuilder() {
+		delete mTrapTunnel;
+		delete mTunnelProject;
+		delete theory;
+		delete project;
+		delete loose;
+		delete balance;
+	};
+	static CTrapProjectBuilder * GetInstance() {
+		static CTrapProjectBuilder instance;
+		return &instance;
+	};
 };

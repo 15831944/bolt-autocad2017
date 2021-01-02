@@ -113,12 +113,12 @@ void CProjectDialog::OnBnClickedOk()
 		mStrCheckDate = mCheckDate.Format("%Y年%m月%d日");
 
 		if (mDesignDate > mCheckDate) {
-			MessageBox(_T("设计时间不能晚于审查时间!"));
+			MessageBox(_T("设计时间不能晚于审查时间!"),_T("警告"), MB_ICONWARNING | MB_OK);
 		}
 		else {
 			if (DataChecker::IsNegative(mIntScaleNumber) == true)
 			{
-				MessageBox(_T("比例不能为负数!"));
+				MessageBox(_T("比例不能为负数!"), _T("警告"), MB_ICONWARNING | MB_OK);
 			}
 			else
 			{
@@ -206,7 +206,7 @@ void CProjectDialog::OnCancel()
 
 	if (CArcProjectBuilder::GetInstance()->GetProjectSaveToInstance() == FALSE)
 	{
-		if (IDYES == MessageBox(_T("当前页面参数尚未保存，仍要关闭当前页面？"), 0, MB_YESNO))
+		if (IDYES == MessageBox(_T("当前页面参数尚未保存，仍要关闭当前页面？"), _T("取消"), MB_YESNO |  MB_ICONQUESTION))
 		{
 			CDialogEx::OnCancel();
 		}

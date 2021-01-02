@@ -96,7 +96,7 @@ void CBalanceMethodDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_TOP_AVG_G, mTopAvgGravity);
 	DDX_Text(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, mConcreteThickness);
 	DDX_Text(pDX, IDC_EDIT_THE_QI_THICKNESS, mQiThickness);
-}
+};
 
 
 BEGIN_MESSAGE_MAP(CBalanceMethodDialog, CDialogEx)
@@ -126,12 +126,65 @@ BOOL CBalanceMethodDialog::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
-}
+};
 
+void CBalanceMethodDialog::SetExpertValue()
+{
+	CBalanceMethod * balance = CArcProjectBuilder::GetInstance()->GetBalanceMethod();
+
+	CBolt * topBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopBolt();
+	CBolt  * leftBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftBolt();
+	CCable *cable = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetCable();
+
+	int tmp = 1000; // 进制单位转换
+	topBolt->setLength(balance->GetTopBoltLength() * tmp);
+	topBolt->setNumber(balance->GetBoltNumber());
+	topBolt->setDiameter(balance->GetBoltDiameter() * tmp);
+	topBolt->setPitch(balance->GetBoltPitch() * tmp);
+	topBolt->setSpace(balance->GetBoltSpace());
+	
+	leftBolt->setLength(balance->GetBangBoltLength()* tmp);
+	leftBolt->setDiameter(balance->GetBoltDiameter() * tmp);
+	leftBolt->setPitch(balance->GetBoltPitch() * tmp);
+	leftBolt->setSpace(balance->GetBoltSpace());
+
+	cable->setLength(balance->GetCableLength()* tmp);
+	cable->setSpace(balance->GetCableSpaceAndPitch()* tmp);
+	cable->setPitch(balance->GetCableSpaceAndPitch()* tmp);
+	cable->setALength(balance->GetCableALength() * tmp);
+};
+
+void CBalanceMethodDialog::CheckThickness()
+{
+	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+	switch (pArc->GetZhihuWay())
+	{
+	case 1:
+		pArc->SetConcreteThickness(0);
+		pArc->SetQiThickness(0);
+		break;
+	case 2:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	case 3:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(0);
+		break;
+	case 4:
+		pArc->SetConcreteThickness(mConcreteThickness);
+		pArc->SetQiThickness(mQiThickness);
+		break;
+	default:
+		break;
+
+	}
+};
 
 void CBalanceMethodDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
 
 	std::vector<double> mVecValue = { mGroundAvgGravity, mMaiDepth,
 		mCoalHardNumber, mCoalThickness, mCaiEffectNumber, mInnerFriction,
@@ -143,8 +196,8 @@ void CBalanceMethodDialog::OnBnClickedOk()
 	};
 
 	if (DataChecker::HasZeroOrNegativeValue(mVecValue) == true) {
-		MessageBox(_T("参数必须大于0"));
-		pmLeagal = false;
+		MessageBox(_T("参数必须大于0"), _T("警告"), MB_ICONWARNING);
+		pmLeagal = false; 
 	}
 	else {
 		CBalanceMethodFactory * factory = new CBalanceMethodFactory();
@@ -154,10 +207,51 @@ void CBalanceMethodDialog::OnBnClickedOk()
 		CBalanceMethod* BalanceMethod = static_cast<CBalanceMethod *>(method);
 		CArcProjectBuilder::GetInstance()->SetMethod(BalanceMethod);
 
+		CBalanceMethod * balance = CArcProjectBuilder::GetInstance()->GetBalanceMethod();
+		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
+		balance->SetA(pArc->GetWidth() / 1000);
+		balance->SetH(pArc->GetHeight() / 1000);
+		balance->SetAvgGravity(mGroundAvgGravity);
+		balance->SetMaiDepth(mMaiDepth);
+		balance->SetCoalHardNumber_Fy(mCoalHardNumber);
+		balance->SetCoalThickness(mCoalThickness);
+		balance->SetCaiEffectNumber(mCaiEffectNumber);
+		balance->SetInnerFriction(mInnerFriction);
+		balance->SetCoalAngle(mCoalFriction);
+		balance->SetStableNumber(mStableNumber);
+		balance->SetStoneHardNumber(mStoneToughNumber);
+		balance->SetBoltOutLength(mBoltOutLength);
+		balance->SetBoltSpace(mBoltSpace);
+		balance->SetBoltYieldNumber(mBoltYieldNumber);
+		balance->SetBoltStablePower(mBoltPower);
+		balance->SetBoltSafeNumber(mBoltSafeNumber);
+		balance->SetBoltNumber(mBoltNumber);
+		balance->SetTopAvgGravity(mTopAvgGravity);
+		balance->SetCableALength(mCableAlength);
+		balance->SetCableStoneHeight(mCableStoneHeight);
+		balance->SetCableOutLength(mCableOutLength);
+		balance->SetCableSafeNumber(mCableSafeNumber);
+		balance->SetMinBreakLoader(mMinBreakPower);
+
+		CArcProjectBuilder::GetInstance()->GetMethod()->SetConcreteThickness(mConcreteThickness);
+		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
+		std::cout << "theory method value\n";
+		CArcProjectBuilder::GetInstance()->SetCalMethodSaveToInstance(TRUE);
+
+		SetExpertValue();
+		CheckThickness();
+		pmLeagal = true;
 	}
-	ShowWindow(SW_HIDE);
-	DialogManager::GetInstance().ShowResultDlg();
+
+	if (pmLeagal) {
+		DialogManager::GetInstance().setHasCalculated(true);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(true);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(true);
+
+		DialogManager::GetInstance().ShowResultDlg();
+		ShowWindow(SW_HIDE);
+	}
 }
 
 
@@ -175,3 +269,4 @@ void CBalanceMethodDialog::OnBnClickedCancel()
 	// TODO: 在此添加控件通知处理程序代码
 	ShowWindow(SW_HIDE);
 }
+

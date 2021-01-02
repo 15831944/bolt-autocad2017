@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MFCUtil.h"
 #include "CalMethod.h"
 #pragma once
 class CBolt
@@ -274,3 +275,50 @@ public:
 	double GetHeight() const { return (arcHeight + wallHeight); };
 };
 
+// 矩形巷道
+class CRectTunnel : public CTunnel {
+private:
+	double width = 0;
+	double height = 0;
+public:
+	CRectTunnel() {};
+	CRectTunnel(double w,double h) {
+		width = w;
+		height = h;
+	};
+	~CRectTunnel() {};
+	void SetWidth(double v) { width = v; };
+	double GetWidth() const { return width; };
+	void SetHeight(double h) { height = h; };
+	double GetHeight() const { return height; };
+};
+
+// 梯形巷道
+class CTrapTunnel : public CTunnel {
+private:
+	double topWidth;
+	double bottomWidth;
+	double height;
+	int leftAngle;
+	int rightAngle;
+public:
+	CTrapTunnel() {};
+	~CTrapTunnel() {};
+	CTrapTunnel(double bw, double h, int la, int ra) {
+		bottomWidth = bw ;
+		height = h ;
+		leftAngle = la;
+		rightAngle = ra;
+		topWidth = bottomWidth - (height / tan(MFCUtil::AngleToArc(la))) - (height / tan(MFCUtil::AngleToArc(ra)));
+	};
+	void SetTopWidth(double v) { topWidth = v; };
+	double GetTopWidth() const { return topWidth; };
+	void SetBottomWidth(double v) { bottomWidth = v; };
+	double GetTbottomWidth() const { return bottomWidth; };
+	void SetHeight(double v) { height = v; };
+	double GetHeight() const { return height; };
+	void SetLeftAngle(int v) { leftAngle = v; };
+	int GetLeftAngle() const { return leftAngle; };
+	void SetRightAngle(int v) { rightAngle = v; };
+	int GetRightAngle() const { return rightAngle; };
+};

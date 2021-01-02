@@ -89,10 +89,10 @@ void CThreeTunnelDlg::InitButtonEdtArray() {
 
 }
 
+// 修改选中巷道的值
 void CThreeTunnelDlg::setOptionDisabled()
 {
 
-	// 矩形巷道被选中
 	// auto &可以对容器中的元素进行读写 
 	for (auto & it : mRectEdtArray)
 	{
@@ -129,7 +129,6 @@ void CThreeTunnelDlg::SetZhihuWay(int flag) {
 		mRadioConcreteQiWay.SetCheck(FALSE);
 		break;
 	case 3:
-
 		mRadioDefaultWay.SetCheck(FALSE);
 		mRadioBoltConcreteWay.SetCheck(FALSE);
 		mRadioJetConcreteWay.SetCheck(TRUE);
@@ -240,7 +239,6 @@ void CThreeTunnelDlg::OnBnClickedRadioArc()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	setOptionDisabled();
-	
 }
 
 
@@ -249,7 +247,6 @@ void CThreeTunnelDlg::OnBnClickedRadioTrapzoid()
 	// TODO: 在此添加控件通知处理程序代码
 	setOptionDisabled();
 }
-
 
 
 void CThreeTunnelDlg::OnBnClickedChooseCancel()
@@ -262,82 +259,106 @@ void CThreeTunnelDlg::OnBnClickedChooseCancel()
 void CThreeTunnelDlg::OnBnClickedChooseOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	if (MFCUtil::VectorHasEmpty(mArcEdtArray) == true) {
-		MessageBox(_T("拱形数据不能含有空值"));
+
+	if (GetCheckedRadioButton(mRadioDefaultWay.GetDlgCtrlID(),
+		mRadioConcreteQiWay.GetDlgCtrlID()) == 0)
+	{
+		MessageBox(_T("请选择一种支护方式"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
+
 	else {
+		UpdateData(TRUE);
 
-		if (GetCheckedRadioButton(mRadioDefaultWay.GetDlgCtrlID(),
-			mRadioConcreteQiWay.GetDlgCtrlID()) == 0)
-		{
-			MessageBox(_T("请选择一种支护方式"));
+		if (mLeftAngle > 90 || mLeftAngle < 0 || mRightAngle > 90
+			|| mRightAngle < 0) {
+			MessageBox(_T("与帮的夹角应介于于0和90之间"), _T("警告"), MB_ICONWARNING | MB_OK);
 		}
-
 		else {
-			UpdateData(TRUE);
-
-			if (mLeftAngle > 90 || mLeftAngle < 0 || mRightAngle > 90
-				|| mRightAngle < 0) {
-				MessageBox(_T("与帮的夹角应介于于0和90之间"));
-			}
-			else {
-				TunnelSavepm();
-				SuccessToMethodChooseDlg();
-			}
+			TunnelSavepm();
+			SuccessToMethodChooseDlg();
 		}
-
+		
 	}
 }
 
 void CThreeTunnelDlg::SuccessToMethodChooseDlg() {
 
 	ShowWindow(SW_HIDE);
-
 	DialogManager::GetInstance().ShowMethodChooseDlg();
-	
+
 }
 
-void CThreeTunnelDlg::TunnelSavepm()
+
+void CThreeTunnelDlg::ArcTunnelSavepm()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	// 新建，将arc信息保存到当前的 Project 单例中
-	CString strWidth;
-	CString strWallHeight;
-	CString strArcHeight;
 
-	mEdtArcWidth.GetWindowText(strWidth);
-	mEdtArcWallHeight.GetWindowText(strWallHeight);
-	mEdtArcHeight.GetWindowText(strArcHeight);
+	if (MFCUtil::VectorHasEmpty(mArcEdtArray) == true) {
+		MessageBox(_T("拱形数据不能含有空值"), _T("警告"), MB_ICONWARNING | MB_OK);
+	}
+	else {
+		CString strWidth;
+		CString strWallHeight;
+		CString strArcHeight;
 
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetWidth(_ttof(strWidth));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetWallHeight(_ttof(strWallHeight));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetArcHeight(_ttof(strArcHeight));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetNormalToArc(
-		mRadioNormalToArc.GetCheck() == TRUE ? true : false
-	);
+		mEdtArcWidth.GetWindowText(strWidth);
+		mEdtArcWallHeight.GetWindowText(strWallHeight);
+		mEdtArcHeight.GetWindowText(strArcHeight);
 
-	// 设置巷道支护方式
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetWidth(_ttof(strWidth));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetWallHeight(_ttof(strWallHeight));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetArcHeight(_ttof(strArcHeight));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetNormalToArc(
+			mRadioNormalToArc.GetCheck() == TRUE ? true : false
+		);
 
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()
-		->SetZhihuWay(GetZhihuWayBtn());
-	std::cout << "zhihu way :" << GetZhihuWayBtn() << std::endl;
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()
-		->SetHasRevertAngle((mCheckBoltAngle.GetCheck() == TRUE) ? true : false);
+		// 设置巷道支护方式
 
-	CString strLeftAngle, strTopAngle(_T("90")), strRightAngle;
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()
+			->SetZhihuWay(GetZhihuWayBtn());
+		std::cout << "zhihu way :" << GetZhihuWayBtn() << std::endl;
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()
+			->SetHasRevertAngle((mCheckBoltAngle.GetCheck() == TRUE) ? true : false);
 
-	mEdtBoltLeftAngle.GetWindowText(strLeftAngle);
-	mEdtBoltRightAngle.GetWindowText(strRightAngle);
+		CString strLeftAngle, strTopAngle(_T("90")), strRightAngle;
+
+		mEdtBoltLeftAngle.GetWindowText(strLeftAngle);
+		mEdtBoltRightAngle.GetWindowText(strRightAngle);
 
 
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopAngle(_ttof(strTopAngle));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftAngle(_ttof(strLeftAngle));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightAngle(_ttof(strRightAngle));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopAngle(_ttof(strTopAngle));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftAngle(_ttof(strLeftAngle));
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightAngle(_ttof(strRightAngle));
 
-	std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
-	CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
+		std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
+		CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
 
-	//MessageBox(_T("本页参数保存成功"));
+		//MessageBox(_T("本页参数保存成功"));
+	}
+}
+
+
+void CThreeTunnelDlg::TunnelSavepm()
+{
+	if (mRecTunnelOption.GetCheck() == TRUE) {
+		RecTunnelSavepm();
+	}
+	if (mArcTunnelOption.GetCheck() == TRUE) {
+		ArcTunnelSavepm();
+	}
+	if (mTrapTunnelOption.GetCheck() == TRUE) {
+		TrapTunelSavepm();
+	}
+}
+
+void CThreeTunnelDlg::RecTunnelSavepm()
+{
+
+}
+
+void CThreeTunnelDlg::TrapTunelSavepm()
+{
 }
 
 void CThreeTunnelDlg::OnBnClickedButtonProjectDialog()

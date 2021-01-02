@@ -50,8 +50,11 @@ private:
 	double mStoneToughNumber;
 	double mStableNumber;
 	double mTopAvgGravity;
+
 	double mConcreteThickness;
 	double mQiThickness;
 	bool pmLeagal = false;
 
+	void CheckThickness();
+	void SetExpertValue();
 };

@@ -272,23 +272,23 @@ void CMFCadDlg::OnBnClickedButtonSaveFile()
 	
 		switch (CArcProjectBuilder::GetInstance()->ProjectSaver()) {
 		case 0:
-			MessageBox(_T("保存工程信息成功"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存工程信息成功"), _T("成功"), MB_ICONHAND);
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
 			break;
 		case 5:
-			MessageBox(_T("保存计算方法参数失败"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存计算方法参数失败"), _T("失败"), MB_ICONERROR);
 			break;
 		case 4:
-			MessageBox(_T("保存锚杆参数失败"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存锚杆参数失败"), _T("失败"), MB_ICONERROR);
 			break;
 		case 3:
-			MessageBox(_T("保存巷道参数失败"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存巷道参数失败"), _T("失败"), MB_ICONERROR);
 			break;
 		case 2:
-			MessageBox(_T("保存flag参数失败"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存flag参数失败"), _T("失败"), MB_ICONERROR);
 			break;
 		case 1:
-			MessageBox(_T("保存工程信息失败"), 0, MB_SYSTEMMODAL);
+			MessageBox(_T("保存工程信息失败"), _T("失败"), MB_ICONERROR);
 			break;
 		}
 	}

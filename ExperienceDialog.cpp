@@ -234,7 +234,7 @@ void CExperienceDialog::OnBnClickedButtonExpSavepm()
 	};
 
 	if (DataChecker::HasZeroOrNegativeValue(mVecValue) == true) {
-		MessageBox(_T("参数不能含有0或负数"));
+		MessageBox(_T("参数不能含有0或负数"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
 	else {
 
@@ -276,7 +276,7 @@ void CExperienceDialog::OnBnClickedButtonExpSavepm()
 		CheckThickness();
 		DialogManager::GetInstance().setHasCalculated(true);
 		pmLeagal = true;
-		MessageBox(_T("本页参数保存成功"));
+		MessageBox(_T("本页参数保存成功"), _T("保存"), MB_OK);
 
 	};
 

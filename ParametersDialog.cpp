@@ -466,15 +466,15 @@ void CParametersDialog::OnBnClickedOk()
 		CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
 
 		if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
-			MessageBox(_T("桥接文件保存成功！"));
+			//MessageBox(_T("桥接文件保存成功！"));
 		}
 		else {
-			MessageBox(_T("桥接文件保存失败！"));
+			MessageBox(_T("桥接文件保存失败！"), _T("错误"));
 		}
 		CADService::WriteAcadRx();
 		CADService::LaunchACad();
 
-		MessageBox(_T("绘制成功，AutoCad已启动！"));
+		MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
 	}
 
 }
@@ -606,7 +606,7 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 		|| (mCheckRightBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtRightBolt) )
 		|| (mCheckCable.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorCable)))
 	{
-		MessageBox(_T("不能含有非空参数"));
+		MessageBox(_T("不能含有空参数"), _T("警告"), MB_ICONWARNING);
 	}
 	else 
 	{
@@ -614,16 +614,16 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 			switch (CheckBoltOrCableLeagal())
 			{
 			case 1:
-				MessageBox(_T("请调整顶部锚杆间距或根数"));
+				MessageBox(_T("请调整顶部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
 				break;
 			case 2:
-				MessageBox(_T("请调整帮部锚杆间距或根数"));
+				MessageBox(_T("请调整帮部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
 				break;
 			case 3:
-				MessageBox(_T("请调整全锚索间距或根数"));
+				MessageBox(_T("请调整全锚索间距或根数"), _T("警告"), MB_ICONWARNING);
 				break;
 			case 4:
-				MessageBox(_T("请调整锚杆间距或根数"));
+				MessageBox(_T("请调整锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
 				break;
 			default:
 				break;
@@ -661,7 +661,7 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 				//CArcProjectBuilder::GetInstance()->SetMethod(method);
 			}
 
-			MessageBox(_T("本页参数已保存"));
+			MessageBox(_T("本页参数已保存"), _T("成功"));
 			pmLeagal = true;
 		}
 	}
@@ -674,7 +674,7 @@ void CParametersDialog::OnOK()
 	if (MFCUtil::VectorHasEmpty(mVectorEdtTopBolt) || MFCUtil::VectorHasEmpty(mVectorEdtLeftBolt)
 		||MFCUtil::VectorHasEmpty(mVectorEdtRightBolt) || MFCUtil::VectorHasEmpty(mVectorCable))
 	{
-		MessageBox(_T("不能含有空参数"));
+		MessageBox(_T("不能含有空参数"), _T("警告"), MB_ICONWARNING);
 	}
 	else { 
 		// 点击绘图，将所有参数保存到 autocad 路径下的 \ini\brige.ini 文件中，

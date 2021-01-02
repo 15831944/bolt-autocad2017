@@ -334,6 +334,7 @@ private:
 		double div_bottom = pow(10, 4) * mCoalHardNumber_Fy;
 		double sub1 = div_top / div_bottom - 1;
 		double tan_fai = tan(MFCUtil::AngleToArc((90 - mInnerFriction) * 0.5));
+		std::cout << "BangBreakDepth C: " << sub1 * mCoalThickness * tan_fai << std::endl;
 		return sub1 * mCoalThickness * tan_fai;
 	};
 
@@ -341,10 +342,11 @@ private:
 		double C = GetBangBreakDepth();
 		double div_top = (a + C) * cos(MFCUtil::AngleToArc(mCoalAngle));
 		double div_bottom = mStableNumber * mStoneHardNumber;
+		std::cout << "TopBreakDepth b: " << div_top / div_bottom << std::endl;
 		return div_top / div_bottom;
 	};
 public:
-	void SetAvgGravity(double t) { mAvgGravity = t; };
+	void SetAvgGravity(double t) { mAvgGravity = t ; };
 	double GetAvgGravity() const { return mAvgGravity; };
 	void SetMaiDepth(double t) { mMaiDepth = t; };
 	double GetMaiDepth() const { return mMaiDepth; };
@@ -405,12 +407,14 @@ public:
 		double b = GetTopBreakDepth();
 		double div_top = mBoltStablePower * mBoltNumber;
 		double div_bottom = 2 * mBoltSafeNumber * mTopAvgGravity * a * b;
+		std::cout << "balance method pitch: " << div_top / div_bottom << std::endl;
 		return div_top / div_bottom;
 	};
 
 	double GetBoltDiameter() {
 		double pi = asin(0.5) * 6;
 		double d = sqrt((4 * mBoltStablePower) / (pi * mBoltYieldNumber));
+		std::cout << "balance diameter: " << d << std::endl;
 		return d;
 	};
 

@@ -122,7 +122,7 @@ void CMethodChooseDialog::OnOK()
 	std::cout << "method flag: " << flag << std::endl;
 	if (flag == 0)
 	{
-		MessageBox(_T("至少选择一种计算方法"));
+		MessageBox(_T("至少选择一种计算方法"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
 }                                                       
 
