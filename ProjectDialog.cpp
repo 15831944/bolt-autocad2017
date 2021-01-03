@@ -10,8 +10,6 @@
 #include "DialogManager.h"
 
 //一开始的巷道选择对话框，现在只有拱形一种巷道
-CTunnelChooseDialog * tDlg = NULL;
-CTunnelProject  *project = new CTunnelProject();
 
 // CProjectDialog 对话框
 
@@ -154,7 +152,7 @@ BOOL CProjectDialog::OnInitDialog()
 
 	CTunnelProject * pInfo = CArcProjectBuilder::GetInstance()->GetTunnelProject();
 
-	mEdtPaperTitle.SetWindowText(pInfo->GetPaperTitle());
+	mEdtPaperTitle.SetWindowText(_T("XXX锚杆支护设计图"));
 	mEdtDevelopApart.SetWindowText(_T("西安科技大学"));
 	mEdtChecker.SetWindowText(pInfo->GetChecker());
 	mEdtDescription.SetWindowText(pInfo->GetPaperDescription());
@@ -181,10 +179,8 @@ CTunnelProject* CProjectDialog::GetProjectInfoFromMFC()
 	
 	mDtCheckDate.GetTime(mCheckDate);
 	mStrCheckDate = mCheckDate.Format("%Y年%m月%d日");
-
+	CTunnelProject  *project = CArcProjectBuilder::GetInstance()->GetTunnelProject();
 	project->SetPaperTitle(mStrPaperTitle);
-
-		
 	project->SetPaperDescription(mStrPaperDescription);
 	project->SetScaleNumber(strScaleNumber);
 	project->SetPaperNumber(mStrPaperNumber);

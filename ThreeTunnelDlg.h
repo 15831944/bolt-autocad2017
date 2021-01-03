@@ -22,9 +22,6 @@ public:
 	afx_msg void OnBnClickedChooseOk();
 	void SuccessToMethodChooseDlg();
 	void TunnelSavepm();
-	void ArcTunnelSavepm();
-	void RecTunnelSavepm();
-	void TrapTunelSavepm();
 	void OnBnClickedButtonProjectDialog();
 
 // 对话框数据
@@ -75,5 +72,8 @@ private:
 	void InitButtonEdtArray();
 	void setOptionDisabled();
 	void SetZhihuWay(int flag);
+	void SetTunnelTypeRadio(int type);
+
+	int GetTunnelOption();
 
 };

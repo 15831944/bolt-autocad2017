@@ -98,8 +98,8 @@ END_MESSAGE_MAP()
 BOOL CMFCadDlg::OnInitDialog()
 {
 
-	CSkipDialog *dlgSkip = new CSkipDialog();
-	dlgSkip->DoModal();
+	//CSkipDialog *dlgSkip = new CSkipDialog();
+	//dlgSkip->DoModal();
 
 	CDialogEx::OnInitDialog();
 	// 将“关于...”菜单项添加到系统菜单中。
@@ -187,7 +187,6 @@ void CMFCadDlg::OnNewProject()
 	std::cout << "is save to file? :" << CArcProjectBuilder::GetInstance()->GetSavedToFile() << std::endl;
 	// TODO: 在此添加命令处理程序代码
 
-	
 	if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == TRUE
 		&& (!CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()))
 	{ 
@@ -197,6 +196,7 @@ void CMFCadDlg::OnNewProject()
 		CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
 		CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
 		
+		DialogManager::GetInstance().NewProjectDialog();
 		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 	}
@@ -208,6 +208,7 @@ void CMFCadDlg::OnNewProject()
 		CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
 		CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
 
+		DialogManager::GetInstance().NewProjectDialog();
 		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 
@@ -339,7 +340,7 @@ void CMFCadDlg::OnSaveProject()
 		if ((CArcProjectBuilder::GetInstance()->SaveProjectToFile() == true)
 			&& (CArcProjectBuilder::GetInstance()->SaveTunnelFlagToFile() == true)
 			&& (CArcProjectBuilder::GetInstance()->SaveParametersToFile() == true)
-			&& (CArcProjectBuilder::GetInstance()->SaveArcTunnelInfoToFile() == true)
+			&& (CArcProjectBuilder::GetInstance()->SaveTunnelInfoToFile() == true)
 			&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
 			) {
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
@@ -396,7 +397,7 @@ void CMFCadDlg::OnCancel()
 				if ((CArcProjectBuilder::GetInstance()->SaveProjectToFile() == true)
 					&& (CArcProjectBuilder::GetInstance()->SaveTunnelFlagToFile() == true)
 					&& (CArcProjectBuilder::GetInstance()->SaveParametersToFile() == true)
-					&& (CArcProjectBuilder::GetInstance()->SaveArcTunnelInfoToFile() == true)
+					&& (CArcProjectBuilder::GetInstance()->SaveTunnelInfoToFile() == true)
 					&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
 					) {
 					MessageBox(_T("保存工程信息成功"), _T("成功"), MB_OK);

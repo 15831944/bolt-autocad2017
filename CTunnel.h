@@ -249,12 +249,24 @@ public:
 	CCable * GetCable() const { return pCable; };
 };
 
+/**
+在计算时利用拱形巷道做载体，记录三种巷道的共同属性;
+Arc.WallHeight = Rect.height;
+Arc.width = rect.width;
+
+Arc.wallheight = trap.height;
+arc.width = trap.topWidth;
+
+**/
 class CArcTunnel : public CTunnel {
 private:
 	double width = 0;
 	double wallHeight = 0;
 	double arcHeight = 0;
 	bool isNormalToArc = true;
+	double trapBottomWidth = 0; // 用拱形巷道做载体记录梯形参数是
+	int LeftAngle = 90; //梯形的左右夹角
+	int RightAngle = 90;
 public:
 	CArcTunnel() {};
 	CArcTunnel(double w, double wh, double ah, bool flag) {
@@ -273,6 +285,13 @@ public:
 	void SetNormalToArc(bool flag) { isNormalToArc = flag; };
 	bool GetNormalToArc() { return isNormalToArc; };
 	double GetHeight() const { return (arcHeight + wallHeight); };
+
+	void SetTrapBottomWidth(double v) { trapBottomWidth = v; };
+	double GetTrapBottomWidth() const { return trapBottomWidth; };
+	void SetTrapLeftAngle(int v) { LeftAngle = v; };
+	int GetTrapLeftAngle() const { return LeftAngle; };
+	void SetTrapRightAngle(int v) { RightAngle = v; };
+	int GetTrapRightAngle() const { return RightAngle; };
 };
 
 // 矩形巷道

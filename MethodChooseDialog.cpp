@@ -79,21 +79,41 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 	{
 	case 1:
 		mRadioTheoretical.SetCheck(TRUE);
+		mRadioExperience.SetCheck(FALSE);
+		mRadioLooseRange.SetCheck(FALSE);
+		mRadioExpert.SetCheck(FALSE);
+		mRadioBalanceMethod.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(1);
 		break;
 	case 2:
+		mRadioTheoretical.SetCheck(FALSE);
 		mRadioExperience.SetCheck(TRUE);
+		mRadioLooseRange.SetCheck(FALSE);
+		mRadioExpert.SetCheck(FALSE);
+		mRadioBalanceMethod.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(2);
 		break;
 	case 3:
+		mRadioTheoretical.SetCheck(FALSE);
+		mRadioExperience.SetCheck(FALSE);
 		mRadioLooseRange.SetCheck(TRUE);
+		mRadioExpert.SetCheck(FALSE);
+		mRadioBalanceMethod.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(3);
 		break;
 	case 4:
+		mRadioTheoretical.SetCheck(FALSE);
+		mRadioExperience.SetCheck(FALSE);
+		mRadioLooseRange.SetCheck(FALSE);
 		mRadioExpert.SetCheck(TRUE);
+		mRadioBalanceMethod.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(4);
 		break;
 	case 5:
+		mRadioTheoretical.SetCheck(FALSE);
+		mRadioExperience.SetCheck(FALSE);
+		mRadioLooseRange.SetCheck(FALSE);
+		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(TRUE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(5);
 		break;
@@ -103,12 +123,8 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 }
 
 int CMethodChooseDialog::GetMethodFlag() {
-	if (mRadioTheoretical.GetCheck() == TRUE) 
-		return 1;
-	
-	if (mRadioExperience.GetCheck() == TRUE) 
-		return 2;
-
+	if (mRadioTheoretical.GetCheck() == TRUE) return 1;
+	if (mRadioExperience.GetCheck() == TRUE) return 2;
 	if (mRadioLooseRange.GetCheck() == TRUE) return 3;
 	if (mRadioExpert.GetCheck() == TRUE) return 4;
 	if (mRadioBalanceMethod.GetCheck() == TRUE) return 5;
@@ -118,12 +134,7 @@ int CMethodChooseDialog::GetMethodFlag() {
 void CMethodChooseDialog::OnOK()
 {
 	// TODO: 在此添加专用代码和/或调用基类
-	int flag = GetMethodFlag();
-	std::cout << "method flag: " << flag << std::endl;
-	if (flag == 0)
-	{
-		MessageBox(_T("至少选择一种计算方法"), _T("警告"), MB_ICONWARNING | MB_OK);
-	}
+
 }                                                       
 
 
@@ -132,39 +143,44 @@ void CMethodChooseDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	CDialogEx::OnOK();
-	std::cout << "method choose clicked ok\n";
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(GetMethodFlag());
-	CArcProjectBuilder::GetInstance()->SetMethodSaveToInstance(TRUE);
-
-	int pTheoreticalState = mRadioTheoretical.GetCheck();
-	int pExperienceState = mRadioExperience.GetCheck();
-	int pLooseState = mRadioLooseRange.GetCheck();
-	int pExpertState = mRadioExpert.GetCheck();
-	int pBalanceMethod = mRadioBalanceMethod.GetCheck();
-
-	std::cout << "method choose clicked ok\n";
-
-	if (pTheoreticalState != 0)
+	int flag = GetMethodFlag();
+	std::cout << "method flag: " << flag << std::endl;
+	if (flag == 0)
 	{
-		//理论法被选中
-		DialogManager::GetInstance().ShowTheoryDlg();
+		MessageBox(_T("至少选择一种计算方法"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
-	if (pExperienceState != 0)
-	{
-		DialogManager::GetInstance().ShowExpDlg();
-	}
-	if (pLooseState != 0) {
-		DialogManager::GetInstance().ShowLooseDlg();
-	}
-	if (pExpertState != 0) {
-		DialogManager::GetInstance().ShowResultDlg();
-	}
-	if (pBalanceMethod != 0) {
-		DialogManager::GetInstance().ShowBalanceDlg();
+	else {
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(flag);
+		CArcProjectBuilder::GetInstance()->SetMethodSaveToInstance(TRUE);
+
+		int pTheoreticalState = mRadioTheoretical.GetCheck();
+		int pExperienceState = mRadioExperience.GetCheck();
+		int pLooseState = mRadioLooseRange.GetCheck();
+		int pExpertState = mRadioExpert.GetCheck();
+		int pBalanceMethod = mRadioBalanceMethod.GetCheck();
+
+		if (pTheoreticalState != 0)
+		{
+			//理论法被选中
+			DialogManager::GetInstance().ShowTheoryDlg();
+		}
+		if (pExperienceState != 0)
+		{
+			DialogManager::GetInstance().ShowExpDlg();
+		}
+		if (pLooseState != 0) {
+			DialogManager::GetInstance().ShowLooseDlg();
+		}
+		if (pExpertState != 0) {
+			DialogManager::GetInstance().ShowResultDlg();
+		}
+		if (pBalanceMethod != 0) {
+			DialogManager::GetInstance().ShowBalanceDlg();
+		}
+
+		ShowWindow(SW_HIDE);
 	}
 
-	ShowWindow(SW_HIDE);
 }
 
 

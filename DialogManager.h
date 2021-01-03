@@ -37,6 +37,12 @@ public:
 		delete mBalanceDlg;
 	};
 
+	void NewProjectDialog() {
+		delete mProjectDlg;
+		mProjectDlg = new CProjectDialog();
+		mProjectDlg->Create(IDD_PROJECT_DIALOG, 0);
+	}
+
 	void ShowProjectDialog() {
 		if (hasCurrentFile == true)
 		{

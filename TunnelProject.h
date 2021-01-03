@@ -20,7 +20,7 @@ private:
 	// 巷道类型设定为工程中的一个属性，便于在 ProjectBuilder 中通过 mTunnelProject 变量进行判断
 	// 默认为拱形巷道，所以初始化为 2
 	// 矩形巷道：1，拱形巷道：2，梯形巷道：3
-	int mTunnelType = 2; 
+	int mTunnelType = 0; 
 
 public:
 	CTunnelProject();

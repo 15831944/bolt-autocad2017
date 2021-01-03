@@ -111,6 +111,7 @@ public:
 		CString strCheckDate("CheckDate");
 		CString strDesignApart("DesignApart");
 		CString strDevelopApart("DevelopApart");
+		CString strTunnelType("TunnelType");
 
 		SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		if (rc < 0) return false; // 若加载文件出错，返回false
@@ -126,6 +127,7 @@ public:
 		mProjectIni.SetValue(strProject, strChecker, mTunnelProject->GetChecker());
 		mProjectIni.SetValue(strProject, strDesignApart, mTunnelProject->GetDesignApart());
 		mProjectIni.SetValue(strProject, strDevelopApart, mTunnelProject->GetDevelopApart());
+		mProjectIni.SetLongValue(strProject, strTunnelType, mTunnelProject->GetTunnelType());
 
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
@@ -134,17 +136,6 @@ public:
 
 	//	return SaveTheoryMethod() && SaveExpMethod() && SaveLooseRangeMethod();
 	//};
-	bool SaveTunnelTypeToFile() {
-		CSimpleIni mProjectIni;
-		CString strProject("Project");
-
-		SI_Error rc = mProjectIni.LoadFile(fileUrl);
-		if (rc < 0) return false; // 若加载文件出错，返回false
-
-		mProjectIni.SetLongValue(strProject, _T("TunnelType"), mTunnelProject->GetTunnelType());
-		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
-		return rc2 < 0 ? false : true;
-	};
 	virtual bool SaveParametersToFile() { return false; };
 	bool SaveTheoryMethod() {
 		CSimpleIni mProjectIni;
@@ -329,7 +320,7 @@ public:
 	
 	CProjectBuilder()
 	{
-		mTunnelProject = new CTunnelProject();
+		//mTunnelProject = new CTunnelProject();
 	};
 
 	static CProjectBuilder * GetInstance() {
@@ -386,20 +377,39 @@ public:
 		CSimpleIni mProjectIni;
 		CString strArc("Arc");
 		CString strFlag("Flag");
+		CString strRect("Rectangle");
+		CString strTrap("Trapzoid");
 		SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		if (rc < 0) return false; // 若加载文件出错，返回false
-		 
-		// 初始化拱形巷道基本信息和 FLAG 标志
-		mArcTunnel->SetWidth(mProjectIni.GetDoubleValue(strArc, _T("Width")));
-		mArcTunnel->SetArcHeight(mProjectIni.GetDoubleValue(strArc, _T("ArcHeight")));
-		mArcTunnel->SetWallHeight(mProjectIni.GetDoubleValue(strArc, _T("WallHeight")));
-		mArcTunnel->SetNormalToArc(mProjectIni.GetBoolValue(strArc, _T("IsNormalToArc")));
+		
+		switch (mTunnelProject->GetTunnelType())
+		{
+		case 1:
+			// 用拱形巷道的属性存储矩形巷道的宽和高
+			mArcTunnel->SetWidth(mProjectIni.GetDoubleValue(strRect, _T("Width")));
+			mArcTunnel->SetWallHeight(mProjectIni.GetDoubleValue(strRect, _T("Height")));
+			break;
+		case 2:
+			// 初始化拱形巷道基本信息和 FLAG 标志
+			mArcTunnel->SetWidth(mProjectIni.GetDoubleValue(strArc, _T("Width")));
+			mArcTunnel->SetArcHeight(mProjectIni.GetDoubleValue(strArc, _T("ArcHeight")));
+			mArcTunnel->SetWallHeight(mProjectIni.GetDoubleValue(strArc, _T("WallHeight")));
+			mArcTunnel->SetNormalToArc(mProjectIni.GetBoolValue(strArc, _T("IsNormalToArc")));
+			break;
+		case 3:
+			mArcTunnel->SetWidth(mProjectIni.GetDoubleValue(strTrap, _T("TopWidth")));
+			mArcTunnel->SetWallHeight(mProjectIni.GetDoubleValue(strTrap, _T("Height")));
+			mArcTunnel->SetTrapBottomWidth(mProjectIni.GetDoubleValue(strTrap, _T("BottomWidth")));
+			mArcTunnel->SetTrapLeftAngle(mProjectIni.GetLongValue(strTrap, _T("LeftAngle")));
+			mArcTunnel->SetTrapRightAngle(mProjectIni.GetLongValue(strTrap, _T("RightAngle")));
+			break;
+		default:
+			break;
+		}
 
 		mArcTunnel->SetZhihuWay(mProjectIni.GetLongValue(strFlag, _T("ZhihuWay")));
 		mArcTunnel->SetHasRevertAngle(mProjectIni.GetBoolValue(strFlag, _T("HasRevertAngle")));
 		mArcTunnel->SetCalMethod(mProjectIni.GetLongValue(strFlag, _T("CalMethod")));
-
-		std::cout << "cal method: " << mArcTunnel->GetCalMethod() << std::endl;
 
 		mArcTunnel->SetHasTopBolt(mProjectIni.GetBoolValue(strFlag, _T("HasTopBolt")));
 		mArcTunnel->SetHasLeftBolt(mProjectIni.GetBoolValue(strFlag, _T("HasLeftBolt")));
@@ -814,7 +824,7 @@ public:
 		return res;
 	};
 
-	bool SaveArcTunnelInfoToFile() {
+	bool SaveTunnelInfoToFile() {
 		CSimpleIni mProjectIni;
 		SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		if (rc < 0) return false; // 若加载文件出错，返回false
@@ -824,11 +834,35 @@ public:
 		CString strArcHeight("ArcHeight");
 		CString strWallHeight("WallHeight");
 		CString strNormal("IsNormalToArc");
+		CString strRect("Rectangle");
+		CString strTrap("Trapzoid");
+		CString strHeight("Height");
+		
+		switch (mTunnelProject->GetTunnelType())
+		{
+		case 1:
+			mProjectIni.SetDoubleValue(strRect, strWidth, mArcTunnel->GetWidth());
+			mProjectIni.SetDoubleValue(strRect, strHeight, mArcTunnel->GetWallHeight());
+			break;
+		case 2:
+			mProjectIni.SetDoubleValue(strArc, strWidth, mArcTunnel->GetWidth());
+			mProjectIni.SetDoubleValue(strArc, strArcHeight, mArcTunnel->GetArcHeight());
+			mProjectIni.SetDoubleValue(strArc, strWallHeight, mArcTunnel->GetWallHeight());
+			mProjectIni.SetBoolValue(strArc, strNormal, mArcTunnel->GetNormalToArc());
+			break;
+		case 3:
+			//上底宽度
+			mProjectIni.SetDoubleValue(strTrap, _T("TopWidth"), mArcTunnel->GetWidth());
+			//下底宽度
+			mProjectIni.SetDoubleValue(strTrap, _T("BottomWidth"), mArcTunnel->GetTrapBottomWidth());
+			mProjectIni.SetDoubleValue(strTrap, strHeight, mArcTunnel->GetWallHeight());
+			mProjectIni.SetLongValue(strTrap, _T("LeftAngle"), mArcTunnel->GetTrapLeftAngle());
+			mProjectIni.SetLongValue(strTrap, _T("RightAngle"), mArcTunnel->GetTrapLeftAngle());
+			break;
+		default:
+			break;
+		}
 
-		mProjectIni.SetDoubleValue(strArc, strWidth, mArcTunnel->GetWidth());
-		mProjectIni.SetDoubleValue(strArc, strArcHeight, mArcTunnel->GetArcHeight());
-		mProjectIni.SetDoubleValue(strArc, strWallHeight, mArcTunnel->GetWallHeight());
-		mProjectIni.SetBoolValue(strArc, strNormal, mArcTunnel->GetNormalToArc());
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	}
@@ -891,13 +925,13 @@ public:
 	virtual int ProjectSaver() {
 
 		int res = 0; 
-		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() ==false) {
+		if ((SaveProjectToFile() == false)) {
 			return res++;
 		}
 		if (SaveTunnelFlagToFile() == false) {
 			return res++;
 		}
-		if (SaveArcTunnelInfoToFile() == false) {
+		if (SaveTunnelInfoToFile() == false) {
 			return res++;
 		}
 		if (SaveParametersToFile() == false) {
@@ -909,99 +943,8 @@ public:
 	};
 
 	bool SaveBridgeFile() {
-		return SaveProjectToFile()&& SaveTunnelTypeToFile() && SaveTunnelFlagToFile() && SaveArcTunnelInfoToFile() && SaveParametersToFile();
+		return SaveProjectToFile() && SaveTunnelFlagToFile() && SaveTunnelInfoToFile() && SaveParametersToFile();
 	};
 
 };
 
-class CRectProjectBuilder : public CProjectBuilder {
-private:
-	CRectTunnel * mRectTunnel;
-public:
-	CRectProjectBuilder() {
-		mRectTunnel = new CRectTunnel();
-		mTunnelProject = new CTunnelProject();
-		theory = new CTheoryCalMethod();
-		project = new CProExpMethod();
-		loose = new CLooseRangeMethod();
-		balance = new CBalanceMethod();
-	};
-	~CRectProjectBuilder() {
-		delete mRectTunnel;
-		delete mTunnelProject;
-		delete theory;
-		delete project;
-		delete loose;
-		delete balance;
-	};
-	static CRectProjectBuilder * GetInstance() {
-		static CRectProjectBuilder instance;
-		return &instance;
-	};
-
-	virtual int ProjectSaver() {
-		int res = 0;
-		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() == false) {
-			return res++;
-		}
-		//if (SaveTunnelFlagToFile() == false) {
-		//	return res++;
-		//}
-		//if (SaveRecTunnelInfoToFile() == false) {
-		//	return res++;
-		//}
-		if (SaveParametersToFile() == false) {
-			return res++;
-		}
-		//if (SaveMethodToFile() == false)
-		//	return res++;
-		return res;
-	};
-
-};
-
-
-class CTrapProjectBuilder : public CProjectBuilder {
-private:
-	CTrapTunnel * mTrapTunnel;
-public:
-	CTrapProjectBuilder() {
-		mTrapTunnel = new CTrapTunnel();
-		mTunnelProject = new CTunnelProject();
-		theory = new CTheoryCalMethod();
-		project = new CProExpMethod();
-		loose = new CLooseRangeMethod();
-		balance = new CBalanceMethod();
-	};
-	~CTrapProjectBuilder() {
-		delete mTrapTunnel;
-		delete mTunnelProject;
-		delete theory;
-		delete project;
-		delete loose;
-		delete balance;
-	};
-	static CTrapProjectBuilder * GetInstance() {
-		static CTrapProjectBuilder instance;
-		return &instance;
-	};
-
-	virtual int ProjectSaver() {
-		int res = 0;
-		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() == false) {
-			return res++;
-		}
-		//if (SaveTunnelFlagToFile() == false) {
-		//	return res++;
-		//}
-		//if (SaveTrapTunnelInfoToFile() == false) {
-		//	return res++;
-		//}
-		if (SaveParametersToFile() == false) {
-			return res++;
-		}
-		//if (SaveMethodToFile() == false)
-		//	return res++;
-		return res;
-	};
-};
