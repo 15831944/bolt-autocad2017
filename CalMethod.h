@@ -413,7 +413,7 @@ public:
 
 	double GetBoltDiameter() {
 		double pi = asin(0.5) * 6;
-		double d = sqrt((4 * mBoltStablePower) / (pi * mBoltYieldNumber));
+		double d = sqrt((4 * mBoltStablePower * 1000) / (pi * mBoltYieldNumber));
 		std::cout << "balance diameter: " << d << std::endl;
 		return d;
 	};

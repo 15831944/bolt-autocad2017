@@ -98,16 +98,11 @@ END_MESSAGE_MAP()
 BOOL CMFCadDlg::OnInitDialog()
 {
 
-
-	//CSkipDialog *dlgSkip = new CSkipDialog();
-	//dlgSkip->DoModal();
-
+	CSkipDialog *dlgSkip = new CSkipDialog();
+	dlgSkip->DoModal();
 
 	CDialogEx::OnInitDialog();
 	// 将“关于...”菜单项添加到系统菜单中。
-
-
-
 
 	// 启动时令窗口最大化 
 	this->ShowWindow(SW_MAXIMIZE);
@@ -219,7 +214,6 @@ void CMFCadDlg::OnNewProject()
 	}
 	else if(CArcProjectBuilder::GetInstance()->GetSavedToFile() == FALSE)
 	{
-
 		DialogManager::GetInstance().ShowProjectDialog();
 	}
 
@@ -272,7 +266,7 @@ void CMFCadDlg::OnBnClickedButtonSaveFile()
 	
 		switch (CArcProjectBuilder::GetInstance()->ProjectSaver()) {
 		case 0:
-			MessageBox(_T("保存工程信息成功"), _T("成功"), MB_ICONHAND);
+			MessageBox(_T("保存工程信息成功"), _T("成功"));
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
 			break;
 		case 5:
@@ -291,9 +285,12 @@ void CMFCadDlg::OnBnClickedButtonSaveFile()
 			MessageBox(_T("保存工程信息失败"), _T("失败"), MB_ICONERROR);
 			break;
 		}
+
 	}
 	
 }
+
+
 
 void CMFCadDlg::ConcreteOpenProject() {
 
@@ -307,7 +304,6 @@ void CMFCadDlg::ConcreteOpenProject() {
 	if (!strFilePath.IsEmpty()) {
 
 		CArcProjectBuilder::GetInstance()->SetFileUrl(strFilePath);
-
 		CArcProjectBuilder::GetInstance()->BuildAll();
 
 		//MessageBox(_T("文件打开成功！参数载入完毕"), 0, MB_SYSTEMMODAL);

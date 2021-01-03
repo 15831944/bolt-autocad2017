@@ -27,6 +27,7 @@ public:
 	virtual void SetFileUrl(CString url) { fileUrl = url; };
 	virtual CString GetFileUrl() const { return fileUrl; };	
 	virtual void SetTunnelProject(CTunnelProject * p) { mTunnelProject = p; };
+	CTunnelProject * GetTunnelProejct() const { return mTunnelProject; };
 	void SetSavedToFile(BOOL flag) { IsSavedToFile = flag; };
 	BOOL GetSavedToFile() const { return IsSavedToFile; };
 	void SetTunnelSaveToInstance(BOOL flag) { IsTunnelSaveToInstance = flag; };
@@ -68,6 +69,7 @@ public:
 		CString strCheckDate("CheckDate");
 		CString strDesignApart("DesignApart");
 		CString strDevelopApart("DevelopApart");
+		CString strTunnelType("TunnelType");
 		SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		if (rc < 0) return false; // 若加载文件出错，返回false
 
@@ -83,6 +85,8 @@ public:
 		mTunnelProject->SetCheckDate(mProjectIni.GetValue(strProject, _T("CheckDate")));
 		mTunnelProject->SetDesignApart(mProjectIni.GetValue(strProject, _T("DesignApart")));
 		mTunnelProject->SetDevelopApart(mProjectIni.GetValue(strProject, _T("DevelopApart")));
+
+		mTunnelProject->SetTunnelType(mProjectIni.GetLongValue(strProject, strTunnelType));
 		return true;
 	};
 	virtual bool BuildTunnelFlag() { return false; };
@@ -130,8 +134,16 @@ public:
 
 	//	return SaveTheoryMethod() && SaveExpMethod() && SaveLooseRangeMethod();
 	//};
-	virtual bool SaveTunnelFlagToFile() {
-		return false;
+	bool SaveTunnelTypeToFile() {
+		CSimpleIni mProjectIni;
+		CString strProject("Project");
+
+		SI_Error rc = mProjectIni.LoadFile(fileUrl);
+		if (rc < 0) return false; // 若加载文件出错，返回false
+
+		mProjectIni.SetLongValue(strProject, _T("TunnelType"), mTunnelProject->GetTunnelType());
+		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
+		return rc2 < 0 ? false : true;
 	};
 	virtual bool SaveParametersToFile() { return false; };
 	bool SaveTheoryMethod() {
@@ -317,7 +329,12 @@ public:
 	
 	CProjectBuilder()
 	{
-		//pProject = new CTunnelProject();
+		mTunnelProject = new CTunnelProject();
+	};
+
+	static CProjectBuilder * GetInstance() {
+		static CProjectBuilder instance;
+		return &instance;
 	};
 
 	~CProjectBuilder()
@@ -329,19 +346,21 @@ class CArcProjectBuilder : public CProjectBuilder {
 private:
 	CArcTunnel * mArcTunnel;
 public:
-	CArcProjectBuilder() { mArcTunnel = new CArcTunnel();
-	mTunnelProject = new CTunnelProject(); 
-	theory = new CTheoryCalMethod();
-	project = new CProExpMethod();
-	loose = new CLooseRangeMethod();
-	balance = new CBalanceMethod();
+	CArcProjectBuilder() { 
+		mArcTunnel = new CArcTunnel();
+		mTunnelProject = new CTunnelProject(); 
+		theory = new CTheoryCalMethod();
+		project = new CProExpMethod();
+		loose = new CLooseRangeMethod();
+		balance = new CBalanceMethod();
 	};
-	~CArcProjectBuilder() { delete mArcTunnel; 
-	delete mTunnelProject;
-	delete theory;
-	delete project;
-	delete loose;
-	delete balance;
+	~CArcProjectBuilder() { 
+		delete mArcTunnel; 
+		delete mTunnelProject;
+		delete theory;
+		delete project;
+		delete loose;
+		delete balance;
 	};
 	static CArcProjectBuilder * GetInstance() {
 		static CArcProjectBuilder instance;
@@ -872,7 +891,7 @@ public:
 	virtual int ProjectSaver() {
 
 		int res = 0; 
-		if ((SaveProjectToFile() == false)) {
+		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() ==false) {
 			return res++;
 		}
 		if (SaveTunnelFlagToFile() == false) {
@@ -881,7 +900,6 @@ public:
 		if (SaveArcTunnelInfoToFile() == false) {
 			return res++;
 		}
-
 		if (SaveParametersToFile() == false) {
 			return res++;
 		}
@@ -891,9 +909,7 @@ public:
 	};
 
 	bool SaveBridgeFile() {
-
-		return SaveProjectToFile() && SaveTunnelFlagToFile() && SaveArcTunnelInfoToFile() && SaveParametersToFile();
-		
+		return SaveProjectToFile()&& SaveTunnelTypeToFile() && SaveTunnelFlagToFile() && SaveArcTunnelInfoToFile() && SaveParametersToFile();
 	};
 
 };
@@ -923,6 +939,25 @@ public:
 		return &instance;
 	};
 
+	virtual int ProjectSaver() {
+		int res = 0;
+		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() == false) {
+			return res++;
+		}
+		//if (SaveTunnelFlagToFile() == false) {
+		//	return res++;
+		//}
+		//if (SaveRecTunnelInfoToFile() == false) {
+		//	return res++;
+		//}
+		if (SaveParametersToFile() == false) {
+			return res++;
+		}
+		//if (SaveMethodToFile() == false)
+		//	return res++;
+		return res;
+	};
+
 };
 
 
@@ -949,5 +984,24 @@ public:
 	static CTrapProjectBuilder * GetInstance() {
 		static CTrapProjectBuilder instance;
 		return &instance;
+	};
+
+	virtual int ProjectSaver() {
+		int res = 0;
+		if ((SaveProjectToFile() == false) && SaveTunnelTypeToFile() == false) {
+			return res++;
+		}
+		//if (SaveTunnelFlagToFile() == false) {
+		//	return res++;
+		//}
+		//if (SaveTrapTunnelInfoToFile() == false) {
+		//	return res++;
+		//}
+		if (SaveParametersToFile() == false) {
+			return res++;
+		}
+		//if (SaveMethodToFile() == false)
+		//	return res++;
+		return res;
 	};
 };
