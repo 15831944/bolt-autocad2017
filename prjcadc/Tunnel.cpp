@@ -4,6 +4,7 @@
 #include "ProjectBuilder.h"
 
 
+
 CTunnel::CTunnel()
 {
 }
@@ -13,7 +14,7 @@ CTunnel::~CTunnel()
 {
 }
 
-void CTunnel::DrawProject()
+void CTunnel::DrawProject(CTunnelProject project)
 {
 	AcGePoint2d ptLeftBottom(255, 5);
 	double border = 0.3;
@@ -29,28 +30,28 @@ void CTunnel::DrawProject()
 	CDrawUtil::AddPolyLine(AcGePoint2d(320, 5), AcGePoint2d(320, 21), border);
 	CDrawUtil::AddPolyLine(AcGePoint2d(380, 29), AcGePoint2d(415, 29), border);
 	CDrawUtil::AddText(AcGePoint2d(275, 25),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetPaperTitle(), 10.0);
+	project.GetPaperTitle(), 10.0);
 
 	
 	CDrawUtil::AddText(AcGePoint2d(383, 32) ,_T("比例"));
 	CDrawUtil::AddText(AcGePoint2d(404, 32), 
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetScaleNumber());
+		project.GetScaleNumber());
 	CDrawUtil::AddText(AcGePoint2d(383, 24),_T("编号"));
 	CDrawUtil::AddText(AcGePoint2d(404, 24),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetPaperNumber());
+		project.GetPaperNumber());
 
 	CDrawUtil::AddText(AcGePoint2d(260, 8),_T("审核者"));
 	CDrawUtil::AddText(AcGePoint2d(275, 8),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetChecker());
+		project.GetChecker());
 	CDrawUtil::AddText(AcGePoint2d(296, 8),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetCheckDate());
+		project.GetCheckDate());
 	CDrawUtil::AddText(AcGePoint2d(260, 16),_T("设计者"));
 	CDrawUtil::AddText(AcGePoint2d(275, 16),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetDesigner());
+		project.GetDesigner());
 	CDrawUtil::AddText(AcGePoint2d(296, 16),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetDate());
+		project.GetDate());
 	CDrawUtil::AddText(AcGePoint2d(330, 8),
-		CArcProjectBuilder::GetInstance()->GetTunnelProject()->GetPaperDescription());
+		project.GetPaperDescription());
 
 }
 

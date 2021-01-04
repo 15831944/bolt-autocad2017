@@ -11,6 +11,7 @@ public:
 	static AcDbObjectId AddPolyLine(AcGePoint2dArray points, double width);
 	static AcDbObjectId AddRectangle(const AcGePoint2d & leftBottom, const double width, const double height, double border);
 	static AcDbObjectId CreateDimAligned(AcGePoint2d pt1, AcGePoint2d pt2, AcGePoint2d ptLine, double length, int angle = 0);
+	// 绘制角度标注
 	static AcDbObjectId CreateDimRotated(AcGePoint2d pt1Start, AcGePoint2d pt1End,
 		AcGePoint2d pt2Start, AcGePoint2d pt2End, AcGePoint2d ptArcCenter, double rotation);
 	static AcDbObjectId AddTrapzoid(AcGePoint2d &leftBottom,double width, double height, int leftAngle, int rightAngle, double border);
@@ -21,7 +22,10 @@ public:
 	static AcDbObjectId AddText(AcGePoint2d ptStart, CString str);
 	static AcDbObjectId AddText(AcGePoint2d ptStart, CString str, double height);
 	// 添加填充
-	static AcDbObjectId AddHatch(const AcDbObjectIdArray & loopids, const TCHAR * patName, double patternScale);
+	static AcDbObjectId AddHatch(const AcDbObjectIdArray & loopids, const TCHAR * patName, double patternScale, bool associative);
+	// 添加两个边界的填充效果
+	static AcDbObjectId AddTwoBoundaryHatch(const AcDbObjectIdArray & loopid1,
+		const AcDbObjectIdArray & loopid2, const TCHAR * patName, double patternScale);
 	static AcGePoint2d GetArcCenter(AcGePoint2d ptStart, AcGePoint2d ptLine, AcGePoint2d ptEnd);
 
 	static AcDbObjectId PostToModelSpace(AcDbEntity *pEnt);

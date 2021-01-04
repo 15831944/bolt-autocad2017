@@ -49,6 +49,13 @@ void CTrapzoidTunnel::DrawTunnel()
 	AcGePoint2d ptHeightDimEnd(ptRightTop.x, ptLeftBottom.y);
 	AcGePoint2d ptHeightDimLine(ptHeightDimEnd.x - 5, ptLeftBottom.y);
 	CDrawUtil::CreateDimAligned(ptRightTop, ptHeightDimEnd, ptHeightDimLine, height * 100, 0);
+
+	AcGePoint2d ptLeftTop(ptLeftBottom.x + (height / tan(CDrawUtil::angleToArc(rightAngle))), ptLeftBottom.y + height);
+
+	CDrawUtil::CreateDimRotated(ptLeftBottom, ptRightBottom, 
+		ptLeftBottom, ptLeftTop, ptLeftBottom ,CDrawUtil::angleToArc(leftAngle));
+	CDrawUtil::CreateDimRotated(ptRightBottom, ptLeftBottom,
+		ptRightBottom, ptRightTop, ptRightBottom, CDrawUtil::angleToArc(rightAngle));
 }
 
 
@@ -487,6 +494,64 @@ void CTrapzoidTunnel::DrawRightViewNet(CBolt bolt)
 void CTrapzoidTunnel::DrawCable(CCable cable)
 {
 	CRectangleTunnel * mRecTunnel = new CRectangleTunnel(bottomWidth * 100, height * 100);
+	mRecTunnel->SetTopBoltAngle(90);
 	mRecTunnel->DrawCable(cable);
+}
+
+void CTrapzoidTunnel::DrawBangBolt()
+{
+	DrawLeftBolt(*pLeftBolt);
+	DrawLeftTuoLiang(*pLeftBolt);
+	DrawLeftViewNet(*pLeftBolt);
+
+	DrawRightBolt(*pLeftBolt);
+	DrawRightTuoLiang(*pLeftBolt);
+	DrawRightViewNet(*pLeftBolt);
+}
+
+void CTrapzoidTunnel::DrawThickness()
+{
+	double conThickness = pConcreteThickness / pScaleNumber,
+		qiThickness = pQiThickness / pScaleNumber;
+
+	double tan_leftAngle = tan(CDrawUtil::angleToArc(leftAngle)),
+		tan_rightAngle = tan(CDrawUtil::angleToArc(rightAngle));
+	double conBottomWidth = bottomWidth - (2 * conThickness) -
+		((tan_leftAngle / conThickness)) - (tan_rightAngle / conThickness),
+		qiBottomWidth = conBottomWidth - (2 * qiThickness) -
+		(tan_leftAngle / qiThickness ) - (tan_rightAngle / qiThickness),
+		conheight = height - (2 * conThickness),
+		qiHeight = conheight - (2 * qiThickness);
+
+	AcDbObjectIdArray tunnelArray = AcDbObjectIdArray();
+	AcDbObjectIdArray conArray = AcDbObjectIdArray();
+	AcDbObjectIdArray qiArray = AcDbObjectIdArray();
+	AcGePoint2d ptLeftBottom(170, 60);
+	AcDbObjectId tunnelId = CDrawUtil::AddTrapzoid(ptLeftBottom, bottomWidth, height, leftAngle, rightAngle, border);
+	tunnelArray.append(tunnelId);
+
+	AcGePoint2d ptConLeftBottom((tan_leftAngle /conThickness) + ptLeftBottom.x + conThickness,
+		ptLeftBottom.y + conThickness);
+	AcDbObjectId conId = CDrawUtil::AddTrapzoid(ptConLeftBottom, 
+		conBottomWidth, conheight, leftAngle, rightAngle, border);
+	conArray.append(conId);
+	CDrawUtil::AddTwoBoundaryHatch(tunnelArray, conArray, _T("AR-CONC"), 0.015);
+
+	AcGePoint2d ptQiLeftBottom((tan_leftAngle / qiThickness) + qiThickness + ptConLeftBottom.x, ptConLeftBottom.y + qiThickness);  
+	AcDbObjectId QiID = CDrawUtil::AddTrapzoid(ptQiLeftBottom,
+			qiBottomWidth, qiHeight, leftAngle, rightAngle, border);
+	qiArray.append(QiID);
+	CDrawUtil::AddTwoBoundaryHatch(conArray, qiArray, _T("EARTH"), 0.2);
+
+
+	//»æÖÆºñ¶ÈÅú×¢
+	if (conThickness != 0) {
+		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), conThickness * pScaleNumber);
+	}
+	if (qiThickness != 0) {
+		CDrawUtil::CreateDimAligned(AcGePoint2d(ptQiLeftBottom.x + qiBottomWidth, ptLeftBottom.y),
+			AcGePoint2d(ptConLeftBottom.x + conBottomWidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), qiThickness * pScaleNumber);
+	}
+
 }
 

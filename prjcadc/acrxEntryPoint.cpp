@@ -72,6 +72,134 @@ public:
 
 	virtual void RegisterServerComponents () {
 	}
+
+	static void DrawRectanglePaper(CTunnelProject *project) {
+
+		CRecProjectBuilder::GetInstance()->BuildTunnelFlag();
+		CRecProjectBuilder::GetInstance()->BuildParameters();
+		//CRecProjectBuilder::GetInstance()->BuildProject();
+
+		CRectangleTunnel *pRec = CRecProjectBuilder::GetInstance()->GetRecTunnel();
+		pRec->DrawProject(*project);
+		pRec->DrawTunnel();
+		if (pRec->GetHasTopBolt() == true)
+		{
+			pRec->DrawTopBolt(*pRec->GetTopBolt());
+			pRec->DrawTopTuoLiang(*pRec->GetTopBolt());
+			pRec->DrawTopViewNet(*pRec->GetTopBolt());
+		}
+		// 右锚杆参数代表全锚索
+		else if (pRec->GetHasRightBolt() == true) {
+			pRec->DrawTopBolt(
+				*pRec->GetRightBolt()
+			);
+			pRec->DrawTopTuoLiang(
+				*pRec->GetRightBolt()
+			);
+
+			pRec->DrawTopViewNet(
+				*pRec->GetRightBolt()
+			);
+		}
+
+		if (pRec->GetHasLeftBolt() == true)
+		{
+			pRec->DrawBangBolt();
+		}
+		// 绘制锚索
+		if (pRec->GetHasCable() == true) {
+			pRec->DrawCable(*pRec->GetCable());
+		}
+		// 若支护方式不是默认的锚杆（索）支护
+		if (pRec->GetZhihuWay() > 1) {
+		pRec->DrawThickness();
+		}
+	}
+
+	static void DrawArcPaper(CTunnelProject* project) {
+		CArcProjectBuilder::GetInstance()->BuildTunnelFlag();
+		CArcProjectBuilder::GetInstance()->BuildParameters();
+		CArcTunnel *pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+		pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+		pArc->DrawProject(*project);
+		pArc->DrawTunnel();
+		if (pArc->GetHasTopBolt() == true)
+		{
+
+			pArc->DrawTopBolt(*pArc->GetTopBolt());
+			pArc->DrawTopTuoLiang(*pArc->GetTopBolt());
+			pArc->DrawTopViewNet(*pArc->GetTopBolt());
+
+		}
+		// 右锚杆参数代表全锚索
+		else if (pArc->GetHasRightBolt() == true) {
+			pArc->DrawTopBolt(
+				*pArc->GetRightBolt()
+			);
+			pArc->DrawTopTuoLiang(
+				*pArc->GetRightBolt()
+			);
+
+			pArc->DrawTopViewNet(
+				*pArc->GetRightBolt()
+			);
+		}
+
+		if (pArc->GetHasLeftBolt() == true)
+		{
+			pArc->DrawBangBolt();
+		}
+		// 绘制锚索
+		if (pArc->GetHasCable() == true) {
+			pArc->DrawCable();
+		}
+		// 若支护方式不是默认的锚杆（索）支护
+		if (pArc->GetZhihuWay() > 1) {
+			pArc->DrawThickness();
+		}
+	}
+
+	static void DrawTrapPaper(CTunnelProject* project) {
+		CTrapProjectBuilder::GetInstance()->BuildTunnelFlag();
+		CTrapProjectBuilder::GetInstance()->BuildParameters();
+		//CTrapProjectBuilder::GetInstance()->BuildProject();
+
+		CTrapzoidTunnel *pTrap = CTrapProjectBuilder::GetInstance()->GetTrapTunnel();
+		pTrap->DrawProject(*project);
+		pTrap->DrawTunnel();
+		if (pTrap->GetHasTopBolt() == true)
+		{
+			pTrap->DrawTopBolt(*pTrap->GetTopBolt());
+			pTrap->DrawTopTuoLiang(*pTrap->GetTopBolt());
+			pTrap->DrawTopViewNet(*pTrap->GetTopBolt());
+		}
+		// 右锚杆参数代表全锚索
+		else if (pTrap->GetHasRightBolt() == true) {
+			pTrap->DrawTopBolt(
+				*pTrap->GetRightBolt()
+			);
+			pTrap->DrawTopTuoLiang(
+				*pTrap->GetRightBolt()
+			);
+
+			pTrap->DrawTopViewNet(
+				*pTrap->GetRightBolt()
+			);
+		}
+
+		if (pTrap->GetHasLeftBolt() == true)
+		{
+			pTrap->DrawBangBolt();
+		}
+		// 绘制锚索
+		if (pTrap->GetHasCable() == true) {
+			pTrap->DrawCable(*pTrap->GetCable());
+		}
+		// 若支护方式不是默认的锚杆（索）支护
+		if (pTrap->GetZhihuWay() > 1) {
+		pTrap->DrawThickness();
+		}
+	}
 	
 	// The ACED_ARXCOMMAND_ENTRY_AUTO macro can be applied to any static member 
 	// function of the CprjcadcApp class.
@@ -100,49 +228,26 @@ public:
 		CDrawUtil::AddRectangle(ptStart, 420, 297, 2);
 		CDrawUtil::AddRectangle(ptLeftBottom, 390, 287, 0.3);
 
-		CArcProjectBuilder::GetInstance()->BuildTunnelFlag();
-		CArcProjectBuilder::GetInstance()->BuildParameters();
-		CArcProjectBuilder::GetInstance()->BuildProject();
+		CTunnelProject *project = ProjectBuilder().BuildProject();
+		acutPrintf(_T(""), "tunnel type: %d\n", project->GetTunnelType());
 
-		CArcTunnel *pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
-		pArc->DrawProject();
-		pArc->DrawTunnel();
-		if (pArc->GetHasTopBolt() == true)
+
+		switch (project->GetTunnelType())
 		{
-			
-			pArc->DrawTopBolt(*pArc->GetTopBolt());
-			pArc->DrawTopTuoLiang(*pArc->GetTopBolt());
-			pArc->DrawTopViewNet(*pArc->GetTopBolt());
-
-		}
-		// 右锚杆参数代表全锚索
-		else if (pArc->GetHasRightBolt() == true) {
-			pArc->DrawTopBolt(
-				*pArc->GetRightBolt()
-			);
-			pArc->DrawTopTuoLiang(
-				*pArc->GetRightBolt()
-			);
-
-			pArc->DrawTopViewNet(
-				*pArc->GetRightBolt()
-			);
+		case 1:
+			DrawRectanglePaper(project);
+			break;
+		case 2:
+			DrawArcPaper(project);
+			break;
+		case 3:
+			DrawTrapPaper(project);
+			break;
+		default:
+			break;
 		}
 
-		if (pArc->GetHasLeftBolt() == true)
-		{
-			pArc->DrawBangBolt();
-		}
 
-		// 绘制锚索
-		if (pArc->GetHasCable() == true) {
-			pArc->DrawCable();
-		}
-
-		// 若支护方式不是默认的锚杆（索）支护
-		if (pArc->GetZhihuWay() > 1) {
-			pArc->DrawThickness();
-		}
 		
 	}
 

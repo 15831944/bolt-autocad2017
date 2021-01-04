@@ -72,6 +72,7 @@ void CRectangleTunnel::DrawTopBolt(CBolt bolt)
 	double beamWidth = double(bolt.getBeamWidth()) / pScaleNumber;
 	AcGePoint2d ptTopMid(ptTunnelStart->x + (width / 2), ptTunnelStart->y + height);
 
+
 	// 初始化 mTopBoltsArr 数组, 即顶部锚杆在巷道边上的坐标点
 	if (number % 2 == 0)
 	{
@@ -277,7 +278,7 @@ void CRectangleTunnel::DrawLeftBolt(CBolt bolt)
 }
 
 
-// 铜川矿业绘制左帮锚杆的方式
+// 铜川矿业绘制左帮锚杆的方式，此处的所有角度都为弧度制
 void CRectangleTunnel::DrawTongLeftBolt(CBolt bolt)
 {
 	int number = bolt.getNumber();
@@ -795,6 +796,59 @@ void CRectangleTunnel::DrawCable(CCable cable)
 					AcGePoint2d(mCableArr->at(0).x + 3, yMid), pitch * pScaleNumber, 0);
 	}
 	
+}
+
+void CRectangleTunnel::DrawBangBolt()
+{
+	DrawTongLeftBolt(*pLeftBolt);
+	DrawLeftTuoLiang(*pLeftBolt);
+	DrawLeftViewNet(*pLeftBolt);
+
+	DrawTongRightBolt(*pLeftBolt);
+	DrawRightTuoLiang(*pLeftBolt);
+	DrawRightViewNet(*pLeftBolt);
+}
+
+// 先绘制最外面巷道矩形，设置填充方式为混凝土方式；
+// 再绘制中间混凝土巷道，设置填充方式为砌煊方式；
+// 最后绘制最内侧矩形，设置填充方式为solid
+void CRectangleTunnel::DrawThickness()
+{
+	double conThickness = pConcreteThickness / pScaleNumber;
+	double qiThickness = pQiThickness / pScaleNumber;
+
+	// 混凝土填充的边界对象id
+	AcDbObjectIdArray conArray = AcDbObjectIdArray();
+	AcDbObjectIdArray tunnelArray = AcDbObjectIdArray();
+	AcGePoint2d ptLeftBottom(ptTunnelStart->x, ptTunnelStart->y); //巷道矩形的起始绘制点
+	//巷道id
+	AcDbObjectId tunnelId = CDrawUtil::AddRectangle(ptLeftBottom, width, height, border);
+	AcGePoint2d ptConLeftBottom(ptLeftBottom.x + conThickness, ptLeftBottom.y + conThickness);
+	double conwidth = width - conThickness - conThickness,
+		conheight = height - conThickness - conThickness;
+	//混凝土矩形的id
+	AcDbObjectId conRecId = CDrawUtil::AddRectangle(ptConLeftBottom, conwidth, conheight, border);
+	conArray.append(conRecId);
+	tunnelArray.append(tunnelId);
+	CDrawUtil::AddTwoBoundaryHatch(tunnelArray, conArray, _T("AR-CONC"), 0.015);
+
+	// 砌煊填充的边界对象id
+	AcDbObjectIdArray qiArray = AcDbObjectIdArray();
+	AcGePoint2d ptQiLeftBottom(ptConLeftBottom.x + qiThickness, ptConLeftBottom.y + qiThickness);
+	double qiwidth = conwidth - qiThickness - qiThickness,
+		qiheight = conheight - qiThickness - qiThickness;
+	qiArray.append(CDrawUtil::AddRectangle(ptQiLeftBottom, qiwidth, qiheight, border));
+	CDrawUtil::AddTwoBoundaryHatch(conArray,qiArray, _T("EARTH"), 0.2);
+
+
+	//绘制厚度批注
+	if (conThickness != 0) {
+		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), conThickness * pScaleNumber);
+	}
+	if (qiThickness != 0) {
+		CDrawUtil::CreateDimAligned(AcGePoint2d(ptQiLeftBottom.x + qiwidth, ptLeftBottom.y),
+			AcGePoint2d(ptConLeftBottom.x+conwidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), qiThickness * pScaleNumber);
+	}
 }
 
 

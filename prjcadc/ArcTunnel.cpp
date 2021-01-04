@@ -263,14 +263,13 @@ void CArcTunnel::DrawTopViewNet(CBolt bolt)
 	}
 }
 
-// 铜川矿业的需求为 左右帮相同
+// 铜川矿业的需求为左右帮相同
 void CArcTunnel::DrawBangBolt()
 { 
 	// 此处的LeftAngle 为图中的帮的上夹角，RightAngle 为图中与帮的下夹角
 	CRectangleTunnel * mRecTunnel = new CRectangleTunnel(
 		width * pScaleNumber, wallHeight * pScaleNumber,
 		 mBangLeftAngle, mBangRightAngle);
-
 
 	mRecTunnel->DrawTongLeftBolt(*pLeftBolt);
 	mRecTunnel->DrawLeftTuoLiang(*pLeftBolt);
@@ -428,7 +427,7 @@ void CArcTunnel::DrawThickness()
 	conArray.append(CDrawUtil::AddArc(ptRightTopLine
 		, ptConArcTop, ptLeftTopLine, 0.2)); // 劣弧
 
-	CDrawUtil::AddHatch(conArray, _T("AR-CONC"), 0.015);
+	CDrawUtil::AddHatch(conArray, _T("AR-CONC"), 0.015, true);
 
 	// 砌煊填充的边界对象id
 	AcDbObjectIdArray QiArray = AcDbObjectIdArray();
@@ -458,5 +457,16 @@ void CArcTunnel::DrawThickness()
 	QiArray.append(CDrawUtil::AddArc(ptQiRightTopLine
 		, ptQiArcTop, ptQiLeftTopLine, 0.2)); // 劣弧
 
-	CDrawUtil::AddHatch(QiArray, _T("EARTH"), 0.2);
+	CDrawUtil::AddHatch(QiArray, _T("EARTH"), 0.2, true);
+
+	//绘制厚度批注
+	if (conThickness != 0) {
+		CDrawUtil::CreateDimAligned(*ptTunnelStart, AcGePoint2d(ptLeftBottomLine.x, ptTunnelStart->y) ,
+			AcGePoint2d(ptTunnelStart->x, ptTunnelStart->y - 3), 
+			conThickness * pScaleNumber);
+	}
+	if (qiThickness != 0) {
+		CDrawUtil::CreateDimAligned(AcGePoint2d(ptRightBottomLine.x, ptTunnelStart->y), 
+			AcGePoint2d(ptQiRightBottomLine.x, ptTunnelStart->y), AcGePoint2d(ptQiLeftBottomLine.x, ptTunnelStart->y - 3), qiThickness * pScaleNumber);
+	}
 }

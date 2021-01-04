@@ -2,6 +2,7 @@
 #include "Bolt.h"
 #include "Cable.h"
 #include "DrawUtil.h"
+#include "TunnelProject.h"
 class CTunnel
 {
 protected:
@@ -29,7 +30,7 @@ protected:
 public:
 	CTunnel();
 	~CTunnel();
-	virtual void DrawProject();
+	void DrawProject(CTunnelProject project);
 	//绘制断面图形，三种巷道绘制断面方式各不相同
 	virtual void DrawTunnel();
 	//顶部锚杆托梁

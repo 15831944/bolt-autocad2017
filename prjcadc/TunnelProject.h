@@ -17,7 +17,7 @@ private:
 	CString mDesignApart;
 	CString mDevelopApart;
 
-	int mZhihuWay;
+	int mTunnelType;
 
 public:
 	CTunnelProject();
@@ -46,5 +46,8 @@ public:
 	CString GetDesignApart() const { return mDesignApart; };
 	void SetDevelopApart(CString t) { mDevelopApart = t; };
 	CString GetDevelopApart() const { return mDevelopApart; };
+
+	void SetTunnelType(int v) { mTunnelType = v; };
+	int GetTunnelType() const { return mTunnelType; };
 };
 

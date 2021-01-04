@@ -53,7 +53,6 @@ AcDbObjectId CDrawUtil::AddRectangle(const AcGePoint2d &leftBottom,const double 
 	pPoly->addVertexAt(3, ptLeftTop, 0, border, border);
 	pPoly->setClosed(Adesk::kTrue);
 
-
 	return CDrawUtil::PostToModelSpace(pPoly);
 }
 
@@ -177,7 +176,42 @@ AcDbObjectId CDrawUtil::AddText(AcGePoint2d ptStart, CString str, double height)
 	return CDrawUtil::PostToModelSpace(pTextEntity);
 }
 
-AcDbObjectId CDrawUtil::AddHatch(const AcDbObjectIdArray & loopids, const TCHAR * patName, double patternScale)
+AcDbObjectId CDrawUtil::AddHatch(const AcDbObjectIdArray & loopids, const TCHAR * patName, double patternScale, bool associative)
+{
+	AcDbHatch *pHatch = new AcDbHatch();
+	AcGeVector3d vec(0, 0, 1);
+	pHatch->setNormal(vec);
+	pHatch->setElevation(0);
+	pHatch->setAssociative(associative);
+	pHatch->setPatternScale(patternScale);
+	pHatch->setPattern(AcDbHatch::kPreDefined, patName);
+	auto es = pHatch->appendLoop(AcDbHatch::kExternal, loopids);
+	es = pHatch->evaluateHatch();
+
+	AcDbObjectId hatchid = CDrawUtil::PostToModelSpace(pHatch);
+	
+	if (acdbOpenObject(pHatch, hatchid) == Acad::eOk)
+	{
+		AcDbObjectIdArray assocentids;
+		pHatch->getAssocObjIds(assocentids);
+		for (auto i = 0; i < assocentids.length(); i++)
+		{
+			AcDbEntity *pEntity = NULL;
+			if (acdbOpenObject(pEntity, assocentids[i], AcDb::kForWrite) == Acad::eOk)
+			{
+				pEntity->addPersistentReactor(hatchid);
+				pEntity->close();
+			}
+		}
+		pHatch->close();
+	}
+
+	return hatchid;
+}
+
+
+
+AcDbObjectId CDrawUtil::AddTwoBoundaryHatch(const AcDbObjectIdArray & outter, const AcDbObjectIdArray & inner, const TCHAR * patName, double patternScale)
 {
 	AcDbHatch *pHatch = new AcDbHatch();
 	AcGeVector3d vec(0, 0, 1);
@@ -186,11 +220,12 @@ AcDbObjectId CDrawUtil::AddHatch(const AcDbObjectIdArray & loopids, const TCHAR 
 	pHatch->setAssociative(true);
 	pHatch->setPatternScale(patternScale);
 	pHatch->setPattern(AcDbHatch::kPreDefined, patName);
-	auto es = pHatch->appendLoop(AcDbHatch::kExternal, loopids);
+	auto es = pHatch->appendLoop(AcDbHatch::kExternal, outter);
+	es = pHatch->appendLoop(AcDbHatch::kDefault, inner);
 	es = pHatch->evaluateHatch();
 
 	AcDbObjectId hatchid = CDrawUtil::PostToModelSpace(pHatch);
-	
+
 	if (acdbOpenObject(pHatch, hatchid) == Acad::eOk)
 	{
 		AcDbObjectIdArray assocentids;
