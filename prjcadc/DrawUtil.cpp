@@ -297,3 +297,40 @@ double CDrawUtil::arcToAngle(double arc) {
 	double pi = asin(0.5) * 6;
 	return arc * 180 / pi;
 }
+
+AcDbObjectId CDrawUtil::createTable(AcDbTable *&pTbl, AcGePoint2d ptPosition, const TCHAR *pTblStyle,
+	const int nColLen, const int nRowLen)
+{
+	//pTbl = new AcDbTable();
+	Acad::ErrorStatus es;
+
+	// Set the Table Style
+	AcDbDictionary *pDict = NULL;
+	AcDbObjectId idTblStyle;
+	acdbHostApplicationServices()->workingDatabase()->getTableStyleDictionary(pDict, AcDb::kForRead);
+	es = pDict->getAt(pTblStyle, idTblStyle);
+	pDict->close();
+
+	if (Acad::eOk == es)	pTbl->setTableStyle(idTblStyle);
+	AcGePoint3d ptStart(ptPosition.x, ptPosition.y, 0);
+	pTbl->setPosition(ptStart);
+	pTbl->setNumColumns(nColLen);
+	pTbl->setNumRows(nRowLen); // you can also use insertRows() at later point
+	pTbl->generateLayout(); // Very very important, else expect crashes later on
+	//pTbl->setAutoScale(1, 1, true);
+	return CDrawUtil::PostToModelSpace(pTbl);
+}
+
+CString CDrawUtil::dtostr(double d)
+{
+	CString str;
+	str.Format(_T("%.2lf"), d);
+	return str;
+}
+
+CString CDrawUtil::itostr(int i)
+{
+	CString str;
+	str.Format(_T("%d"), i);
+	return str;
+}

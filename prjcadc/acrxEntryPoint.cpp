@@ -81,6 +81,7 @@ public:
 
 		CRectangleTunnel *pRec = CRecProjectBuilder::GetInstance()->GetRecTunnel();
 		pRec->DrawProject(*project);
+		pRec->DrawTableBoltPm();
 		pRec->DrawTunnel();
 		if (pRec->GetHasTopBolt() == true)
 		{
@@ -123,9 +124,9 @@ public:
 		pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 		pArc->DrawProject(*project);
 		pArc->DrawTunnel();
+		pArc->DrawTableBoltPm();
 		if (pArc->GetHasTopBolt() == true)
 		{
-
 			pArc->DrawTopBolt(*pArc->GetTopBolt());
 			pArc->DrawTopTuoLiang(*pArc->GetTopBolt());
 			pArc->DrawTopViewNet(*pArc->GetTopBolt());
@@ -166,6 +167,7 @@ public:
 
 		CTrapzoidTunnel *pTrap = CTrapProjectBuilder::GetInstance()->GetTrapTunnel();
 		pTrap->DrawProject(*project);
+		pTrap->DrawTableBoltPm();
 		pTrap->DrawTunnel();
 		if (pTrap->GetHasTopBolt() == true)
 		{

@@ -32,4 +32,7 @@ public:
 	static double angleToArc(double angle);
 	static double arcToAngle(double arc);
 
+	static AcDbObjectId createTable(AcDbTable *& pTbl, AcGePoint2d ptPosition,const TCHAR * pTblStyle, const int nColLen, const int nRowLen);
+	static CString dtostr(double d);
+	static CString itostr(int i);
 };

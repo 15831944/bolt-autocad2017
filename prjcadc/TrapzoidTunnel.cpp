@@ -543,7 +543,6 @@ void CTrapzoidTunnel::DrawThickness()
 	qiArray.append(QiID);
 	CDrawUtil::AddTwoBoundaryHatch(conArray, qiArray, _T("EARTH"), 0.2);
 
-
 	//»æÖÆºñ¶ÈÅú×¢
 	if (conThickness != 0) {
 		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), conThickness * pScaleNumber);

@@ -47,7 +47,7 @@ public:
 	void setShuLength(double l) { shuLength = l; }
 	double getShuLength() const { return shuLength; }
 	void setShuMaterial(CString m) { shuMaterial = m; }
-	CString geShutMaterial() const { return shuMaterial; }
+	CString getShuMaterial() const { return shuMaterial; }
 
 
 	CCable();

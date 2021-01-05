@@ -72,7 +72,7 @@ public:
 		CString strTrayLength("TrayLength");
 		CString strTrayMaterial("TrayMaterial");
 		CString strShuDiameter("ShuDiameter");
-		CString strShuLength("ShuLength ");
+		CString strShuLength("ShuLength");
 		CString strShuMaterial("ShuMaterial");
 
 		CCable * cable = new CCable();
