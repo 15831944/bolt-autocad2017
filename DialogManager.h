@@ -48,6 +48,7 @@ public:
 		{
 			mProjectDlg->UpdateUI();
 		}
+
 		mProjectDlg->ShowWindow(SW_SHOW);
 
 	};
@@ -153,6 +154,9 @@ public:
 		hasCalculated = value;
 	};
 
+	bool GetReNewFlag() const { return reNewFlag; };
+	void SetReNewFlag(bool value) { reNewFlag; }
+
 private:
 
 
@@ -188,5 +192,6 @@ private:
 
 	bool hasCurrentFile = false;
 	bool hasCalculated = false;
+	bool reNewFlag = false;
 };
 

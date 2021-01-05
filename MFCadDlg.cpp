@@ -183,39 +183,37 @@ HCURSOR CMFCadDlg::OnQueryDragIcon()
 
 void CMFCadDlg::OnNewProject()
 {
-	//CArcProjectBuilder();
-	std::cout << "is save to file? :" << CArcProjectBuilder::GetInstance()->GetSavedToFile() << std::endl;
-	// TODO: 在此添加命令处理程序代码
-
 	if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == TRUE
 		&& (!CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()))
-	{ 
+	{
 		// 打开的工程已经保存了
 		CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
 		CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
 		CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
 		CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
-		
-		DialogManager::GetInstance().NewProjectDialog();
+
 		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 	}
 	else if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == TRUE &&
 		CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
 		// 当前窗口是新建窗口
-		CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
-		CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
-		CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
-		CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
 
-		DialogManager::GetInstance().NewProjectDialog();
 		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 
 	}
-	else if(CArcProjectBuilder::GetInstance()->GetSavedToFile() == FALSE)
+	else if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == FALSE)
 	{
-		DialogManager::GetInstance().ShowProjectDialog();
+		if (IDYES == MessageBox(_T("当前工程尚未保存，是否直接新建？"), _T("新建"), MB_YESNO | MB_ICONQUESTION)) {
+			CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
+			CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
+			CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
+			CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
+
+			DialogManager::GetInstance().ShowProjectDialog();
+			CArcProjectBuilder::GetInstance()->InitSaveToInstance();
+		}
 	}
 
 }

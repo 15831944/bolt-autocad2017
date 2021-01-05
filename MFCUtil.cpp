@@ -76,6 +76,10 @@ int MFCUtil::GetCheckedRadioButton(CButton IDC_FIRST, CButton IDC_LAST)
 
 CTime * MFCUtil::CStringToCTime(CString str)
 {
+	if (str.GetLength() == 0) {
+		CTime * time = new CTime();
+		return time;
+	}
 	COleVariant vtime(str);
 	vtime.ChangeType(VT_DATE);
 	COleDateTime oletime = vtime;

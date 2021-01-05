@@ -39,6 +39,7 @@ void CProjectDialog::UpdateUI()
 {
 	CTunnelProject * pInfo = CArcProjectBuilder::GetInstance()->GetTunnelProject();
 
+
 	mEdtPaperTitle.SetWindowText(pInfo->GetPaperTitle());
 	mEdtDevelopApart.SetWindowText(_T("西安科技大学"));
 	mDtCheckDate.SetTime(MFCUtil::CStringToCTime(pInfo->GetCheckDate()));
