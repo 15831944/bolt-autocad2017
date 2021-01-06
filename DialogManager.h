@@ -8,6 +8,7 @@
 #include "ParametersDialog.h"
 #include "BalanceMethodDialog.h"
 #include "ZuheliangDialog.h"
+#include "SuxingquDialog.h"
 class DialogManager
 {
 public:
@@ -36,6 +37,7 @@ public:
 		delete mLooseDlg;
 		delete mResultDlg;
 		delete mBalanceDlg;
+		delete mSuxingquDlg;
 	};
 
 	void NewProjectDialog() {
@@ -137,6 +139,16 @@ public:
 		mZuheliangDlg->ShowWindow(SW_HIDE);
 	};
 	
+	void ShowSuxingquDlg() {
+		if (hasCurrentFile == true)
+		{
+			//mSuxingquDlg->UpdateUI();
+		}
+		mSuxingquDlg->ShowWindow(SW_SHOW);
+	};
+	void HideSuxingquDlg() {
+		mSuxingquDlg->ShowWindow(SW_HIDE);
+	};
 
 	void ShowResultDlg() {
 		
@@ -189,6 +201,8 @@ private:
 		mBalanceDlg->Create(IDD_BALANCE_METHOD_DIALOG, 0);
 		mZuheliangDlg = new CZuheliangDialog();
 		mZuheliangDlg->Create(IDD_ZUHELIANG_METHOD_DIALOG, 0);
+		mSuxingquDlg = new CSuxingquDialog();
+		mSuxingquDlg->Create(IDD_SUXINGQU_METHOD_DIALOG, 0);
 	}
 
 	CProjectDialog *mProjectDlg;
@@ -200,6 +214,7 @@ private:
 	CParametersDialog *mResultDlg;
 	CBalanceMethodDialog *mBalanceDlg;
 	CZuheliangDialog *mZuheliangDlg;
+	CSuxingquDialog *mSuxingquDlg;
 
 	bool hasCurrentFile = false;
 	bool hasCalculated = false;

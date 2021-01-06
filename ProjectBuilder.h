@@ -17,6 +17,7 @@ protected:
 	CLooseRangeMethod * loose;
 	CBalanceMethod * balance;
 	CZuheliangMethod * zuheliang;
+	CSuxingquMethod * suxingqu;
 
 	BOOL IsSavedToFile = TRUE;
 	BOOL IsProjectSaveToInstance = FALSE;
@@ -45,6 +46,7 @@ public:
 	CLooseRangeMethod * GetLooseMethod() const { return loose; };
 	CBalanceMethod * GetBalanceMethod() const { return balance; };
 	CZuheliangMethod * GetZuheliangMethod() const { return zuheliang; };
+	CSuxingquMethod * GetSuxingquMethod() const { return suxingqu; };
 	void SetMethod(CMethod * m) {
 		method = m;
 	}
@@ -345,7 +347,6 @@ public:
 		CString mZhejianNumber("ZhejianNumber");
 
 		CSimpleIni mProjectIni;
-
 		SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		if (rc < 0) return false; // 若加载文件出错，返回false
 
@@ -371,6 +372,41 @@ public:
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mTopThickness, zuheliang->GetTopThickness());
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mZhejianNumber, zuheliang->GetZhejianNumber());
 
+		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
+		return rc2 < 0 ? false : true;
+	};
+	bool SaveSuxingquMethod() {
+		CString strSuxingquMethod("Suxingqu");
+		CString mInnerFriction("InnerFriction");
+		CString mAvgGravity("AvgGravity");
+		CString mMaiDepth("MaiDepth");
+		CString mMeiyanZhongdu("MeiyanZhongdu");
+		CString mNianPower("NianPower");
+		CString mShuLength("ShuLength");
+		CString mBoltAttach("BoltAttach");
+		CString mBoltDesignNumber("BoltDesignNumber");
+		CString mBoltDiameter("BoltDiameter");
+		CString mCableDiameter("CableDiameter");
+		CString mCableFreeLength("CableFreeLength");
+		CString mCableAttach("CableAttach");
+		CString mCableBreakPower("CableBreakPower");
+		CSimpleIni mProjectIni;
+		SI_Error rc = mProjectIni.LoadFile(fileUrl);
+		if (rc < 0) return false; // 若加载文件出错，返回false
+
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mAvgGravity, suxingqu->GetAvgGravity());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mInnerFriction, suxingqu->GetInnerFriction());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mMaiDepth, suxingqu->GetMaiDepth());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mMeiyanZhongdu, suxingqu->GetMeiyanZhongdu());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mNianPower, suxingqu->GetNianPower());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mShuLength, suxingqu->GetShuLength());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mBoltAttach, suxingqu->GetBoltAttach());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mBoltDesignNumber, suxingqu->GetBoltDesignNumber());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mBoltDiameter, suxingqu->GetBoltDiameter());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableDiameter, suxingqu->GetCableDiameter());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableFreeLength, suxingqu->GetCableFreeLength());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableAttach, suxingqu->GetCableAttach());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableBreakPower, suxingqu->GetCableBreakPower());
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	};
@@ -401,6 +437,7 @@ public:
 		loose = new CLooseRangeMethod();
 		balance = new CBalanceMethod();
 		zuheliang = new CZuheliangMethod();
+		suxingqu = new CSuxingquMethod();
 	};
 	~CArcProjectBuilder() { 
 		delete mArcTunnel; 
@@ -409,6 +446,8 @@ public:
 		delete project;
 		delete loose;
 		delete balance;
+		delete zuheliang;
+		delete suxingqu;
 	};
 	static CArcProjectBuilder * GetInstance() {
 		static CArcProjectBuilder instance;
@@ -660,6 +699,8 @@ public:
 		CString mTopSafeNumber("TopSafeNumber");
 		CString mTopThickness("TopThickness");
 		CString mZhejianNumber("ZhejianNumber");
+
+		CString strSuxingquMethod("Suxingqu");
 		switch (mArcTunnel->GetCalMethod())
 		{
 		case 1:
@@ -692,10 +733,6 @@ public:
 			theory->SetCableCaiAffectNumber(mProjectIni.GetDoubleValue(strSec, strCableCaiNumber));
 			theory->SetCablePitch(mProjectIni.GetDoubleValue(strSec, strCablePitch));
 			theory->SetCableFreeLength(mProjectIni.GetDoubleValue(strSec, strCableFreeNumber));
-			
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
-
 			break;
 		case 2:
 			factory = new CProExpMethodFactory();
@@ -718,9 +755,6 @@ public:
 			project->SetCableNumber(mProjectIni.GetLongValue(strExp, strCableNumber));
 			project->SetCableAttach(mProjectIni.GetDoubleValue(strExp, strCableAttach));
 			project->SetCableShuLength(mProjectIni.GetDoubleValue(strExp, strCableShuLength)); 
-
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
 		case 3:
 			factory = new CLooseRangeMethodFactory();
@@ -738,15 +772,10 @@ public:
 			default:
 				break;
 			}
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
-
 			break;
 		case 4:
 			factory = new CTheroyMethodFactory();
 			method = factory->createMethod();
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
 		case 5:
 			factory = new CBalanceMethodFactory();
@@ -775,9 +804,7 @@ public:
 			balance->SetCableStoneHeight(mProjectIni.GetDoubleValue(strBalanceMethod, mCableStoneHeight));
 			balance->SetMinBreakLoader(mProjectIni.GetDoubleValue(strBalanceMethod, mMinBreakPower));
 			balance->SetCableSafeNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mCableSafeNumber));
-			
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+		
 			break;
 
 		case 6:
@@ -806,16 +833,32 @@ public:
 			zuheliang->SetTopSafeNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopSafeNumber));
 			zuheliang->SetTopThickness(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopThickness));
 			zuheliang->SetZhejianNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mZhejianNumber));
+			break;
+		case 7:
+			factory = new CSuxingquFactory();
+			method = factory->createMethod();
 
-			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
-			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			suxingqu = static_cast<CSuxingquMethod *>(method);
+			suxingqu->SetInnerFriction(mProjectIni.GetDoubleValue(strSuxingquMethod, mInnerFriction));
+			suxingqu->SetAvgGravity(mProjectIni.GetDoubleValue(strSuxingquMethod, strAvgGravity)) ;
+			suxingqu->SetMaiDepth(mProjectIni.GetDoubleValue(strSuxingquMethod, mMaiDepth)) ;
+			suxingqu->SetMeiyanZhongdu(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("MeiyanZhongdu"))) ;
+			suxingqu->SetNianPower(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("NianPower"))) ;
+			suxingqu->SetShuLength(mProjectIni.GetDoubleValue(strSuxingquMethod, strShuLength)) ;
+			suxingqu->SetBoltAttach(mProjectIni.GetDoubleValue(strSuxingquMethod, strBoltAttach)) ;
+			suxingqu->SetBoltDesignNumber(mProjectIni.GetDoubleValue(strSuxingquMethod, strBoltDesignNumber)) ;
+			suxingqu->SetBoltDiameter(mProjectIni.GetDoubleValue(strSuxingquMethod, strBoltDiameter)) ;
+			suxingqu->SetCableDiameter(mProjectIni.GetDoubleValue(strSuxingquMethod, strCableDiameter)) ;
+			suxingqu->SetCableFreeLength(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("CableFreeLength"))) ;
+			suxingqu->SetCableAttach(mProjectIni.GetDoubleValue(strSuxingquMethod, strCableAttach)) ;
+			suxingqu->SetCableBreakPower(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("CableBreakPower"))) ;
 			break;
 		default:
 			break;
 		}
-
+		mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+		mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 		return true;
-
 	}
 
 	bool SaveBoltToFile(CString strSection, CBolt * bolt) {
@@ -1027,6 +1070,8 @@ public:
 			return SaveBalanceMethod();
 		case 6:
 			return SaveZuheliangMethod();
+		case 7:
+			return SaveSuxingquMethod();
 		default:
 			return false;
 		}

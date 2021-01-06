@@ -30,6 +30,7 @@ private:
 	CButton mRadioExpert;
 	CButton mRadioBalanceMethod;
 	CButton mRadioZuheliang;
+	CButton mRadioSuxingqu;
 	CStatic mMethodChooseTitle;
 
 	void SetMethodFlag(int flag);

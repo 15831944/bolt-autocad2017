@@ -286,11 +286,13 @@ void CZuheliangDialog::OnBnClickedOk()
 void CZuheliangDialog::OnBnClickedCancel()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialogEx::OnCancel();
+	ShowWindow(SW_HIDE);
 }
 
 
 void CZuheliangDialog::OnBnClickedButtonPredialog()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	ShowWindow(SW_HIDE);
+	DialogManager::GetInstance().ShowMethodChooseDlg();
 }

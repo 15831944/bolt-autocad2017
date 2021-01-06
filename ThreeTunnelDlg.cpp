@@ -416,7 +416,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 			break;
 	case 3:
 		CArcProjectBuilder::GetInstance()->GetTunnelProejct()->SetTunnelType(3);
-		if (MFCUtil::VectorHasEmpty(mRectEdtArray) == true) {
+		if (MFCUtil::VectorHasEmpty(mTrapEdtArray) == true) {
 			MessageBox(_T("梯形巷道数据不能含有空值"), _T("警告"), MB_ICONWARNING | MB_OK);
 		}
 		else {
@@ -436,12 +436,8 @@ void CThreeTunnelDlg::TunnelSavepm()
 	default:
 		break;
 	}
-
-
 	}
 }
-
-
 
 void CThreeTunnelDlg::OnBnClickedButtonProjectDialog()
 {

@@ -550,6 +550,41 @@ public:
 
 };
 
+class CSuxingquMethod : public CMethod {
+private:
+	double mInnerFriction;
+	double mAvgGravity;
+	double mMaiDepth;
+	double mMeiyanZhongdu;
+	double mNianPower;
+	double mShuLength;
+	double mCableFreeLength;
+public:
+	void SetInnerFriction(double t) { mInnerFriction = t; };
+	double GetInnerFriction() const { return mInnerFriction; };
+	void SetAvgGravity(double t) { mAvgGravity = t; };
+	double GetAvgGravity() const { return mAvgGravity; };
+	void SetMaiDepth(double t) { mMaiDepth = t; };
+	double GetMaiDepth() const { return mMaiDepth; };
+	void SetMeiyanZhongdu(double t) { mMeiyanZhongdu = t; };
+	double GetMeiyanZhongdu() const { return mMeiyanZhongdu; };
+	void SetNianPower(double t) { mNianPower = t; };
+	double GetNianPower() const { return mNianPower; };
+	void SetShuLength(double t) { mShuLength = t; };
+	double GetShuLength() const { return mShuLength; };
+	void SetCableFreeLength(double t) { mCableFreeLength = t; };
+	double GetCableFreeLength() const { return mCableFreeLength; };
+
+	virtual int GetTopBoltNumber() {
+		return 3;
+	};
+
+	// 获取顶部锚杆的长度
+	virtual double GetTopBoltLength() {
+		return 0.0;
+	};
+};
+
 class CMethodFactory {
 public:
 	CMethodFactory() {  };
@@ -600,5 +635,14 @@ public:
 	~CZuheliangFactory() {};
 	CMethod* createMethod() {
 		return new CZuheliangMethod();
+	};
+};
+
+class CSuxingquFactory : public CMethodFactory {
+public:
+	CSuxingquFactory() {};
+	~CSuxingquFactory() {};
+	CMethod* createMethod() {
+		return new CSuxingquMethod();
 	};
 };

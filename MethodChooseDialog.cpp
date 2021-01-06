@@ -33,6 +33,7 @@ void CMethodChooseDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_CHOOSE_METHOD, mMethodChooseTitle);
 	DDX_Control(pDX, IDC_RADIO_BALANCE_METHOD, mRadioBalanceMethod);
 	DDX_Control(pDX, IDC_RADIO_ZUHELIANG_METHOD, mRadioZuheliang);
+	DDX_Control(pDX, IDC_RADIO_SUXINGQU_METHOD, mRadioSuxingqu);
 }
 
 
@@ -82,6 +83,7 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(FALSE);
 		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(1);
 		break;
 	case 2:
@@ -91,6 +93,7 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(FALSE);
 		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(2);
 		break;
 	case 3:
@@ -100,6 +103,7 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(FALSE);
 		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(3);
 		break;
 	case 4:
@@ -109,6 +113,7 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(TRUE);
 		mRadioBalanceMethod.SetCheck(FALSE);
 		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(4);
 		break;
 	case 5:
@@ -118,6 +123,7 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(TRUE);
 		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(5);
 		break;
 	case 6:
@@ -127,8 +133,17 @@ void CMethodChooseDialog::SetMethodFlag(int flag) {
 		mRadioExpert.SetCheck(FALSE);
 		mRadioBalanceMethod.SetCheck(FALSE);
 		mRadioZuheliang.SetCheck(TRUE);
+		mRadioSuxingqu.SetCheck(FALSE);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCalMethod(6);
 		break;
+	case 7:
+		mRadioTheoretical.SetCheck(FALSE);
+		mRadioExperience.SetCheck(FALSE);
+		mRadioLooseRange.SetCheck(FALSE);
+		mRadioExpert.SetCheck(FALSE);
+		mRadioBalanceMethod.SetCheck(FALSE);
+		mRadioZuheliang.SetCheck(FALSE);
+		mRadioSuxingqu.SetCheck(TRUE);
 	default:
 		break;
 	}
@@ -141,6 +156,7 @@ int CMethodChooseDialog::GetMethodFlag() {
 	if (mRadioExpert.GetCheck() == TRUE) return 4;
 	if (mRadioBalanceMethod.GetCheck() == TRUE) return 5;
 	if (mRadioZuheliang.GetCheck() == TRUE) return 6;
+	if (mRadioSuxingqu.GetCheck() == TRUE) return 7;
 	return 0;
 }
 
@@ -149,8 +165,6 @@ void CMethodChooseDialog::OnOK()
 	// TODO: 在此添加专用代码和/或调用基类
 
 }                                                       
-
-
 
 void CMethodChooseDialog::OnBnClickedOk()
 {
@@ -172,6 +186,7 @@ void CMethodChooseDialog::OnBnClickedOk()
 		int pExpertState = mRadioExpert.GetCheck();
 		int pBalanceMethod = mRadioBalanceMethod.GetCheck();
 		int pZuheliang = mRadioZuheliang.GetCheck();
+		int pSuxingqu = mRadioSuxingqu.GetCheck();
 
 		if (pTheoreticalState != 0)
 		{
@@ -194,12 +209,13 @@ void CMethodChooseDialog::OnBnClickedOk()
 		if (pZuheliang != 0) {
 			DialogManager::GetInstance().ShowZuheliangDlg();
 		}
+		if (pSuxingqu != 0) {
+			DialogManager::GetInstance().ShowSuxingquDlg();
+		}
 		ShowWindow(SW_HIDE);
 	}
 
 }
-
-
 
 void CMethodChooseDialog::OnBnClickedButtonTunnelDialog()
 {
@@ -207,7 +223,6 @@ void CMethodChooseDialog::OnBnClickedButtonTunnelDialog()
 	ShowWindow(SW_HIDE);
 	DialogManager::GetInstance().ShowTunnelChooseDlg();
 }
-
 
 void CMethodChooseDialog::OnMoving(UINT fwSide, LPRECT lpRect)
 {

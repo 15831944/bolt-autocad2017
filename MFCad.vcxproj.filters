@@ -109,6 +109,9 @@
     <ClInclude Include="ZuheliangDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SuxingquDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCad.cpp">
@@ -166,6 +169,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ZuheliangDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SuxingquDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

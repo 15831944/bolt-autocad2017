@@ -215,6 +215,7 @@
     <ClInclude Include="SimpleIni.h" />
     <ClInclude Include="SkipDialog.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SuxingquDialog.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TheoreticalDialog.h" />
     <ClInclude Include="ThreeTunnelDlg.h" />
@@ -242,6 +243,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SuxingquDialog.cpp" />
     <ClCompile Include="TheoreticalDialog.cpp" />
     <ClCompile Include="ThreeTunnelDlg.cpp" />
     <ClCompile Include="TunnelChooseDialog.cpp" />
