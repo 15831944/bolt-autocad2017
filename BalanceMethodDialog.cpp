@@ -177,7 +177,6 @@ void CBalanceMethodDialog::CheckThickness()
 		break;
 	default:
 		break;
-
 	}
 };
 
@@ -268,5 +267,40 @@ void CBalanceMethodDialog::OnBnClickedCancel()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	ShowWindow(SW_HIDE);
+}
+
+void CBalanceMethodDialog::UpdateUI()
+{
+	CArcProjectBuilder::GetInstance()->BuildMethod();
+
+	CBalanceMethod * balance = CArcProjectBuilder::GetInstance()->GetBalanceMethod();
+	UpdateData(TRUE);
+
+	mGroundAvgGravity = balance->GetAvgGravity();
+	mMaiDepth = balance->GetMaiDepth();
+	mCoalHardNumber = balance->GetCoalHardNumber_Fy();
+	mCoalThickness = balance->GetCoalThickness();
+	mCaiEffectNumber = balance->GetCaiEffectNumber();
+	mInnerFriction = balance->GetInnerFriction();
+	mCoalFriction = balance->GetCoalAngle();
+	mStableNumber = balance->GetStableNumber();
+	mStoneToughNumber = balance->GetStoneHardNumber();
+	mBoltOutLength = balance->GetBoltOutLength();
+	mBoltSpace = balance->GetBoltSpace();
+	mBoltYieldNumber = balance->GetBoltYieldNumber();
+	mBoltPower = balance->GetBoltStablePower();
+	mBoltSafeNumber = balance->GetBoltSafeNumber();
+	mBoltNumber = balance->GetBoltNumber();
+	mTopAvgGravity = balance->GetTopAvgGravity();
+	mCableAlength = balance->GetCableALength();
+	mCableStoneHeight = balance->GetCableStoneHeight();
+	mCableOutLength = balance->GetCableOutLength();
+	mCableSafeNumber = balance->GetCableSafeNumber();
+	mMinBreakPower = balance->GetMinBreakLoader();
+
+	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
+	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
+
+	UpdateData(FALSE);
 }
 

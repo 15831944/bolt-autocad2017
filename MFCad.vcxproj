@@ -219,7 +219,9 @@
     <ClInclude Include="TheoreticalDialog.h" />
     <ClInclude Include="ThreeTunnelDlg.h" />
     <ClInclude Include="TunnelChooseDialog.h" />
+    <ClInclude Include="TunnelFeature.h" />
     <ClInclude Include="TunnelProject.h" />
+    <ClInclude Include="ZuheliangDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AverageDialog.cpp" />
@@ -243,7 +245,9 @@
     <ClCompile Include="TheoreticalDialog.cpp" />
     <ClCompile Include="ThreeTunnelDlg.cpp" />
     <ClCompile Include="TunnelChooseDialog.cpp" />
+    <ClCompile Include="TunnelFeature.cpp" />
     <ClCompile Include="TunnelProject.cpp" />
+    <ClCompile Include="ZuheliangDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCad.rc" />

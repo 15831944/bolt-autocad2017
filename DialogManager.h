@@ -7,6 +7,7 @@
 #include "LooseRangeDialog.h"
 #include "ParametersDialog.h"
 #include "BalanceMethodDialog.h"
+#include "ZuheliangDialog.h"
 class DialogManager
 {
 public:
@@ -116,16 +117,25 @@ public:
 	};
 
 	void ShowBalanceDlg() {
-		//if (hasCurrentFile == true)
-		//{
-		//	mBalanceDlg->UpdateUI();
-		//}
+		if (hasCurrentFile == true)
+		{
+			mBalanceDlg->UpdateUI();
+		}
 		mBalanceDlg->ShowWindow(SW_SHOW);
 	};
 	void HideBalanceDlg() {
 		mBalanceDlg->ShowWindow(SW_HIDE);
 	};
-
+	void ShowZuheliangDlg() {
+		if (hasCurrentFile == true)
+		{
+			mZuheliangDlg->UpdateUI();
+		}
+		mZuheliangDlg->ShowWindow(SW_SHOW);
+	};
+	void HideZuheliangDlg() {
+		mZuheliangDlg->ShowWindow(SW_HIDE);
+	};
 	
 
 	void ShowResultDlg() {
@@ -154,8 +164,6 @@ public:
 		hasCalculated = value;
 	};
 
-	bool GetReNewFlag() const { return reNewFlag; };
-	void SetReNewFlag(bool value) { reNewFlag; }
 
 private:
 
@@ -179,6 +187,8 @@ private:
 
 		mBalanceDlg = new CBalanceMethodDialog();
 		mBalanceDlg->Create(IDD_BALANCE_METHOD_DIALOG, 0);
+		mZuheliangDlg = new CZuheliangDialog();
+		mZuheliangDlg->Create(IDD_ZUHELIANG_METHOD_DIALOG, 0);
 	}
 
 	CProjectDialog *mProjectDlg;
@@ -189,9 +199,9 @@ private:
 	CLooseRangeDialog *mLooseDlg;
 	CParametersDialog *mResultDlg;
 	CBalanceMethodDialog *mBalanceDlg;
+	CZuheliangDialog *mZuheliangDlg;
 
 	bool hasCurrentFile = false;
 	bool hasCalculated = false;
-	bool reNewFlag = false;
 };
 

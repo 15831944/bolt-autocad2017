@@ -108,14 +108,6 @@ void CTheoreticalDialog::UpdateUI()
 	UpdateData(FALSE);	
 }
 
-void CTheoreticalDialog::UpdateThickness()
-{
-	//UpdateData(TRUE);
-	//mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
-	//mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
-	//UpdateData(FALSE);
-}
-
 void CTheoreticalDialog::CheckThickness()
 {
 	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();

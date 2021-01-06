@@ -16,7 +16,7 @@ public:
 	afx_msg void OnBnClickedButtonPredialog();
 	afx_msg void OnBnClickedCancel();
 
-
+	void UpdateUI();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_BALANCE_METHOD_DIALOG };

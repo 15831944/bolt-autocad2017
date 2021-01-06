@@ -330,6 +330,25 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 		}
 		else {
 			TunnelSavepm();
+			//MessageBox(_T("本页参数保存成功"));
+			// 设置巷道支护方式
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()
+				->SetZhihuWay(GetZhihuWayBtn());
+			std::cout << "zhihu way :" << GetZhihuWayBtn() << std::endl;
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()
+				->SetHasRevertAngle((mCheckBoltAngle.GetCheck() == TRUE) ? true : false);
+
+			CString strLeftAngle, strTopAngle(_T("90")), strRightAngle;
+
+			mEdtBoltLeftAngle.GetWindowText(strLeftAngle);
+			mEdtBoltRightAngle.GetWindowText(strRightAngle);
+
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopAngle(_ttof(strTopAngle));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftAngle(_ttof(strLeftAngle));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightAngle(_ttof(strRightAngle));
+
+			std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
+			CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
 			SuccessToMethodChooseDlg();
 		}
 		
@@ -360,8 +379,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 	CString strTrapLeftAngle;
 	CString strTrapRightAngle;
 
-	switch (type)
-	{
+	switch (type) {
 	case 0:
 		MessageBox(_T("请选择一种巷道类型"), _T("警告"), MB_ICONWARNING | MB_OK);
 		break;
@@ -371,7 +389,6 @@ void CThreeTunnelDlg::TunnelSavepm()
 			MessageBox(_T("矩形巷道数据不能含有空值"), _T("警告"), MB_ICONWARNING | MB_OK);
 		}
 		else {
-
 			mEdtRecWidth.GetWindowText(strWidth);
 			mEdtRecHeight.GetWindowText(strWallHeight);
 
@@ -403,7 +420,6 @@ void CThreeTunnelDlg::TunnelSavepm()
 			MessageBox(_T("梯形巷道数据不能含有空值"), _T("警告"), MB_ICONWARNING | MB_OK);
 		}
 		else {
-
 			mEdtTrapTopWidth.GetWindowText(strWidth);
 			mEdtTrapHeight.GetWindowText(strWallHeight);
 			mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
@@ -421,27 +437,10 @@ void CThreeTunnelDlg::TunnelSavepm()
 		break;
 	}
 
-	// 设置巷道支护方式
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()
-		->SetZhihuWay(GetZhihuWayBtn());
-	std::cout << "zhihu way :" << GetZhihuWayBtn() << std::endl;
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()
-		->SetHasRevertAngle((mCheckBoltAngle.GetCheck() == TRUE) ? true : false);
 
-	CString strLeftAngle, strTopAngle(_T("90")), strRightAngle;
-
-	mEdtBoltLeftAngle.GetWindowText(strLeftAngle);
-	mEdtBoltRightAngle.GetWindowText(strRightAngle);
-
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopAngle(_ttof(strTopAngle));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftAngle(_ttof(strLeftAngle));
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightAngle(_ttof(strRightAngle));
-
-	std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
-	CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
-		//MessageBox(_T("本页参数保存成功"));
 	}
 }
+
 
 
 void CThreeTunnelDlg::OnBnClickedButtonProjectDialog()

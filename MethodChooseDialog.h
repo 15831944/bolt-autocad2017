@@ -28,6 +28,8 @@ private:
 	CButton mRadioExperience;
 	CButton mRadioLooseRange;
 	CButton mRadioExpert;
+	CButton mRadioBalanceMethod;
+	CButton mRadioZuheliang;
 	CStatic mMethodChooseTitle;
 
 	void SetMethodFlag(int flag);
@@ -40,6 +42,6 @@ protected:
 public:
 	afx_msg void OnBnClickedButtonTunnelDialog();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
-private:
-	CButton mRadioBalanceMethod;
+
+	
 };

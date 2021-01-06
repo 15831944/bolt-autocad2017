@@ -16,6 +16,7 @@ protected:
 	CProExpMethod * project;
 	CLooseRangeMethod * loose;
 	CBalanceMethod * balance;
+	CZuheliangMethod * zuheliang;
 
 	BOOL IsSavedToFile = TRUE;
 	BOOL IsProjectSaveToInstance = FALSE;
@@ -43,6 +44,7 @@ public:
 	CProExpMethod * GetExpMethod() const { return project; };
 	CLooseRangeMethod * GetLooseMethod() const { return loose; };
 	CBalanceMethod * GetBalanceMethod() const { return balance; };
+	CZuheliangMethod * GetZuheliangMethod() const { return zuheliang; };
 	void SetMethod(CMethod * m) {
 		method = m;
 	}
@@ -317,7 +319,61 @@ public:
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
 	 };
-	
+	bool SaveZuheliangMethod() {
+
+		CString strZuheliangMethod("Zuheliang");
+		CString mGroundAvgGravity("GroundAvgGravity");
+		CString mMaiDepth("MaiDepth");
+		CString mCoalHardNumber("CoalHardNumber");
+		CString mCoalThickness("CoalThickness");
+		CString mCaiEffectNumber("CaiEffectNumber");
+		CString mInnerFriction("InnerFriction");
+		CString mBoltALength("BoltALength");
+		CString mBoltDiameter("BoltDiameter");
+		CString mBoltOutLength("BoltOutLength");
+		CString mBoltSafeNumber("BoltSafeNumber");
+		CString mCeyaliNumber("CeyaliNumber");
+		CString mCoalFriction("CoalFriction");
+		CString mKangjian("CoalFriction");
+		CString mKangla("Kangla");
+		CString mKuadu("Kuadu");
+		CString mStableNumber("StableNumber");
+		CString mStoneHardNumber("StoneHardNumber");
+		CString mTopGravity("TopGravity");
+		CString mTopSafeNumber("TopSafeNumber");
+		CString mTopThickness("TopThickness");
+		CString mZhejianNumber("ZhejianNumber");
+
+		CSimpleIni mProjectIni;
+
+		SI_Error rc = mProjectIni.LoadFile(fileUrl);
+		if (rc < 0) return false; // 若加载文件出错，返回false
+
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mGroundAvgGravity, zuheliang->GetGroundAvgGravity());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mMaiDepth, zuheliang->GetMaiDepth());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mCoalHardNumber, zuheliang->GetCoalHardNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mCoalThickness, zuheliang->GetCoalThickness());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mCaiEffectNumber, zuheliang->GetCaiEffectNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mInnerFriction, zuheliang->GetInnerFriction());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mBoltALength, zuheliang->GetBoltALength());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mBoltDiameter, zuheliang->GetBoltDiameter());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mBoltOutLength, zuheliang->GetBoltOutLength());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mBoltSafeNumber, zuheliang->GetBoltSafeNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mCeyaliNumber, zuheliang->GetCeyaliNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mCoalFriction, zuheliang->GetCoalFriction());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mKangjian, zuheliang->GetKangjian());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mKangla, zuheliang->GetKangla());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mKuadu, zuheliang->GetKuadu());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mStableNumber, zuheliang->GetStableNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mStoneHardNumber, zuheliang->GetStableNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mTopGravity, zuheliang->GetTopGravity());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mTopSafeNumber, zuheliang->GetTopSafeNumber());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mTopThickness, zuheliang->GetTopThickness());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mZhejianNumber, zuheliang->GetZhejianNumber());
+
+		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
+		return rc2 < 0 ? false : true;
+	};
 	CProjectBuilder()
 	{
 		//mTunnelProject = new CTunnelProject();
@@ -344,6 +400,7 @@ public:
 		project = new CProExpMethod();
 		loose = new CLooseRangeMethod();
 		balance = new CBalanceMethod();
+		zuheliang = new CZuheliangMethod();
 	};
 	~CArcProjectBuilder() { 
 		delete mArcTunnel; 
@@ -580,6 +637,29 @@ public:
 		CString mStoneToughNumber("StoneToughNumber");
 		CString mStableNumber("StableNumber");
 		CString mTopAvgGravity("TopAvgGravity");
+
+		CString strZuheliangMethod("Zuheliang");
+		//CString mGroundAvgGravity("GroundAvgGravity");
+		//CString mMaiDepth("MaiDepth");
+		//CString mCoalHardNumber("CoalHardNumber");
+		//CString mCoalThickness("CoalThickness");
+		//CString mCaiEffectNumber("CaiEffectNumber");
+		//CString mInnerFriction("InnerFriction") ;
+		CString mBoltALength("BoltALength") ;
+		CString mBoltDiameter("BoltDiameter") ;
+		//CString mBoltOutLength("BoltOutLength");
+		//CString mBoltSafeNumber("BoltSafeNumber");
+		CString mCeyaliNumber("CeyaliNumber");
+		//CString mCoalFriction("CoalFriction");
+		CString mKangjian("CoalFriction");
+		CString mKangla("Kangla");
+		CString mKuadu("Kuadu");
+		//CString mStableNumber("StableNumber");
+		CString mStoneHardNumber("StoneHardNumber");
+		CString mTopGravity("TopGravity");
+		CString mTopSafeNumber("TopSafeNumber");
+		CString mTopThickness("TopThickness");
+		CString mZhejianNumber("ZhejianNumber");
 		switch (mArcTunnel->GetCalMethod())
 		{
 		case 1:
@@ -696,6 +776,37 @@ public:
 			balance->SetMinBreakLoader(mProjectIni.GetDoubleValue(strBalanceMethod, mMinBreakPower));
 			balance->SetCableSafeNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mCableSafeNumber));
 			
+			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
+			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
+			break;
+
+		case 6:
+			factory = new CZuheliangFactory();
+			method = factory->createMethod();
+
+			zuheliang = static_cast<CZuheliangMethod *>(method);
+			zuheliang->SetGroundAvgGravity(mProjectIni.GetDoubleValue(strZuheliangMethod, mGroundAvgGravity));
+			zuheliang->SetMaiDepth(mProjectIni.GetDoubleValue(strZuheliangMethod, mMaiDepth));
+			zuheliang->SetCoalHardNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mCoalHardNumber));
+			zuheliang->SetCoalThickness(mProjectIni.GetDoubleValue(strZuheliangMethod, mCoalThickness));
+			zuheliang->SetCaiEffectNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mCaiEffectNumber));
+			zuheliang->SetInnerFriction(mProjectIni.GetDoubleValue(strZuheliangMethod, mInnerFriction));
+			zuheliang->SetBoltALength(mProjectIni.GetDoubleValue(strZuheliangMethod, mBoltALength));
+			zuheliang->SetBoltDiameter(mProjectIni.GetDoubleValue(strZuheliangMethod, mBoltDiameter));
+			zuheliang->SetBoltOutLength(mProjectIni.GetDoubleValue(strZuheliangMethod, mBoltOutLength));
+			zuheliang->SetBoltSafeNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mBoltSafeNumber));
+			zuheliang->SetCeyaliNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mCeyaliNumber));
+			zuheliang->SetCoalFriction(mProjectIni.GetDoubleValue(strZuheliangMethod, mCoalFriction));
+			zuheliang->SetKangjian(mProjectIni.GetDoubleValue(strZuheliangMethod, mKangjian));
+			zuheliang->SetKangla(mProjectIni.GetDoubleValue(strZuheliangMethod, mKangla));
+			zuheliang->SetKuadu(mProjectIni.GetDoubleValue(strZuheliangMethod, mKuadu));
+			zuheliang->SetStableNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mStableNumber));
+			zuheliang->SetStoneHardNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mStoneHardNumber));
+			zuheliang->SetTopGravity(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopGravity));
+			zuheliang->SetTopSafeNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopSafeNumber));
+			zuheliang->SetTopThickness(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopThickness));
+			zuheliang->SetZhejianNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mZhejianNumber));
+
 			mArcTunnel->SetConcreteThickness(mProjectIni.GetLongValue(strThickness, strConcreteThickness));
 			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 			break;
@@ -881,6 +992,7 @@ public:
 		CString strHasRightBolt("HasRightBolt");
 		CString strHasCable("HasCable");
 
+		std::cout << "bridge file zhihu way: " << strZhihuWay << std::endl;
 		mProjectIni.SetLongValue(strFlag, strZhihuWay, mArcTunnel->GetZhihuWay());
 		mProjectIni.SetBoolValue(strFlag, strHasRevertAngle, mArcTunnel->GetRevertAngle());
 		mProjectIni.SetLongValue(strFlag, strCalMethod, mArcTunnel->GetCalMethod());
@@ -913,6 +1025,8 @@ public:
 			return true;
 		case 5:
 			return SaveBalanceMethod();
+		case 6:
+			return SaveZuheliangMethod();
 		default:
 			return false;
 		}

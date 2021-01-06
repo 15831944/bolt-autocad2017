@@ -430,6 +430,126 @@ public:
 	};
 };
 
+class CZuheliangMethod : public CMethod {
+
+private:
+	double mGroundAvgGravity;
+	double mMaiDepth;
+	double mCoalHardNumber;
+	double mCoalThickness;
+	double mCaiEffectNumber;
+	double mInnerFriction;
+	double mBoltALength;
+	double mBoltDiameter;
+	double mBoltOutLength;
+	double mBoltSafeNumber;
+	double mCeyaliNumber;
+	double mCoalFriction;
+	double mKangjian;
+	double mKangla;
+	double mKuadu;
+	double mStableNumber;
+	double mStoneHardNumber;
+	double mTopGravity;
+	double mTopSafeNumber;
+	double mTopThickness;
+	double mZhejianNumber;
+
+	
+	double GetBangBreakDepth() {
+		double Kcx = 2.5;
+		double div_top = Kcx * mGroundAvgGravity * mMaiDepth * mCaiEffectNumber;
+		double div_bottom = pow(10, 4) * mCoalHardNumber;
+		double sub1 = div_top / div_bottom - 1;
+		double tan_fai = tan(MFCUtil::AngleToArc((90 - mInnerFriction) * 0.5));
+		std::cout << "BangBreakDepth C: " << sub1 * mCoalThickness * tan_fai << std::endl;
+		return sub1 * mCoalThickness * tan_fai;
+	};
+
+	double GetTopBreakDepth() {
+		double C = GetBangBreakDepth();
+		double div_top = (a + C) * cos(MFCUtil::AngleToArc(mCoalFriction));
+		double div_bottom = mStableNumber * mStoneHardNumber;
+		std::cout << "TopBreakDepth b: " << div_top / div_bottom << std::endl;
+		return div_top / div_bottom;
+	};
+public:
+
+	void SetGroundAvgGravity(double t) { mGroundAvgGravity = t; };
+	double GetGroundAvgGravity() const { return mGroundAvgGravity; };
+	void SetMaiDepth(double t) { mMaiDepth = t; };
+	double GetMaiDepth() const { return mMaiDepth; };
+	void SetCoalHardNumber(double t) { mCoalHardNumber = t; };
+	double GetCoalHardNumber() const { return mCoalHardNumber; };
+	void SetCoalThickness(double t) { mCoalThickness = t; };
+	double GetCoalThickness() const { return mCoalThickness; };
+	void SetCaiEffectNumber(double t) { mCaiEffectNumber = t; };
+	double GetCaiEffectNumber() const { return mCaiEffectNumber; };
+	void SetInnerFriction(double t) { mInnerFriction = t; };
+	double GetInnerFriction() const { return mInnerFriction; };
+	void SetBoltALength(double t) { mBoltALength = t; };
+	double GetBoltALength() const { return mBoltALength; };
+	void SetBoltDiameter(double t) { mBoltDiameter = t; };
+	double GetBoltDiameter() const { return mBoltDiameter; };
+	void SetBoltOutLength(double t) { mBoltOutLength = t; };
+	double GetBoltOutLength() const { return mBoltOutLength; };
+	void SetBoltSafeNumber(double t) { mBoltSafeNumber = t; };
+	double GetBoltSafeNumber() const { return mBoltSafeNumber; };
+	void SetCeyaliNumber(double t) { mCeyaliNumber = t; };
+	double GetCeyaliNumber() const { return mCeyaliNumber; };
+	void SetCoalFriction(double t) { mCoalFriction = t; };
+	double GetCoalFriction() const { return mCoalFriction; };
+	void SetKangjian(double t) { mKangjian = t; };
+	double GetKangjian() const { return mKangjian; };
+	void SetKangla(double t) { mKangla = t; };
+	double GetKangla() const { return mKangla; };
+	void SetKuadu(double t) { mKuadu = t; };
+	double GetKuadu() const { return mKuadu; };
+	void SetStableNumber(double t) { mStableNumber = t; };
+	double GetStableNumber() const { return mStableNumber; };
+	void SetStoneHardNumber(double t) { mStoneHardNumber = t; };
+	double GetStoneHardNumber() const { return mStoneHardNumber; };
+	void SetTopGravity(double t) { mTopGravity = t; };
+	double GetTopGravity() const { return mTopGravity; };
+	void SetTopSafeNumber(double t) { mTopSafeNumber = t; };
+	double GetTopSafeNumber() const { return mTopSafeNumber; };
+	void SetTopThickness(double t) { mTopThickness = t; };
+	double GetTopThickness() const { return mTopThickness; };
+	void SetZhejianNumber(double t) { mZhejianNumber = t; };
+	double GetZhejianNumber() const { return mZhejianNumber; };
+	virtual int GetTopBoltNumber() {
+		return 3;
+	};
+
+	// 获取顶部锚杆的长度
+	virtual double GetTopBoltLength() {
+		double b = GetTopBreakDepth();
+		double q = mTopGravity * b;
+		//巷道所受水平应力
+		double SigmaH = 1.2 * mCeyaliNumber * mTopGravity * mTopThickness;
+		double div_top = mBoltSafeNumber * q,
+			div_bottom = mZhejianNumber * (mKangla + SigmaH);
+		double num = div_top / div_bottom;
+		double L2 = 0.602 * mKuadu * num;
+		return mBoltALength + L2 + mBoltOutLength;
+	};
+
+	double GetBoltSpaceAndPitch() {
+		double b = GetTopBreakDepth();
+		double q = mTopGravity * b;
+		//巷道所受水平应力
+		double SigmaH = 1.2 * mCeyaliNumber * mTopGravity * mTopThickness;
+		double div_top = mBoltSafeNumber * q,
+			div_bottom = mZhejianNumber * (mKangla + SigmaH);
+		double num = div_top / div_bottom;
+		double L2 = 0.602 * mKuadu * num;
+		double num_sqrt = sqrt((L2 * mKangjian) / (mTopSafeNumber * q * mKuadu));
+		double minBoltSpace = 1.4472 * mBoltDiameter * num_sqrt;
+		return minBoltSpace;
+	}
+
+};
+
 class CMethodFactory {
 public:
 	CMethodFactory() {  };
@@ -471,5 +591,14 @@ public:
 	~CBalanceMethodFactory() {};
 	CMethod* createMethod() {
 		return new CBalanceMethod();
+	};
+};
+
+class CZuheliangFactory : public CMethodFactory {
+public:
+	CZuheliangFactory() {};
+	~CZuheliangFactory() {};
+	CMethod* createMethod() {
+		return new CZuheliangMethod();
 	};
 };
