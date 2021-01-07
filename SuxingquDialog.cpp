@@ -30,7 +30,21 @@ CSuxingquDialog::CSuxingquDialog(CWnd* pParent /*=NULL*/)
 	, mCableAttach(0)
 	, mCableBreakPower(0)
 {
+	// 容重是围岩平均重度
+	mAvgGravity = 24.9;
+	mMeiyanZhongdu = 7.3;
+	mMaiDepth = 561;
+	mNianPower = 4.29;
+	mInnerFriction = 37.5;
+	mShuLength = 20;
 
+	mBoltDiameter = 16;
+	mBoltDesignNumber = 50;
+	mBoltAttach = 20;
+	mCableDiameter = 22;
+	mCableBreakPower = 260;
+	mCableAttach = 50;
+	mCableFreeLength = 5500;
 }
 
 CSuxingquDialog::~CSuxingquDialog()
@@ -115,6 +129,30 @@ void CSuxingquDialog::SetExpertValue()
 	CSuxingquMethod * suxingqu = CArcProjectBuilder::GetInstance()->GetSuxingquMethod();
 
 	CBolt * topBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopBolt();
+	CBolt  * leftBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftBolt();
+	CCable *cable = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetCable();
+	int tmp = 1000;
+
+	topBolt->setLength(suxingqu->GetTopBoltLength() * tmp);
+	topBolt->setDiameter(suxingqu->GetBoltDiameter());
+	topBolt->setNumber(suxingqu->GetTopBoltNumber());
+	topBolt->setPitch(suxingqu->GetTopSpaceAndPitch() * tmp);
+	topBolt->setSpace(suxingqu->GetTopSpaceAndPitch() * tmp);
+	topBolt->setALength(suxingqu->GetBoltALength() * tmp);
+
+	leftBolt->setLength(suxingqu->GetBangBoltLength() * tmp);
+	leftBolt->setNumber(suxingqu->GetBangBoltNumber());
+	leftBolt->setSpace(suxingqu->GetBangSpaceAndPitch() *tmp);
+	leftBolt->setPitch(suxingqu->GetBangSpaceAndPitch() *tmp);
+	leftBolt->setDiameter(suxingqu->GetBoltDiameter());
+	leftBolt->setALength(suxingqu->GetBoltALength() * tmp);
+
+	cable->setDiameter(suxingqu->GetCableDiameter());
+	cable->setLength(suxingqu->GetCableLength() * tmp);
+	cable->setNumber(suxingqu->GetCableNumber());
+	cable->setPitch(suxingqu->GetCablePitch() * tmp);
+	cable->setSpace(suxingqu->GetCableSpace() *tmp);
+	cable->setALength(suxingqu->GetCableALength() * tmp);
 }
 
 
@@ -163,14 +201,14 @@ void CSuxingquDialog::OnBnClickedOk()
 		CSuxingquMethod * zuheliang = CArcProjectBuilder::GetInstance()->GetSuxingquMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
-//		std::cout << "tunnel type : " << CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() << std::endl;
 		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
-			zuheliang->SetA(pArc->GetTrapBottomWidth());
+			zuheliang->SetA(pArc->GetTrapBottomWidth()/1000);
 		}
 		else
 		{
-			zuheliang->SetA(pArc->GetWidth());
+			zuheliang->SetA(pArc->GetWidth()/1000);
 		}
+		zuheliang->SetH(pArc->GetHeight() / 1000);
 		zuheliang->SetInnerFriction(mInnerFriction);
 		zuheliang->SetAvgGravity(mAvgGravity);
 		zuheliang->SetMaiDepth(mMaiDepth);
@@ -189,7 +227,7 @@ void CSuxingquDialog::OnBnClickedOk()
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
 		CArcProjectBuilder::GetInstance()->SetCalMethodSaveToInstance(TRUE);
 
-		//SetExpertValue();
+		SetExpertValue();
 		CheckThickness();
 		pmLeagal = true;
 	}

@@ -394,6 +394,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 
 			pTunnel->SetWidth(_ttof(strWidth));
 			pTunnel->SetWallHeight(_ttof(strWallHeight));
+			pTunnel->SetArcHeight(0);
 		}
 		break;
 	case 2:
@@ -425,7 +426,8 @@ void CThreeTunnelDlg::TunnelSavepm()
 			mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
 			mEdtTrapLeftAngle.GetWindowText(strTrapLeftAngle);
 			mEdtTrapRightAngle.GetWindowText(strTrapRightAngle);
-
+			
+			pTunnel->SetArcHeight(0);
 			pTunnel->SetWidth(_ttof(strWidth));
 			pTunnel->SetWallHeight(_ttof(strWallHeight));
 			pTunnel->SetTrapBottomWidth(_ttof(strTrapBottomWidth));

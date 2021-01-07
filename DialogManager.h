@@ -142,7 +142,7 @@ public:
 	void ShowSuxingquDlg() {
 		if (hasCurrentFile == true)
 		{
-			//mSuxingquDlg->UpdateUI();
+			mSuxingquDlg->UpdateUI();
 		}
 		mSuxingquDlg->ShowWindow(SW_SHOW);
 	};

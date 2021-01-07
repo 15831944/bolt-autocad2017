@@ -211,10 +211,12 @@ void SetExpertValue() {
 	topBolt->setDiameter(theory->GetBoltDiameter());
 	topBolt->setNumber(theory->GetTopBoltNumber());
 	topBolt->setPitch(theory->GetBoltPitch());
+	topBolt->setPitch(theory->GetBoltPitch());
 	leftBolt->setLength(theory->GetBangBoltLength() * tmp);
 	leftBolt->setALength(theory->GetTopBoltALength() * tmp);
+	leftBolt->setNumber(theory->GetTopBoltNumber());
 	leftBolt->setPitch(theory->GetBoltPitch());
-
+	leftBolt->setPitch(theory->GetBoltPitch());
 	cable->setDiameter(theory->GetCableDiameter());
 	cable->setALength(theory->GetCableALength() * tmp);
 	cable->setLength(theory->GetCableLength() * tmp);
