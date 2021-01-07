@@ -467,6 +467,7 @@ void CParametersDialog::OnBnClickedOk()
 
 		if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
 			//MessageBox(_T("桥接文件保存成功！"));
+			CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
 		}
 		else {
 			MessageBox(_T("桥接文件保存失败！"), _T("错误"));
