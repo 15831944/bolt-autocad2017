@@ -15,6 +15,7 @@ public:
 	CParametersDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CParametersDialog();
 	void UpdateUI();
+	void SetThikcnessEdit();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME

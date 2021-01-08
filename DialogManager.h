@@ -25,8 +25,6 @@ public:
 		return instance;
 	};
 
-
-
 	~DialogManager()
 	{
 		delete mProjectDlg;
@@ -175,6 +173,14 @@ public:
 	void setHasCalculated(bool value) {
 		hasCalculated = value;
 	};
+
+	CTheoreticalDialog *GetTheoryDlg() const { return mTheoryDlg; };
+	CExperienceDialog *GetExpDlg() const { return mExpDlg; };
+	CLooseRangeDialog *GetLooseDlg() const { return mLooseDlg; };
+	CParametersDialog *GetResultDlg() const { return mResultDlg; };
+	CBalanceMethodDialog *GetBalanceDlg() const { return mBalanceDlg; };
+	CZuheliangDialog *GetZuheliangDlg() const { return mZuheliangDlg; };
+	CSuxingquDialog *GetSuxingquDlg() const { return mSuxingquDlg; };
 
 
 private:

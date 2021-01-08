@@ -78,6 +78,19 @@ void CSuxingquDialog::UpdateUI()
 	UpdateData(FALSE);
 }
 
+void CSuxingquDialog::SetThicknessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		CEdtConThickcness.EnableWindow(TRUE);
+		CEdtQiThickcness.EnableWindow(TRUE);
+	}
+	else {
+		CEdtConThickcness.EnableWindow(FALSE);
+		CEdtQiThickcness.EnableWindow(FALSE);
+	}
+}
+
 void CSuxingquDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -96,6 +109,8 @@ void CSuxingquDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_LOOSE_CABLE_BREAK_POWER, mCableBreakPower);
 	DDX_Text(pDX, IDC_EDIT_CONCRETE_THICKNESS, mConcreteThickness);
 	DDX_Text(pDX, IDC_EDIT_QI_THICKNESS, mQiThickness);
+	DDX_Control(pDX, IDCANCEL, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT_QI_THICKNESS, CEdtQiThickcness);
 }
 
 void CSuxingquDialog::CheckThickness()

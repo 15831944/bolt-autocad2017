@@ -70,6 +70,19 @@ void CExperienceDialog::UpdateUI()
 	UpdateData(FALSE);
 }
 
+void CExperienceDialog::SetThicknessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		CEdtConThickcness.EnableWindow(TRUE);
+		CEdtQiThickcness.EnableWindow(TRUE);
+	}
+	else {
+		CEdtConThickcness.EnableWindow(FALSE);
+		CEdtQiThickcness.EnableWindow(FALSE);
+	}
+}
+
 
 
 void CExperienceDialog::DoDataExchange(CDataExchange* pDX)
@@ -91,6 +104,8 @@ void CExperienceDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_EXP_CABLE_SHU_LENGTH, mCableShuLength);
 	DDX_Text(pDX, IDC_EDIT45, mConcreteThickness);
 	DDX_Text(pDX, IDC_EDIT43, mQiThickness);
+	DDX_Control(pDX, IDC_EDIT45, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT43, CEdtQiThickcness);
 }
 
 

@@ -102,6 +102,19 @@ void CZuheliangDialog::UpdateUI()
 	UpdateData(FALSE);
 }
 
+void CZuheliangDialog::SetThikcnessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		CEdtConThickcness.EnableWindow(TRUE);
+		CEdtQiThickcness.EnableWindow(TRUE);
+	}
+	else {
+		CEdtConThickcness.EnableWindow(FALSE);
+		CEdtQiThickcness.EnableWindow(FALSE);
+	}
+}
+
 void CZuheliangDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -128,6 +141,8 @@ void CZuheliangDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_TOP_SAFE_NUMBER, mTopSafeNumber);
 	DDX_Text(pDX, IDC_EDIT_TOP_THICKNESS, mTopThickness);
 	DDX_Text(pDX, IDC_EDIT_ZHEJIAN_NUMBER, mZhejianNumber);
+	DDX_Control(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT_THE_QI_THICKNESS, CEdtQiThickcness);
 }
 
 
@@ -172,15 +187,21 @@ void CZuheliangDialog::SetExpertValue()
 	CZuheliangMethod * zuheliang = CArcProjectBuilder::GetInstance()->GetZuheliangMethod();
 
 	CBolt * topBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopBolt();
+	CBolt * leftBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftBolt();
 	int tmp = 1000; // 进制单位转换
 	topBolt->setLength(zuheliang->GetTopBoltLength()* tmp);
-	topBolt->setNumber(zuheliang->GetBoltNumber());
+	topBolt->setNumber(zuheliang->GetTopBoltNumber());
 	topBolt->setDiameter(zuheliang->GetBoltDiameter());
 	topBolt->setPitch(zuheliang->GetBoltSpaceAndPitch() * tmp);
 	topBolt->setSpace(zuheliang->GetBoltSpaceAndPitch() * tmp);
 	topBolt->setALength(zuheliang->GetBoltALength() * tmp);
 
-	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(topBolt);
+	leftBolt->setLength(zuheliang->GetTopBoltLength()* tmp);
+	leftBolt->setNumber(zuheliang->GetBangBoltNumber());
+	leftBolt->setDiameter(zuheliang->GetBoltDiameter());
+	leftBolt->setPitch(zuheliang->GetBoltSpaceAndPitch() * tmp);
+	leftBolt->setSpace(zuheliang->GetBoltSpaceAndPitch() * tmp);
+	leftBolt->setALength(zuheliang->GetBoltALength() * tmp);
 }
 
 BOOL CZuheliangDialog::OnInitDialog()
@@ -250,6 +271,7 @@ void CZuheliangDialog::OnBnClickedOk()
 		{
 			zuheliang->SetA(pArc->GetWidth() / 1000);
 		}
+		zuheliang->SetH(pArc->GetHeight() / 1000);
 		zuheliang->SetGroundAvgGravity(mGroundAvgGravity);
 		zuheliang->SetMaiDepth(mMaiDepth);
 		zuheliang->SetCoalHardNumber( mCoalHardNumber);

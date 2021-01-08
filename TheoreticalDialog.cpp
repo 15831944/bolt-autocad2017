@@ -135,6 +135,19 @@ void CTheoreticalDialog::CheckThickness()
 	}
 }
 
+void CTheoreticalDialog::SetThicknessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		CEdtConThickcness.EnableWindow(TRUE);
+		CEdtQiThickcness.EnableWindow(TRUE);
+	}
+	else {
+		CEdtConThickcness.EnableWindow(FALSE);
+		CEdtQiThickcness.EnableWindow(FALSE);
+	}
+}
+
 void CTheoreticalDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -166,6 +179,8 @@ void CTheoreticalDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_THE_QI_THICKNESS, mQiThickness);
 	DDX_Text(pDX, IDC_EDIT_THE_ATTACH, mAttach);
 	DDV_MinMaxInt(pDX, mBoltPitch, 700, 1500);
+	DDX_Control(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT_THE_QI_THICKNESS, CEdtQiThickcness);
 }
 
 

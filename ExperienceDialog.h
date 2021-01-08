@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "afxwin.h"
 // CExperienceDialog 对话框
 
 class CExperienceDialog : public CDialogEx
@@ -10,6 +11,7 @@ public:
 	CExperienceDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CExperienceDialog();
 	void UpdateUI();
+	void SetThicknessEdit();
 	afx_msg void OnBnClickedButtonExpSavepm();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
@@ -47,4 +49,6 @@ private:
 	int mQiThickness;
 	void CheckThickness();
 
+	CEdit CEdtConThickcness;
+	CEdit CEdtQiThickcness;
 };

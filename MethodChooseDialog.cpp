@@ -192,25 +192,31 @@ void CMethodChooseDialog::OnBnClickedOk()
 		if (pTheoreticalState != 0)
 		{
 			//理论法被选中
+			DialogManager::GetInstance().GetTheoryDlg()->SetThicknessEdit();
 			DialogManager::GetInstance().ShowTheoryDlg();
 		}
 		if (pExperienceState != 0)
 		{
+			DialogManager::GetInstance().GetExpDlg()->SetThicknessEdit();
 			DialogManager::GetInstance().ShowExpDlg();
 		}
 		if (pLooseState != 0) {
 			DialogManager::GetInstance().ShowLooseDlg();
 		}
 		if (pExpertState != 0) {
+			DialogManager::GetInstance().GetResultDlg()->SetThikcnessEdit();
 			DialogManager::GetInstance().ShowResultDlg();
 		}
 		if (pBalanceMethod != 0) {
+			DialogManager::GetInstance().GetBalanceDlg()->SetThicknessEdit();
 			DialogManager::GetInstance().ShowBalanceDlg();
 		}
 		if (pZuheliang != 0) {
+			DialogManager::GetInstance().GetZuheliangDlg()->SetThikcnessEdit();
 			DialogManager::GetInstance().ShowZuheliangDlg();
 		}
 		if (pSuxingqu != 0) {
+			DialogManager::GetInstance().GetSuxingquDlg()->SetThicknessEdit();
 			DialogManager::GetInstance().ShowSuxingquDlg();
 		}
 		ShowWindow(SW_HIDE);

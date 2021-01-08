@@ -94,6 +94,8 @@ void CBalanceMethodDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_TOP_AVG_G, mTopAvgGravity);
 	DDX_Text(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, mConcreteThickness);
 	DDX_Text(pDX, IDC_EDIT_THE_QI_THICKNESS, mQiThickness);
+	DDX_Control(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT_THE_QI_THICKNESS, CEdtQiThickcness);
 };
 
 
@@ -307,5 +309,18 @@ void CBalanceMethodDialog::UpdateUI()
 	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
 
 	UpdateData(FALSE);
+}
+
+void CBalanceMethodDialog::SetThicknessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		CEdtConThickcness.EnableWindow(TRUE);
+		CEdtQiThickcness.EnableWindow(TRUE);
+	}
+	else {
+		CEdtConThickcness.EnableWindow(FALSE);
+		CEdtQiThickcness.EnableWindow(FALSE);
+	}
 }
 

@@ -53,6 +53,19 @@ void CParametersDialog::UpdateUI()
 	std::cout << "set bolt info successfully!\n";
 }
 
+void CParametersDialog::SetThikcnessEdit()
+{
+	if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+	{
+		mEdtConcreteThickness.EnableWindow(TRUE);
+		mEdtQiThickness.EnableWindow(TRUE);
+	}
+	else {
+		mEdtConcreteThickness.EnableWindow(FALSE);
+		mEdtQiThickness.EnableWindow(FALSE);
+	}
+}
+
 void CParametersDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);

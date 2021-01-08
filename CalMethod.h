@@ -529,9 +529,6 @@ public:
 	double GetTopThickness() const { return mTopThickness; };
 	void SetZhejianNumber(double t) { mZhejianNumber = t; };
 	double GetZhejianNumber() const { return mZhejianNumber; };
-	virtual int GetTopBoltNumber() {
-		return 3;
-	};
 
 	// 获取顶部锚杆的长度
 	virtual double GetTopBoltLength() {
@@ -563,8 +560,18 @@ public:
 		double num_sqrt = sqrt((L2 * mKangjian) / (mTopSafeNumber * q * mKuadu));
 		double minBoltSpace = 1.4472 * mBoltDiameter * 0.001 * num_sqrt;
 		std::cout << "zuheliang space': " << minBoltSpace << std::endl;
-		return minBoltSpace;
-	}
+		return ceil(minBoltSpace * 10) / 10;
+	};
+
+	virtual int GetTopBoltNumber() {
+		double space = GetBoltSpaceAndPitch();
+		return ceil(a * 2 / space);
+	};
+
+	int GetBangBoltNumber() {
+		double space = GetBoltSpaceAndPitch();
+		return ceil(h / space);
+	};
 
 };
 
@@ -592,8 +599,6 @@ public:
 	double GetShuLength() const { return mShuLength; };
 	void SetCableFreeLength(double t) { mCableFreeLength = t; };
 	double GetCableFreeLength() const { return mCableFreeLength; };
-
-
 
 	double GetFeitanxing() {
 		double r0 = std::sqrt((a * a) + ((h / 2) * (h / 2)));

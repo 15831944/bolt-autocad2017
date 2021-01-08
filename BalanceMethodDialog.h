@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "afxwin.h"
 
 
 // CBalanceMethodDialog 对话框
@@ -17,6 +18,7 @@ public:
 	afx_msg void OnBnClickedCancel();
 
 	void UpdateUI();
+	void SetThicknessEdit();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_BALANCE_METHOD_DIALOG };
@@ -57,4 +59,6 @@ private:
 
 	void CheckThickness();
 	void SetExpertValue();
+	CEdit CEdtConThickcness;
+	CEdit CEdtQiThickcness;
 };

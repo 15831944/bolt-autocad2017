@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // CSuxingquDialog 对话框
@@ -11,6 +12,7 @@ public:
 	CSuxingquDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CSuxingquDialog();
 	void UpdateUI();
+	void SetThicknessEdit();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
@@ -49,4 +51,7 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedButtonTunnelDialog();
 	virtual BOOL OnInitDialog();
+private:
+	CButton CEdtConThickcness;
+	CEdit CEdtQiThickcness;
 };

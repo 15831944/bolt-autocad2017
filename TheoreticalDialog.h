@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "afxwin.h"
 
 
 class CTheoreticalDialog : public CDialogEx
@@ -11,6 +12,7 @@ public:
 	virtual ~CTheoreticalDialog();
 	void UpdateUI();
 	void CheckThickness();
+	void SetThicknessEdit();
 	afx_msg void OnBnClickedButtonAverage();
 	afx_msg void OnBnClickedButtonBackMethodChooseDialog();
 	afx_msg void OnBnClickedOk();
@@ -65,4 +67,6 @@ private:
 	// ÄÚÄ¦²Á½Ç
 	double mInnerFirction;
 
+	CEdit CEdtConThickcness;
+	CEdit CEdtQiThickcness;
 };

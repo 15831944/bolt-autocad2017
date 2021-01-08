@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // CZuheliangDialog 对话框
@@ -12,7 +13,7 @@ public:
 	virtual ~CZuheliangDialog();
 
 	void UpdateUI();
-
+	void SetThikcnessEdit();
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ZUHELIANG_METHOD_DIALOG };
@@ -57,4 +58,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedButtonPredialog();
+private:
+	CEdit CEdtConThickcness;
+	CEdit CEdtQiThickcness;
 };
