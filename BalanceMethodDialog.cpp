@@ -44,15 +44,15 @@ CBalanceMethodDialog::CBalanceMethodDialog(CWnd* pParent /*=NULL*/)
 	mMaiDepth = 581;
 	mCaiEffectNumber = 1.1;
 	mCoalHardNumber = 1.3;
-	mCoalThickness = 5.9;
+	mCoalThickness = 3.6;
 	mInnerFriction = 52;
 	mCoalFriction = 6;
 	mStableNumber = 0.5;
 	mStoneToughNumber = 5;
-	mBoltOutLength = 0.5;
+	mBoltOutLength = 0.6;
 	mBoltPower = 50;
 	mBoltNumber = 7;
-	mBoltSafeNumber = 2;
+	mBoltSafeNumber = 3;
 	mTopAvgGravity = 24.9;
 	mBoltSpace = 800;
 	mBoltYieldNumber = 240;
@@ -62,8 +62,6 @@ CBalanceMethodDialog::CBalanceMethodDialog(CWnd* pParent /*=NULL*/)
 	mCableAlength = 1.4;
 	mCableSafeNumber = 0.2;
 	mMinBreakPower = 260;
-
-
 }
 
 CBalanceMethodDialog::~CBalanceMethodDialog()
@@ -147,6 +145,7 @@ void CBalanceMethodDialog::SetExpertValue()
 	leftBolt->setDiameter(balance->GetBoltDiameter());
 	leftBolt->setPitch(balance->GetBoltPitch() * tmp);
 	leftBolt->setSpace(balance->GetBoltSpace());
+	leftBolt->setNumber(balance->GetBangBoltNumber());
 
 	cable->setLength(balance->GetCableLength()* tmp);
 	cable->setSpace(balance->GetCableSpaceAndPitch()* tmp);
@@ -209,7 +208,13 @@ void CBalanceMethodDialog::OnBnClickedOk()
 		CBalanceMethod * balance = CArcProjectBuilder::GetInstance()->GetBalanceMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
-		balance->SetA(pArc->GetWidth() / 1000);
+		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
+			balance->SetA(pArc->GetTrapBottomWidth() / 1000);
+		}
+		else
+		{
+			balance->SetA(pArc->GetWidth() / 1000);
+		}
 		balance->SetH(pArc->GetHeight() / 1000);
 		balance->SetAvgGravity(mGroundAvgGravity);
 		balance->SetMaiDepth(mMaiDepth);

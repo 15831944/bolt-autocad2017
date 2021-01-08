@@ -63,6 +63,7 @@ BOOL CMethodChooseDialog::OnInitDialog()
 
 	// 设置标题字体
 	mMethodChooseTitle.SetFont(MFCUtil::GetTitleFont());
+	mRadioExpert.SetCheck(TRUE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE

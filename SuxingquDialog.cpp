@@ -31,20 +31,20 @@ CSuxingquDialog::CSuxingquDialog(CWnd* pParent /*=NULL*/)
 	, mCableBreakPower(0)
 {
 	// 容重是围岩平均重度
-	mAvgGravity = 24.9;
-	mMeiyanZhongdu = 7.3;
-	mMaiDepth = 561;
-	mNianPower = 4.29;
-	mInnerFriction = 37.5;
-	mShuLength = 20;
+	mAvgGravity = 26;
+	mMeiyanZhongdu = 26;
+	mMaiDepth = 400;
+	mNianPower =3;
+	mInnerFriction = 25;
+	mShuLength = 350;
 
-	mBoltDiameter = 16;
+	mBoltDiameter = 25;
 	mBoltDesignNumber = 50;
-	mBoltAttach = 20;
-	mCableDiameter = 22;
-	mCableBreakPower = 260;
-	mCableAttach = 50;
-	mCableFreeLength = 5500;
+	mBoltAttach = 7;
+	mCableDiameter = 40;
+	mCableBreakPower = 250;
+	mCableAttach = 16;
+	mCableFreeLength = 3000;
 }
 
 CSuxingquDialog::~CSuxingquDialog()

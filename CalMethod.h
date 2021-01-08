@@ -185,13 +185,13 @@ public:
 		double r0 = std::sqrt((a * a) + ((h / 2) * (h / 2)));
 		std::cout << "r0: " << r0 << std::endl;
 
-		std::cout << "P: " << mAvgGravity * mMaiDepth << std::endl;
+		std::cout << "P: " << mAvgGravity * mMaiDepth / 1000 << std::endl;
 		std::cout << "cot fai :" << 1 / tan(MFCUtil::AngleToArc(mInnerFriction)) << std::endl;
 		std::cout << "sin fai :" << sin(MFCUtil::AngleToArc(mInnerFriction)) << std::endl;
 
 		double cot_fai = 1 / tan(MFCUtil::AngleToArc(mInnerFriction));
 		double sin_fai = sin(MFCUtil::AngleToArc(mInnerFriction));
-		double tmp1 = ((mAvgGravity * mMaiDepth) + 
+		double tmp1 = ((mAvgGravity * mMaiDepth / 1000) + 
 			(mStoneNianPower * cot_fai)) * (1 - sin_fai)
 			/ (mStoneNianPower * cot_fai);
 		std::cout << "底数：" << tmp1 << std::endl;
@@ -212,7 +212,7 @@ public:
 		double r0 = std::sqrt((a * a) + ((h / 2) * (h / 2)));
 		double cot_fai = 1 / tan(MFCUtil::AngleToArc(mInnerFriction));
 		double sin_fai = sin(MFCUtil::AngleToArc(mInnerFriction));
-		double tmp1 = ((mAvgGravity * mMaiDepth) +
+		double tmp1 = ((mAvgGravity * mMaiDepth / 1000) +
 			(mStoneNianPower * cot_fai)) * (1 - sin_fai)
 			/ (mStoneNianPower * cot_fai);
 		std::cout << "底数：" << tmp1 << std::endl;
@@ -329,7 +329,7 @@ private:
 	double mCableSafeNumber;
 
 	double GetBangBreakDepth() {
-		double Kcx = 2.5;
+		double Kcx = 2;
 		double div_top = Kcx * mAvgGravity * mMaiDepth * mCaiEffectNumber;
 		double div_bottom = pow(10, 4) * mCoalHardNumber_Fy;
 		double sub1 = div_top / div_bottom - 1;
@@ -391,16 +391,22 @@ public:
 
 	// 获取顶部锚杆的根数
 	int GetTopBoltNumber() {
+		if (mBoltNumber * mBoltSpace > a * 2) {
+			return a * 2 / (mBoltSpace * 0.001);
+		}
 		return mBoltNumber;
 	};
 
+
 	// 获取顶部锚杆的长度
 	double GetTopBoltLength() {
-		return GetTopBreakDepth() + mBoltOutLength;
+		double L =  GetTopBreakDepth() + mBoltOutLength;
+		return ceil(L * 10) / 10;
 	};
 
 	double GetBangBoltLength() {
-		return GetBangBreakDepth() + mBoltOutLength;
+		double L = GetBangBreakDepth() + mBoltOutLength;
+		return ceil(L * 10) / 10;
 	};
 
 	double GetBoltPitch() {
@@ -408,7 +414,8 @@ public:
 		double div_top = mBoltStablePower * mBoltNumber;
 		double div_bottom = 2 * mBoltSafeNumber * mTopAvgGravity * a * b;
 		std::cout << "balance method pitch: " << div_top / div_bottom << std::endl;
-		return div_top / div_bottom;
+		double pitch = div_top / div_bottom;
+		return ceil(pitch * 10)/ 10;
 	};
 
 	double GetBoltDiameter() {
@@ -417,7 +424,7 @@ public:
 		std::cout << "balance diameter: " << d << std::endl;
 		return d;
 	};
-
+	  
 	// 返回结果以 m 为单位
 	double GetCableLength() {
 		return mCableOutLength + mCableALength + mCableStoneHeight;
@@ -426,7 +433,12 @@ public:
 	double GetCableSpaceAndPitch() {
 		double width = a * 2;
 		double S = (mMinBreakLoader * 3) / (4 * pow(width, 2) * mAvgGravity * mCableSafeNumber);
-		return S;
+		return max(S, (mBoltSpace / 1000) * 3);
+	};
+
+	int GetBangBoltNumber() {
+		int number = h / mBoltSpace;
+		return number;
 	};
 };
 
@@ -457,7 +469,7 @@ private:
 
 	
 	double GetBangBreakDepth() {
-		double Kcx = 2.5;
+		double Kcx = 2;
 		double div_top = Kcx * mGroundAvgGravity * mMaiDepth * mCaiEffectNumber;
 		double div_bottom = pow(10, 4) * mCoalHardNumber;
 		double sub1 = div_top / div_bottom - 1;
@@ -524,27 +536,33 @@ public:
 	// 获取顶部锚杆的长度
 	virtual double GetTopBoltLength() {
 		double b = GetTopBreakDepth();
-		double q = mTopGravity * b;
+		double q = mTopGravity * b * 0.001;
+		std::cout << "zuheliang q: " << q << std::endl;
 		//巷道所受水平应力
 		double SigmaH = 1.2 * mCeyaliNumber * mTopGravity * mTopThickness;
+		SigmaH /= 10;
+		std::cout << "zuheliang sigmaH: " << SigmaH << std::endl;
 		double div_top = mBoltSafeNumber * q,
 			div_bottom = mZhejianNumber * (mKangla + SigmaH);
 		double num = div_top / div_bottom;
-		double L2 = 0.602 * mKuadu * num;
+		double L2 = 0.602 * mKuadu * sqrt(num);
+		std::cout << "zuheliang L2': " << L2 << std::endl;
 		return mBoltALength + L2 + mBoltOutLength;
 	};
 
 	double GetBoltSpaceAndPitch() {
 		double b = GetTopBreakDepth();
-		double q = mTopGravity * b;
+		double q = mTopGravity * b * 0.001;
 		//巷道所受水平应力
 		double SigmaH = 1.2 * mCeyaliNumber * mTopGravity * mTopThickness;
+		SigmaH /= 10;
 		double div_top = mBoltSafeNumber * q,
 			div_bottom = mZhejianNumber * (mKangla + SigmaH);
 		double num = div_top / div_bottom;
-		double L2 = 0.602 * mKuadu * num;
+		double L2 = 0.602 * mKuadu * sqrt(num);
 		double num_sqrt = sqrt((L2 * mKangjian) / (mTopSafeNumber * q * mKuadu));
-		double minBoltSpace = 1.4472 * mBoltDiameter * num_sqrt;
+		double minBoltSpace = 1.4472 * mBoltDiameter * 0.001 * num_sqrt;
+		std::cout << "zuheliang space': " << minBoltSpace << std::endl;
 		return minBoltSpace;
 	}
 
@@ -591,6 +609,9 @@ public:
 	double GetBoltALength() {
 		double pi = asin(0.5) * 6;
 		double lb3 = pBoltDesignNumber / (pi * mNianPower * pBoltDiameter);
+		if (int(lb3 * 100) * (int)mShuLength != 0) {
+			lb3 = (int(lb3 * 1000 / mShuLength) + 1) * mShuLength / 1000;
+		}
 		return lb3;
 	};
 	// 获取顶部锚杆的长度
@@ -601,7 +622,7 @@ public:
 		double TopBoltLength = feitanxing - (h / 2);
 		//double boltLength = max(TopBoltLength, BangBoltLength);
 
-		double lb3 = pBoltDesignNumber / (pi * mNianPower * pBoltDiameter);
+		double lb3 = GetBoltALength();
 		std::cout << "lb3: " << lb3 << std::endl;
 		TopBoltLength = (TopBoltLength + lb3 + 0.1);
 		std::cout << "suxingqu: bang bolt length: " << TopBoltLength << std::endl;
@@ -616,7 +637,7 @@ public:
 		double BangBoltLength = feitanxing - a;
 		//double boltLength = max(TopBoltLength, BangBoltLength);
 		double pi = asin(0.5) * 6;
-		double lb3 = pBoltDesignNumber / (pi * mNianPower * pBoltDiameter);
+		double lb3 = GetBoltALength();
 		std::cout << "lb3: " << lb3 << std::endl;
 		BangBoltLength = (BangBoltLength + lb3 + 0.1);
 		std::cout << "suxingqu: bang bolt length: " << BangBoltLength << std::endl;
@@ -657,21 +678,25 @@ public:
 	double GetCableALength() {
 		double pi = asin(0.5) * 6;
 		double la3 = pCableBreakPower / (pi * pCableDiameter *pCableAttach);
+		if (int(la3 * 100) * (int)mShuLength != 0) {
+			la3 = (int(la3 * 1000 / mShuLength) + 1) * mShuLength / 1000;
+		}
 		return la3;
 	};
 	double GetCableLength() {
 		double la3 = GetCableALength();
-		double la2 = mCableFreeLength /= 1000;
+		double la2 = mCableFreeLength /1000;
 		double cableLength = la3 + 0.2 + la2;
 		std::cout << "suxingqu: cable length: " << cableLength << std::endl;
-		return cableLength;
+		return min(8, cableLength);
 	};
 	int GetCableNumber() {
 		double jianpaiju_top = GetTopSpaceAndPitch(),
 			feitanxing = GetFeitanxing();
 
-		double MaoSuo_Number = mMeiyanZhongdu * 2 * a * 3 * jianpaiju_top * (feitanxing - h / 2) / pCableBreakPower;
+		double MaoSuo_Number = mMeiyanZhongdu * 2 * a * 3 * jianpaiju_top * (feitanxing - a) / pCableBreakPower;
 		std::cout << "suxingqu: cable number: " << MaoSuo_Number << std::endl;
+
 		return ceil(MaoSuo_Number);
 	};
 	double GetCableSpace() {

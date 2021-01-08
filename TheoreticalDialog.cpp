@@ -43,19 +43,19 @@ CTheoreticalDialog::CTheoreticalDialog(CWnd* pParent /*=NULL*/)
 	, mAttach(0)
 {
 
-	mAvgGrivity = 7.3;
-	mDepth = 2000;
+	mAvgGrivity = 24.9;
+	mDepth = 561;
 	mCompressive = 14.8;
 	mInnerFirction = 35.75;
 	mAttach = 4.29;
-	mShuLength = 20;
+	mShuLength = 300;
 	mStoneStrongNumber = 1.7;
 
 	mBoltDiameter = 16;
 	mBoltDesignNumber = 50;
 	mBoltAttach = 20;
 	mBoltPitch = 700;
-	mBoltNumber = 5;
+	mBoltNumber = 3;
 	mBoltExperienceNumber = 1.37;
 	mBoltCaiNumber = 1.5;
 	mCableDiameter = 17.8;
@@ -63,7 +63,7 @@ CTheoreticalDialog::CTheoreticalDialog(CWnd* pParent /*=NULL*/)
 	mCableAttach = 20;
 	mCablePitch = 1400;
 	mCableNumber = 2;
-	mCableFreeLength = 5500;
+	mCableFreeLength = 3000;
 	mCableCaiNumber = 2.0;
 	
 }
@@ -210,19 +210,19 @@ void SetExpertValue() {
 	topBolt->setLength(theory->GetTopBoltLength() * tmp);
 	topBolt->setDiameter(theory->GetBoltDiameter());
 	topBolt->setNumber(theory->GetTopBoltNumber());
-	topBolt->setPitch(theory->GetBoltPitch());
+	topBolt->setSpace(theory->GetBoltPitch());
 	topBolt->setPitch(theory->GetBoltPitch());
 	leftBolt->setLength(theory->GetBangBoltLength() * tmp);
 	leftBolt->setALength(theory->GetTopBoltALength() * tmp);
 	leftBolt->setNumber(theory->GetTopBoltNumber());
-	leftBolt->setPitch(theory->GetBoltPitch());
+	leftBolt->setSpace(theory->GetBoltPitch());
 	leftBolt->setPitch(theory->GetBoltPitch());
 	cable->setDiameter(theory->GetCableDiameter());
 	cable->setALength(theory->GetCableALength() * tmp);
 	cable->setLength(theory->GetCableLength() * tmp);
 	cable->setNumber(theory->GetCableNumber()); 
-	cable->setPitch(theory->GetCablePitch());
-
+	cable->setPitch(max(theory->GetCablePitch(), 3 * theory->GetBoltPitch()));
+	cable->setSpace(max(theory->GetCablePitch(), 3 * theory->GetBoltPitch()));
 };
 
 void CTheoreticalDialog::OnBnClickedOk()
@@ -336,11 +336,17 @@ void CTheoreticalDialog::OnBnClickedButtonTheorySavepm()
 		CTheoryCalMethod * theory = CArcProjectBuilder::GetInstance()->GetTheoryMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
-		theory->SetA(pArc->GetWidth() / 1000);
+		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
+			theory->SetA(pArc->GetTrapBottomWidth() / 1000);
+		}
+		else
+		{
+			theory->SetA(pArc->GetWidth() / 1000);
+		}
 		theory->SetH(pArc->GetHeight() / 1000);
 		theory->SetAvgGravity(mAvgGrivity);
 		theory->SetCompressive(mCompressive);
-		theory->SetMaiDepth(mDepth/1000);
+		theory->SetMaiDepth(mDepth);
 		theory->SetShuLength(mShuLength);
 		theory->SetInnerFriction(mInnerFirction);
 		theory->SetStoneStrongNumber(mStoneStrongNumber);

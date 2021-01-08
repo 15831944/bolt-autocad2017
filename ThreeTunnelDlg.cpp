@@ -65,6 +65,10 @@ BEGIN_MESSAGE_MAP(CThreeTunnelDlg, CDialogEx)
 	ON_BN_CLICKED(ID_CHOOSE_CANCEL, &CThreeTunnelDlg::OnBnClickedChooseCancel)
 	ON_BN_CLICKED(ID_CHOOSE_OK, &CThreeTunnelDlg::OnBnClickedChooseOk)
 	ON_BN_CLICKED(IDC_BUTTON_PROJECT_DIALOG, &CThreeTunnelDlg::OnBnClickedButtonProjectDialog)
+	ON_EN_CHANGE(IDC_EDIT_TRAP_BOTTOM_WIDTH, &CThreeTunnelDlg::OnEnChangeEditTrapBottomWidth)
+	ON_EN_CHANGE(IDC_EDIT_TRAP_LEFT_ANGLE, &CThreeTunnelDlg::OnEnChangeEditTrapLeftAngle)
+	ON_EN_CHANGE(IDC_EDIT_TRAP_RIGHT_ANGLE, &CThreeTunnelDlg::OnEnChangeEditTrapRightAngle)
+	ON_EN_CHANGE(IDC_EDIT_TRAP_HEIGHT, &CThreeTunnelDlg::OnEnChangeEditTrapHeight)
 END_MESSAGE_MAP()
 
 
@@ -448,4 +452,135 @@ void CThreeTunnelDlg::OnBnClickedButtonProjectDialog()
 
 	DialogManager::GetInstance().ShowProjectDialog();
 
+}
+
+int CalTrapTopWidth(double bottomWidth, double height, int leftAngle, int right) {
+	int topWidth = bottomWidth - (height / tan(MFCUtil::AngleToArc(leftAngle)))
+		- (height / tan(MFCUtil::AngleToArc(right)));
+	return topWidth;
+};
+
+void CThreeTunnelDlg::OnEnChangeEditTrapBottomWidth()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	
+	CString strWallHeight;
+	CString strTrapBottomWidth;
+	CString strTrapLeftAngle;
+	CString strTrapRightAngle;
+
+	mEdtTrapHeight.GetWindowText(strWallHeight);
+	mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
+	mEdtTrapLeftAngle.GetWindowText(strTrapLeftAngle);
+	mEdtTrapRightAngle.GetWindowText(strTrapRightAngle);
+
+	if (!strWallHeight.IsEmpty() && !strTrapBottomWidth.IsEmpty()
+		&& !strTrapLeftAngle.IsEmpty() && !strTrapRightAngle.IsEmpty()) {
+		mEdtTrapTopWidth.SetWindowText(MFCUtil::itostr(
+			CalTrapTopWidth(
+				_ttof(strTrapBottomWidth),
+				_ttof(strWallHeight),
+				_ttof(strTrapLeftAngle),
+				_ttof(strTrapRightAngle)
+			)));
+	}
+}
+
+
+
+void CThreeTunnelDlg::OnEnChangeEditTrapLeftAngle()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	CString strWallHeight;
+	CString strTrapBottomWidth;
+	CString strTrapLeftAngle;
+	CString strTrapRightAngle;
+
+	mEdtTrapHeight.GetWindowText(strWallHeight);
+	mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
+	mEdtTrapLeftAngle.GetWindowText(strTrapLeftAngle);
+	mEdtTrapRightAngle.GetWindowText(strTrapRightAngle);
+
+	if (!strWallHeight.IsEmpty() && !strTrapBottomWidth.IsEmpty()
+		&& !strTrapLeftAngle.IsEmpty() && !strTrapRightAngle.IsEmpty()) {
+		mEdtTrapTopWidth.SetWindowText(MFCUtil::itostr(
+			CalTrapTopWidth(
+				_ttof(strTrapBottomWidth),
+				_ttof(strWallHeight),
+				_ttof(strTrapLeftAngle),
+				_ttof(strTrapRightAngle)
+			)));
+	}
+}
+
+
+void CThreeTunnelDlg::OnEnChangeEditTrapRightAngle()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	CString strWallHeight;
+	CString strTrapBottomWidth;
+	CString strTrapLeftAngle;
+	CString strTrapRightAngle;
+
+	mEdtTrapHeight.GetWindowText(strWallHeight);
+	mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
+	mEdtTrapLeftAngle.GetWindowText(strTrapLeftAngle);
+	mEdtTrapRightAngle.GetWindowText(strTrapRightAngle);
+
+	if (!strWallHeight.IsEmpty() && !strTrapBottomWidth.IsEmpty()
+		&& !strTrapLeftAngle.IsEmpty() && !strTrapRightAngle.IsEmpty()) {
+		mEdtTrapTopWidth.SetWindowText(MFCUtil::itostr(
+			CalTrapTopWidth(
+				_ttof(strTrapBottomWidth),
+				_ttof(strWallHeight),
+				_ttof(strTrapLeftAngle),
+				_ttof(strTrapRightAngle)
+			)));
+	}
+}
+
+
+void CThreeTunnelDlg::OnEnChangeEditTrapHeight()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	CString strWallHeight;
+	CString strTrapBottomWidth;
+	CString strTrapLeftAngle;
+	CString strTrapRightAngle;
+
+	mEdtTrapHeight.GetWindowText(strWallHeight);
+	mEdtTrapBottomWidth.GetWindowText(strTrapBottomWidth);
+	mEdtTrapLeftAngle.GetWindowText(strTrapLeftAngle);
+	mEdtTrapRightAngle.GetWindowText(strTrapRightAngle);
+
+	if (!strWallHeight.IsEmpty() && !strTrapBottomWidth.IsEmpty()
+		&& !strTrapLeftAngle.IsEmpty() && !strTrapRightAngle.IsEmpty()) {
+		mEdtTrapTopWidth.SetWindowText(MFCUtil::itostr(
+			CalTrapTopWidth(
+				_ttof(strTrapBottomWidth),
+				_ttof(strWallHeight),
+				_ttof(strTrapLeftAngle),
+				_ttof(strTrapRightAngle)
+			)));
+	}
 }

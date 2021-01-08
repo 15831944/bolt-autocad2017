@@ -43,7 +43,7 @@ CZuheliangDialog::CZuheliangDialog(CWnd* pParent /*=NULL*/)
 	mMaiDepth = 581;
 	mCaiEffectNumber = 1.1;
 	mCoalHardNumber = 1.3;
-	mCoalThickness = 5.9;
+	mCoalThickness = 3.6;
 	mInnerFriction = 52;
 	mTopGravity = 24.9;
 	mCeyaliNumber = 1.1;
@@ -173,11 +173,14 @@ void CZuheliangDialog::SetExpertValue()
 
 	CBolt * topBolt = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopBolt();
 	int tmp = 1000; // 进制单位转换
-	topBolt->setLength(zuheliang->GetTopBoltLength());
+	topBolt->setLength(zuheliang->GetTopBoltLength()* tmp);
 	topBolt->setNumber(zuheliang->GetBoltNumber());
 	topBolt->setDiameter(zuheliang->GetBoltDiameter());
 	topBolt->setPitch(zuheliang->GetBoltSpaceAndPitch() * tmp);
 	topBolt->setSpace(zuheliang->GetBoltSpaceAndPitch() * tmp);
+	topBolt->setALength(zuheliang->GetBoltALength() * tmp);
+
+	CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(topBolt);
 }
 
 BOOL CZuheliangDialog::OnInitDialog()
@@ -240,7 +243,13 @@ void CZuheliangDialog::OnBnClickedOk()
 		CZuheliangMethod * zuheliang = CArcProjectBuilder::GetInstance()->GetZuheliangMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
-		zuheliang->SetA(pArc->GetWidth());
+		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
+			zuheliang->SetA(pArc->GetTrapBottomWidth() / 1000);
+		}
+		else
+		{
+			zuheliang->SetA(pArc->GetWidth() / 1000);
+		}
 		zuheliang->SetGroundAvgGravity(mGroundAvgGravity);
 		zuheliang->SetMaiDepth(mMaiDepth);
 		zuheliang->SetCoalHardNumber( mCoalHardNumber);
@@ -275,7 +284,7 @@ void CZuheliangDialog::OnBnClickedOk()
 	if (pmLeagal) {
 		DialogManager::GetInstance().setHasCalculated(true);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(true);
-		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(true);
+		//CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(true);
 
 		DialogManager::GetInstance().ShowResultDlg();
 		ShowWindow(SW_HIDE);

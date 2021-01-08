@@ -224,26 +224,16 @@ BOOL CParametersDialog::OnInitDialog()
 	SetIcon(hIcon, FALSE);
 
 	InitEdtVector();
-	
-	std::cout << "parameters init dialog" << std::endl;
-
-	std::cout << "file url is empty? " << CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty() << std::endl;
-
 
 	mCheckTopBolt.SetCheck(true);
 	mCheckLeftBolt.SetCheck(true);
 	mCheckCable.SetCheck(true);
-
 
 	SetMfcBoltCableFormIni();
 	OnBnClickedCheckCable();
 	OnBnClickedCheckLeftBolt();
 	OnBnClickedCheckTopBolt();
 	OnBnClickedCheckRightBolt();
-	/*UpdateData(TRUE);
-	mTopBoltLength = CArcProjectBuilder::GetInstance()->GetTheoryMethod()->GetTopBoltLength();
-	mTopBoltNumber = CArcProjectBuilder::GetInstance()->GetTheoryMethod()->GetBoltNumber();
-	UpdateData(FALSE);*/
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -442,41 +432,35 @@ void CParametersDialog::OnBnClickedCheckTopBolt()
 void CParametersDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CDialogEx::OnOK();
-	OnBnClickedButtonSavePm();
-
-	//if (MessageBox(_T("是否保存当前参数？"), NULL, MB_YESNO) == IDYES)
-	//{
-	//	if (CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
-	//		MessageBox(_T("请选择文件路径！"));
-	//	}
-	//	else {
-	//		if (CArcProjectBuilder::GetInstance()->ProjectSaver() == true) {
-	//			MessageBox(_T("保存工程信息成功"));
-	//		}
-	//		else {
-	//			MessageBox(_T("保存工程信息失败"));
-	//		}
-	//	}
-	//}
-
-	if (pmLeagal == true) {
-		std::cout << "going to draw paper\n";
-		//向桥接文件写入参数
-		CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
-
-		if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
-			//MessageBox(_T("桥接文件保存成功！"));
-			CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
-		}
-		else {
-			MessageBox(_T("桥接文件保存失败！"), _T("错误"));
-		}
-		CADService::WriteAcadRx();
-		CADService::LaunchACad();
-
-		MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
+	if ((mCheckTopBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtTopBolt))
+		|| (mCheckLeftBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtLeftBolt))
+		|| (mCheckRightBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtRightBolt))
+		|| (mCheckCable.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorCable)))
+	{
+		MessageBox(_T("不能含有空参数"), _T("警告"), MB_ICONWARNING);
 	}
+	else {
+		OnBnClickedButtonSavePm();
+
+		if (pmLeagal == true) {
+			std::cout << "going to draw paper\n";
+			//向桥接文件写入参数
+			CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
+
+			if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
+				//MessageBox(_T("桥接文件保存成功！"));
+				CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
+			}
+			else {
+				MessageBox(_T("桥接文件保存失败！"), _T("错误"));
+			}
+			CADService::WriteAcadRx();
+			CADService::LaunchACad();
+
+			MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
+		}
+	}
+
 
 }
  
@@ -566,7 +550,6 @@ void CParametersDialog::SetMfcBoltCableFormIni() {
 		mEdtQiThickness.SetWindowText(MFCUtil::dtostr(
 			pArc->GetQiThickness()));
 	}
-
 }
 
 int CParametersDialog::CheckBoltOrCableLeagal() {
@@ -599,88 +582,67 @@ int CParametersDialog::CheckBoltOrCableLeagal() {
 void CParametersDialog::OnBnClickedButtonSavePm()
 {
 	// TODO: 在此添加控件通知处理程序代码
-
 	UpdateData(TRUE);
 
-	if ((mCheckTopBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtTopBolt))
-		|| (mCheckLeftBolt.GetCheck() == TRUE &&  MFCUtil::VectorHasEmpty(mVectorEdtLeftBolt))
-		|| (mCheckRightBolt.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorEdtRightBolt) )
-		|| (mCheckCable.GetCheck() == TRUE && MFCUtil::VectorHasEmpty(mVectorCable)))
-	{
-		MessageBox(_T("不能含有空参数"), _T("警告"), MB_ICONWARNING);
-	}
-	else 
-	{
-		if (CheckBoltOrCableLeagal() != 0) {
-			switch (CheckBoltOrCableLeagal())
-			{
-			case 1:
-				MessageBox(_T("请调整顶部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
-				break;
-			case 2:
-				MessageBox(_T("请调整帮部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
-				break;
-			case 3:
-				MessageBox(_T("请调整全锚索间距或根数"), _T("警告"), MB_ICONWARNING);
-				break;
-			case 4:
-				MessageBox(_T("请调整锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
-				break;
-			default:
-				break;
-			}
-		}
-		else {
-			// 检查无错误
-			CArcProjectBuilder::GetInstance()
-				->GetArcTunnel()->SetHasTopBolt(mCheckTopBolt.GetCheck() == TRUE ? true : false);
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(
-				mCheckLeftBolt.GetCheck() == TRUE ? true : false);
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasRightBolt(
-				mCheckRightBolt.GetCheck() == TRUE ? true : false
-			);
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(
-				mCheckCable.GetCheck() == TRUE ? true : false);
-
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopBolt(InitBoltInfo(1));
-
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(InitBoltInfo(2));
-
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightBolt(InitBoltInfo(3));
-
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCable(InitCableInfo());
-
-			if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
-			{
-				//CMethod * method = new CTheoryCalMethod();
-
-				CString strQi, strConcrete;
-				mEdtConcreteThickness.GetWindowText(strConcrete);
-				mEdtQiThickness.GetWindowText(strQi);
-				CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetQiThickness(_ttoi(strQi));
-				CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetConcreteThickness(_ttoi(strConcrete));
-				//CArcProjectBuilder::GetInstance()->SetMethod(method);
-			}
-
-			MessageBox(_T("本页参数已保存"), _T("成功"));
-			pmLeagal = true;
+	if (CheckBoltOrCableLeagal() != 0) {
+		switch (CheckBoltOrCableLeagal())
+		{
+		case 1:
+			MessageBox(_T("请调整顶部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			break;
+		case 2:
+			MessageBox(_T("请调整帮部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			break;
+		case 3:
+			MessageBox(_T("请调整全锚索间距或根数"), _T("警告"), MB_ICONWARNING);
+			break;
+		case 4:
+			MessageBox(_T("请调整锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			break;
+		default:
+			break;
 		}
 	}
-	
+	else {
+		// 检查无错误
+		CArcProjectBuilder::GetInstance()
+			->GetArcTunnel()->SetHasTopBolt(mCheckTopBolt.GetCheck() == TRUE ? true : false);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(
+			mCheckLeftBolt.GetCheck() == TRUE ? true : false);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasRightBolt(
+			mCheckRightBolt.GetCheck() == TRUE ? true : false
+		);
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(
+			mCheckCable.GetCheck() == TRUE ? true : false);
+
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopBolt(InitBoltInfo(1));
+
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(InitBoltInfo(2));
+
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightBolt(InitBoltInfo(3));
+
+		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCable(InitCableInfo());
+
+		if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
+		{
+			//CMethod * method = new CTheoryCalMethod();
+
+			CString strQi, strConcrete;
+			mEdtConcreteThickness.GetWindowText(strConcrete);
+			mEdtQiThickness.GetWindowText(strQi);
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetQiThickness(_ttoi(strQi));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetConcreteThickness(_ttoi(strConcrete));
+			//CArcProjectBuilder::GetInstance()->SetMethod(method);
+		}
+
+		//MessageBox(_T("本页参数已保存"), _T("成功"));
+		pmLeagal = true;
+	}
 }
 
 void CParametersDialog::OnOK()
 {
 	// TODO: 在此添加专用代码和/或调用基类
-	if (MFCUtil::VectorHasEmpty(mVectorEdtTopBolt) || MFCUtil::VectorHasEmpty(mVectorEdtLeftBolt)
-		||MFCUtil::VectorHasEmpty(mVectorEdtRightBolt) || MFCUtil::VectorHasEmpty(mVectorCable))
-	{
-		MessageBox(_T("不能含有空参数"), _T("警告"), MB_ICONWARNING);
-	}
-	else { 
-		// 点击绘图，将所有参数保存到 autocad 路径下的 \ini\brige.ini 文件中，
-		// 并在 acad.exe 路径下如果不存在，则创建 acad.rx 文件，并写入 brige.ini 的路径
-	}
 
 }
 

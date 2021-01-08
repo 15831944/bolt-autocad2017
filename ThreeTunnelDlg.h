@@ -77,4 +77,9 @@ private:
 
 	int GetTunnelOption();
 
+public:
+	afx_msg void OnEnChangeEditTrapBottomWidth();
+	afx_msg void OnEnChangeEditTrapLeftAngle();
+	afx_msg void OnEnChangeEditTrapRightAngle();
+	afx_msg void OnEnChangeEditTrapHeight();
 };
