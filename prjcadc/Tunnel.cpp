@@ -30,7 +30,7 @@ void CTunnel::DrawProject(CTunnelProject project)
 	CDrawUtil::AddPolyLine(AcGePoint2d(320, 5), AcGePoint2d(320, 21), border);
 	CDrawUtil::AddPolyLine(AcGePoint2d(380, 29), AcGePoint2d(415, 29), border);
 	CDrawUtil::AddText(AcGePoint2d(275, 25),
-	project.GetPaperTitle(), 10.0);
+	project.GetPaperTitle(), 8.0);
 
 	CDrawUtil::AddText(AcGePoint2d(383, 32) ,_T("比例"));
 	CDrawUtil::AddText(AcGePoint2d(404, 32), 
@@ -84,7 +84,7 @@ void CTunnel::DrawTableBoltPm()
 	pFeatureTable->setTextString(2, 6, _T("宽"));
 	pFeatureTable->setTextString(2, 7, _T("高"));
 	pFeatureTable->setTextString(1, 8, _T("净周长\n（m）"));
-	CDrawUtil::createTable(pFeatureTable, AcGePoint2d(280, 270), _T("Standard"), 9, 4);
+	CDrawUtil::createTable(pFeatureTable, AcGePoint2d(280, 275), _T("Standard"), 9, 4);
 
 	AcDbTable * pTbl = new AcDbTable();
 	pTbl->setNumColumns(8);

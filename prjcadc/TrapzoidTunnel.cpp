@@ -294,7 +294,7 @@ void CTrapzoidTunnel::DrawLeftViewNet(CBolt bolt)
 	for (int i = 0; i < 2; i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x + 5, ptCrossBase.y + (i * height));
-		AcGePoint2d ptEnd(ptStart.x - 60, ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x - (6 * pitch) - 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
 	int minId = GetMinPointId(mLeftBoltArr);
@@ -302,7 +302,7 @@ void CTrapzoidTunnel::DrawLeftViewNet(CBolt bolt)
 	for (int i = 0; i < mLeftBoltArr->length(); i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x + 5, mLeftBoltArr->at(i).y);
-		AcGePoint2d ptEnd(ptStart.x - (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x - (6 * pitch) - 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 		if (i != minId)
 		{
@@ -460,14 +460,14 @@ void CTrapzoidTunnel::DrawRightViewNet(CBolt bolt)
 	for (int i = 0; i < 2; i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - 5, ptCrossBase.y + (i * height));
-		AcGePoint2d ptEnd(ptStart.x + (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
 	// 绘制与锚杆对应的横线，直接调用mRightBoltArr 的纵坐标即可
 	for (int i = 0; i < mRightBoltArr->length(); i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - 5, mRightBoltArr->at(i).y);
-		AcGePoint2d ptEnd(ptStart.x + (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
 	// 绘制竖线，竖线长度为巷道宽度 + 10,间隔为排距

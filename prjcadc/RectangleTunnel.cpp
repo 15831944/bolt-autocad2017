@@ -55,9 +55,19 @@ void CRectangleTunnel::DrawTunnel()
 	//绘制矩形断面长和宽的标注
 	AcGePoint2d ptLeftTop(ptLeftBottom.x, ptLeftBottom.y + height);
 	AcGePoint2d ptRightBottom(ptLeftBottom.x + width, ptLeftBottom.y);
-	AcGePoint2d ptHeight(ptLeftBottom.x - 24, (ptLeftBottom.y + ptLeftTop.y )/ 2);
 	AcGePoint2d ptWidth((ptLeftBottom.x + ptRightBottom.x) / 2, ptLeftBottom.y - 5);
-	CDrawUtil::CreateDimAligned(ptLeftBottom, ptLeftTop, ptHeight, height * pScaleNumber, 0);
+	if (pZhihuWay == 1) {
+		CDrawUtil::CreateDimAligned(ptLeftTop, *ptTunnelStart, AcGePoint2d(ptLeftTop.x + 5, ptLeftTop.y),
+			height * pScaleNumber, 0);
+	}
+	else {
+		double conThickness = pConcreteThickness / pScaleNumber;
+		double qiThickness = pQiThickness / pScaleNumber;
+
+		CDrawUtil::CreateDimAligned(ptLeftTop, *ptTunnelStart,
+			AcGePoint2d(ptLeftTop.x + +conThickness + qiThickness + 5, ptLeftTop.y),
+			height * pScaleNumber, 0);
+	}
 	CDrawUtil::CreateDimAligned(ptLeftBottom, ptRightBottom, ptWidth,width * pScaleNumber, 0);
 }
 
@@ -403,7 +413,7 @@ void CRectangleTunnel::DrawLeftViewNet(CBolt bolt)
 	for (int i = 0; i < 2; i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x + 5, ptCrossBase.y + (i * height));
-		AcGePoint2d ptEnd(ptStart.x - 60, ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x - (6 * pitch) - 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
 
@@ -412,7 +422,7 @@ void CRectangleTunnel::DrawLeftViewNet(CBolt bolt)
 	for (int i = 0; i < mLeftBoltArr->length(); i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x + 5, mLeftBoltArr->at(i).y);
-		AcGePoint2d ptEnd(ptStart.x - (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x - (6 * pitch) - 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 		if (i != minId)
 		{
@@ -652,7 +662,7 @@ void CRectangleTunnel::DrawRightViewNet(CBolt bolt)
 	for (int i = 0; i < 2; i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - 5, ptCrossBase.y + (i * height));
-		AcGePoint2d ptEnd(ptStart.x + (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
 
@@ -661,7 +671,7 @@ void CRectangleTunnel::DrawRightViewNet(CBolt bolt)
 	for (int i = 0; i < mRightBoltArr->length(); i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - 5, mRightBoltArr->at(i).y);
-		AcGePoint2d ptEnd(ptStart.x + (6 * pitch), ptStart.y);
+		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 		if (i != minId)
 		{

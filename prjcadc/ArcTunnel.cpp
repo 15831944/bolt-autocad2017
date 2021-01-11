@@ -293,7 +293,7 @@ void CArcTunnel::DrawCable()
 
 	if (number % 2 == 0)
 	{
-		// 偶数根锚杆
+		// 偶数根锚索
 		for (int i = 1; i <= (number / 2); i++)
 		{
 
@@ -335,8 +335,28 @@ void CArcTunnel::DrawCable()
 		AcGePoint2d ptTrayLeftBottom(ptStart.x - 0.5, ptStart.y - beamWidth - 0.5);  // 绘制托盘
 		CDrawUtil::AddRectangle(ptTrayLeftBottom, 1, 0.5, 0.1);
 		
-
-		AcGePoint2d ptEnd(ptStart.x - (cos(pTopAngle) * length), ptStart.y + (sin(pTopAngle) * length));
+		AcGePoint2d ptEnd(0, 0);
+		if (length <= 40)
+		{
+			ptEnd.x = ptStart.x - (cos(pTopAngle) * length);
+			ptEnd.y = ptStart.y + (sin(pTopAngle) * length);
+		}
+		else {
+			ptEnd.x = ptStart.x - (cos(pTopAngle) * 40);
+			ptEnd.y = ptStart.y + (sin(pTopAngle) * 40);
+			AcGePoint2d ptMid((ptEnd.x + ptStart.x) / 2, (ptStart.y + ptEnd.y) / 2);
+			// 用数组记录省略符的四个点
+			AcGePoint2d ptA(ptMid.x - 1, ptMid.y);
+			AcGePoint2d ptB(ptMid.x + 1, ptMid.y);
+			AcGePoint2d ptC(ptA.x, ptMid.y - 1);
+			AcGePoint2d ptD(ptB.x, ptMid.y - 1);
+			AcGePoint2dArray arr(4);
+			arr.append(ptA);
+			arr.append(ptB);
+			arr.append(ptC);
+			arr.append(ptD);
+			CDrawUtil::AddPolyLine(arr, 0.3);
+		}
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.3);
 		AcGePoint2d ptAEnd(ptEnd.x + (alength * cos(pTopAngle)), ptEnd.y - (sin(pTopAngle) * alength));
 

@@ -77,7 +77,6 @@ public:
 
 		CRecProjectBuilder::GetInstance()->BuildTunnelFlag();
 		CRecProjectBuilder::GetInstance()->BuildParameters();
-		//CRecProjectBuilder::GetInstance()->BuildProject();
 
 		CRectangleTunnel *pRec = CRecProjectBuilder::GetInstance()->GetRecTunnel();
 		pRec->DrawProject(*project);
@@ -113,7 +112,7 @@ public:
 		}
 		// 若支护方式不是默认的锚杆（索）支护
 		if (pRec->GetZhihuWay() > 1) {
-		pRec->DrawThickness();
+			pRec->DrawThickness();
 		}
 	}
 
@@ -224,7 +223,6 @@ public:
 
 		//测试绘图代码
 		AcGePoint2d ptStart(0, 0), ptEnd(100, 100);
-		//CDrawUtil::AddPolyLine(ptStart, ptEnd, 1);
 		AcGePoint2d ptLeftBottom(25,5);
 		//绘制矩形外框
 		CDrawUtil::AddRectangle(ptStart, 420, 297, 2);
@@ -248,9 +246,6 @@ public:
 		default:
 			break;
 		}
-
-
-		
 	}
 
 	// 指定命令行
