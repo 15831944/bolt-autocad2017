@@ -138,7 +138,7 @@ void CBalanceMethodDialog::SetExpertValue()
 
 	int tmp = 1000; // 进制单位转换
 	topBolt->setLength(balance->GetTopBoltLength() * tmp);
-	topBolt->setNumber(balance->GetBoltNumber());
+	topBolt->setNumber(balance->GetTopBoltNumber());
 	topBolt->setDiameter(balance->GetBoltDiameter());
 	topBolt->setPitch(balance->GetBoltPitch() * tmp);
 	topBolt->setSpace(balance->GetBoltSpace());

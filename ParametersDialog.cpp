@@ -393,9 +393,7 @@ CBolt * CParametersDialog::InitBoltInfo(int flag) {
 	default:
 		break;
 	}
-	
-		return bolt;
-
+	return bolt;
 }
 
 // 从界面中获取锚索数据，返回一个锚索对象
@@ -456,25 +454,33 @@ void CParametersDialog::OnBnClickedOk()
 		OnBnClickedButtonSavePm();
 
 		if (pmLeagal == true) {
-			std::cout << "going to draw paper\n";
+			
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopBolt(InitBoltInfo(1));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(InitBoltInfo(2));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightBolt(InitBoltInfo(3));
+			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCable(InitCableInfo());
+
 			//向桥接文件写入参数
 			CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
 
-			if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
-				//MessageBox(_T("桥接文件保存成功！"));
-				CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
-			}
-			else {
-				MessageBox(_T("桥接文件保存失败！"), _T("错误"));
-			}
-			CADService::WriteAcadRx();
-			CADService::LaunchACad();
+			if (CFileUtil::AddFile(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini")) == TRUE) {
+				if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
+					//MessageBox(_T("桥接文件保存成功！"));
+					CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
+				}
+				else {
+					MessageBox(_T("桥接文件保存失败！"), _T("错误"));
+				}
+				CADService::WriteAcadRx();
+				CADService::LaunchACad();
 
-			MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
+				MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
+			}
+		}
+		else {
+			MessageBox(_T("参数错误，无法绘图"), _T("错误"), MB_ICONERROR);
 		}
 	}
-
-
 }
  
 // 从文件中获取 Cable 和 Bolt 信息，并展示到对话框中
@@ -602,38 +608,39 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 		{
 		case 1:
 			MessageBox(_T("请调整顶部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			pmLeagal = false;
 			break;
 		case 2:
 			MessageBox(_T("请调整帮部锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			pmLeagal = false;
 			break;
 		case 3:
 			MessageBox(_T("请调整全锚索间距或根数"), _T("警告"), MB_ICONWARNING);
+			pmLeagal = false;
 			break;
 		case 4:
 			MessageBox(_T("请调整锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			pmLeagal = false;
 			break;
 		default:
 			break;
 		}
 	}
 	else {
+
 		// 检查无错误
 		CArcProjectBuilder::GetInstance()
 			->GetArcTunnel()->SetHasTopBolt(mCheckTopBolt.GetCheck() == TRUE ? true : false);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(
 			mCheckLeftBolt.GetCheck() == TRUE ? true : false);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasRightBolt(
-			mCheckRightBolt.GetCheck() == TRUE ? true : false
-		);
+			mCheckRightBolt.GetCheck() == TRUE ? true : false);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasCable(
 			mCheckCable.GetCheck() == TRUE ? true : false);
 
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopBolt(InitBoltInfo(1));
-
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(InitBoltInfo(2));
-
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightBolt(InitBoltInfo(3));
-
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCable(InitCableInfo());
 
 		if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
@@ -648,9 +655,10 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 			//CArcProjectBuilder::GetInstance()->SetMethod(method);
 		}
 
-		//MessageBox(_T("本页参数已保存"), _T("成功"));
+		MessageBox(_T("本页参数已保存"), _T("成功"));
 		pmLeagal = true;
 	}
+
 }
 
 void CParametersDialog::OnOK()

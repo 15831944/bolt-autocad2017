@@ -29,7 +29,6 @@ CZuheliangDialog::CZuheliangDialog(CWnd* pParent /*=NULL*/)
 	, mCoalFriction(0)
 	, mKangjian(0)
 	, mKangla(0)
-	, mKuadu(0)
 	, mStableNumber(0)
 	, mStoneHardNumber(0)
 	, mConcreteThickness(0)
@@ -54,7 +53,6 @@ CZuheliangDialog::CZuheliangDialog(CWnd* pParent /*=NULL*/)
 	mBoltDiameter = 22;
 	mBoltOutLength = 0.1;
 	mBoltALength = 0.5;
-	mKuadu = 5.2;
 	mKangla = 1.09;
 	mKangjian = 266;
 	mTopSafeNumber = 3;
@@ -88,7 +86,6 @@ void CZuheliangDialog::UpdateUI()
 	mCoalFriction = zuheliang->GetCoalFriction();
 	mKangjian = zuheliang->GetKangjian();
 	mKangla = zuheliang->GetKangla();
-	mKuadu = zuheliang->GetKuadu();
 	mStableNumber = zuheliang->GetStableNumber();
 	mStoneHardNumber = zuheliang->GetStoneHardNumber();
 	mTopGravity = zuheliang->GetTopGravity();
@@ -132,7 +129,6 @@ void CZuheliangDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_COAL_QING_FRCTION, mCoalFriction);
 	DDX_Text(pDX, IDC_EDIT_KANGJIAN, mKangjian);
 	DDX_Text(pDX, IDC_EDIT_KANGLA, mKangla);
-	DDX_Text(pDX, IDC_EDIT_KUADU, mKuadu);
 	DDX_Text(pDX, IDC_EDIT_STABLE_NUMBER, mStableNumber);
 	DDX_Text(pDX, IDC_EDIT_STONE_TOUGH_NUMBER, mStoneHardNumber);
 	DDX_Text(pDX, IDC_EDIT_THE_CONCRETE_THICKNESS, mConcreteThickness);
@@ -242,7 +238,6 @@ void CZuheliangDialog::OnBnClickedOk()
 	  mCoalFriction,
 	  mKangjian,
 	  mKangla,
-	  mKuadu,
 	  mStableNumber,
 	  mStoneHardNumber,
 	  mTopGravity,
@@ -266,10 +261,12 @@ void CZuheliangDialog::OnBnClickedOk()
 
 		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
 			zuheliang->SetA(pArc->GetTrapBottomWidth() / 1000);
+			zuheliang->SetKuadu(pArc->GetTrapBottomWidth() / 1000);
 		}
 		else
 		{
 			zuheliang->SetA(pArc->GetWidth() / 1000);
+			zuheliang->SetKuadu(pArc->GetWidth() / 1000);
 		}
 		zuheliang->SetH(pArc->GetHeight() / 1000);
 		zuheliang->SetGroundAvgGravity(mGroundAvgGravity);
@@ -286,7 +283,7 @@ void CZuheliangDialog::OnBnClickedOk()
 		zuheliang->SetCoalFriction(mCoalFriction);
 		zuheliang->SetKangjian(mKangjian);
 		zuheliang->SetKangla(mKangla);
-		zuheliang->SetKuadu(mKuadu);
+		
 		zuheliang->SetStableNumber(mStableNumber);
 		zuheliang->SetStoneHardNumber(mStoneHardNumber);
 		zuheliang->SetTopGravity(mTopGravity);

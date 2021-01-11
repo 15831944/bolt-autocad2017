@@ -189,28 +189,51 @@ void CMFCadDlg::OnNewProject()
 		// 打开的工程已经保存了
 		CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
 		CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
-		CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
-		CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
+		CTunnelProject * pInfo = new CTunnelProject();
+		pInfo->SetPaperTitle(_T("锚杆支护设计图"));
+		pInfo->SetScaleNumber(_T("100"));
+		pInfo->SetTunnelType(0);
+		CTime time;
+		time = CTime::GetCurrentTime();
+		CString curdata = time.Format("%Y年%m月%d日");
+		pInfo->SetCheckDate(curdata);
+		pInfo->SetDate(curdata);
 
+		CArcTunnel * pArc = new CArcTunnel();
+
+		CArcProjectBuilder::GetInstance()->SetTunnelProject(pInfo);
+		CArcProjectBuilder::GetInstance()->SetArcTunnel(pArc);
+
+		DialogManager::GetInstance().setHasCurrentFile(true);
 		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 	}
 	else if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == TRUE &&
 		CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
 		// 当前窗口是新建窗口
-
-		DialogManager::GetInstance().ShowProjectDialog();
 		CArcProjectBuilder::GetInstance()->InitSaveToInstance();
-
+		DialogManager::GetInstance().ShowProjectDialog();
 	}
 	else if (CArcProjectBuilder::GetInstance()->GetSavedToFile() == FALSE)
 	{
 		if (IDYES == MessageBox(_T("当前工程尚未保存，是否直接新建？"), _T("新建"), MB_YESNO | MB_ICONQUESTION)) {
 			CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
-			CArcProjectBuilder::GetInstance()->SetTunnelProject(new CTunnelProject());
-			CArcProjectBuilder::GetInstance()->SetArcTunnel(new CArcTunnel());
+			CTunnelProject * pInfo = new CTunnelProject() ;
+			pInfo->SetPaperTitle(_T("锚杆支护设计图"));
+			pInfo->SetScaleNumber(_T("100"));
+			pInfo->SetTunnelType(0);
+			CTime time;
+			time = CTime::GetCurrentTime();
+			CString curdata = time.Format("%Y年%m月%d日");
+			pInfo->SetCheckDate(curdata);
+			pInfo->SetDate(curdata);
 
+			CArcTunnel * pArc = new CArcTunnel();
+
+			CArcProjectBuilder::GetInstance()->SetTunnelProject(pInfo);
+			CArcProjectBuilder::GetInstance()->SetArcTunnel(pArc);
+			DialogManager::GetInstance().setHasCurrentFile(true);
 			DialogManager::GetInstance().ShowProjectDialog();
 			CArcProjectBuilder::GetInstance()->InitSaveToInstance();
 		}
@@ -331,24 +354,30 @@ void CMFCadDlg::OnOpenProject()
 void CMFCadDlg::OnSaveProject()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
-		OnSaveto();
+	if (CArcProjectBuilder::GetInstance()->GetProjectSaveToInstance() == FALSE) {
+		MessageBox(_T("当前无工程打开"), _T("警告"), MB_ICONWARNING | MB_OK);
 	}
 	else {
-		if ((CArcProjectBuilder::GetInstance()->SaveProjectToFile() == true)
-			&& (CArcProjectBuilder::GetInstance()->SaveTunnelFlagToFile() == true)
-			&& (CArcProjectBuilder::GetInstance()->SaveParametersToFile() == true)
-			&& (CArcProjectBuilder::GetInstance()->SaveTunnelInfoToFile() == true)
-			&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
-			) {
-			CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
-			MessageBox(_T("保存工程信息成功"), _T("成功"), MB_OK);
+		if (CArcProjectBuilder::GetInstance()->GetFileUrl().IsEmpty()) {
+			OnSaveto();
 		}
 		else {
-			CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
-			MessageBox(_T("保存工程信息失败，参数可能不完善"), _T("失败"), MB_ICONERROR | MB_OK);
+			if ((CArcProjectBuilder::GetInstance()->SaveProjectToFile() == true)
+				&& (CArcProjectBuilder::GetInstance()->SaveTunnelFlagToFile() == true)
+				&& (CArcProjectBuilder::GetInstance()->SaveParametersToFile() == true)
+				&& (CArcProjectBuilder::GetInstance()->SaveTunnelInfoToFile() == true)
+				&& (CArcProjectBuilder::GetInstance()->SaveMethodToFile() == true)
+				) {
+				CArcProjectBuilder::GetInstance()->SetSavedToFile(TRUE);
+				MessageBox(_T("保存工程信息成功"), _T("成功"), MB_OK);
+			}
+			else {
+				CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
+				MessageBox(_T("保存工程信息失败，参数可能不完善"), _T("失败"), MB_ICONERROR | MB_OK);
+			}
 		}
 	}
+
 }
 
 
@@ -451,7 +480,12 @@ void CMFCadDlg::OnMove(int x, int y)
 void CMFCadDlg::OnSaveto()
 {
 	// TODO: 在此添加命令处理程序代码
-	OnBnClickedButtonSaveFile();
+	if (CArcProjectBuilder::GetInstance()->GetProjectSaveToInstance() == FALSE) {
+		MessageBox(_T("当前无工程打开"), _T("警告"), MB_ICONWARNING | MB_OK);
+	}
+	else {
+		OnBnClickedButtonSaveFile();
+	}
 }
 
 

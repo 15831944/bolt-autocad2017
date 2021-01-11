@@ -1,5 +1,6 @@
 #pragma once
 #include "MFCUtil.h"
+#include "DataChecker.h"
 #include "stdafx.h"
 #include <map>
 #include <vector>
@@ -163,6 +164,11 @@ public:
 			return  CalculateNumber;
 		}
 	};
+
+	int GetBangBoltNumber() {
+		return h / (pBoltPitch * 0.001);
+	};
+
 	// 通过计算得到顶部锚杆的锚固长度
 	double GetTopBoltALength() {
 		double b = (a + (h / 2) *  (1 / tan(MFCUtil::AngleToArc(45 + (mInnerFriction / 2)))))
@@ -175,7 +181,7 @@ public:
 		double length = (mBoltExperienceNumber * G1) /
 			((2.83 * (mCompressive / 12) * (pBoltDiameter/ 1000) * 1000));
 		std::cout << "A length: " << length << std::endl;
-		return length;
+		return DataChecker::RestrainAlength(length);
 	};
 	double GetTopBoltLength() {
 		//等效圆半径
@@ -205,8 +211,8 @@ public:
 
 		double a2 = maxR0 - (h / 2);
 		std::cout << "a2: " << a2 << std::endl;
-
-		return a2 + GetTopBoltALength() + 0.1;
+		double length = a2 + GetTopBoltALength() + 0.1;
+		return DataChecker::RestrainBoltLength(length);
 	};
 	double GetBangBoltLength() {
 		double r0 = std::sqrt((a * a) + ((h / 2) * (h / 2)));
@@ -222,7 +228,8 @@ public:
 		double tmp2 = pow(tmp1, point_number);
 		double maxR0 = r0 * tmp2;
 		double a1 = maxR0 - a;
-		return a1 + GetTopBoltALength() + 0.1;
+		double length = a1 + GetTopBoltALength() + 0.1;
+		return DataChecker::RestrainBoltLength(length);
 	};
 	
 	double GetCableALength() {
@@ -232,10 +239,11 @@ public:
 		std::cout << "G2: " << G2 << std::endl;
 		double Lc = G2 / (2.83 * pCableNumber * (pCableDiameter / 1000) * (mCompressive / 12) * 1000);
 		std::cout << "Lc: " << Lc << std::endl;
-		return Lc;
+		return DataChecker::RestrainAlength( Lc);
 	};
 	double GetCableLength() {
-		return 0.3 + (mCableFreeLength /1000) + GetCableALength();
+		double length = 0.3 + (mCableFreeLength / 1000) + GetCableALength();
+		return DataChecker::RestrainCableLength(length) ;
 	};
 };
 
@@ -275,6 +283,9 @@ public:
 		return mBoltLength;
 	};
 
+	double GetBangBoltLength() {
+		return mBoltLength;
+	};
 };
 
 class CLooseRangeMethod : public CMethod {
@@ -391,22 +402,22 @@ public:
 
 	// 获取顶部锚杆的根数
 	int GetTopBoltNumber() {
-		if (mBoltNumber * mBoltSpace > a * 2) {
-			return a * 2 / (mBoltSpace * 0.001);
+		if (mBoltNumber * mBoltSpace * 0.001 > a * 2) {
+			std::cout << "balance top bolt number: " << ceil(a * 2 / (mBoltSpace * 0.001)) << std::endl;
+			return ceil(a * 2 / (mBoltSpace * 0.001));
 		}
 		return mBoltNumber;
 	};
 
-
 	// 获取顶部锚杆的长度
 	double GetTopBoltLength() {
 		double L =  GetTopBreakDepth() + mBoltOutLength;
-		return ceil(L * 10) / 10;
+		return DataChecker::RestrainBoltLength(L) ;
 	};
 
 	double GetBangBoltLength() {
 		double L = GetBangBreakDepth() + mBoltOutLength;
-		return ceil(L * 10) / 10;
+		return DataChecker::RestrainBoltLength(L);
 	};
 
 	double GetBoltPitch() {
@@ -415,7 +426,7 @@ public:
 		double div_bottom = 2 * mBoltSafeNumber * mTopAvgGravity * a * b;
 		std::cout << "balance method pitch: " << div_top / div_bottom << std::endl;
 		double pitch = div_top / div_bottom;
-		return ceil(pitch * 10)/ 10;
+		return DataChecker::RestrainBoltSpace(pitch);
 	};
 
 	double GetBoltDiameter() {
@@ -427,17 +438,17 @@ public:
 	  
 	// 返回结果以 m 为单位
 	double GetCableLength() {
-		return mCableOutLength + mCableALength + mCableStoneHeight;
+		return DataChecker::RestrainCableLength(mCableOutLength + mCableALength + mCableStoneHeight);
 	};
 
 	double GetCableSpaceAndPitch() {
 		double width = a * 2;
 		double S = (mMinBreakLoader * 3) / (4 * pow(width, 2) * mAvgGravity * mCableSafeNumber);
-		return max(S, (mBoltSpace / 1000) * 3);
+		return DataChecker::RestrainCableSpace(max(S, (mBoltSpace / 1000) * 3)) ;
 	};
 
 	int GetBangBoltNumber() {
-		int number = h / mBoltSpace;
+		int number = h / (mBoltSpace * 0.001);
 		return number;
 	};
 };
@@ -481,6 +492,7 @@ private:
 	double GetTopBreakDepth() {
 		double C = GetBangBreakDepth();
 		double div_top = (a + C) * cos(MFCUtil::AngleToArc(mCoalFriction));
+		std::cout << "Zuheliang a: " << a << std::endl;
 		double div_bottom = mStableNumber * mStoneHardNumber;
 		std::cout << "TopBreakDepth b: " << div_top / div_bottom << std::endl;
 		return div_top / div_bottom;
@@ -544,7 +556,8 @@ public:
 		double num = div_top / div_bottom;
 		double L2 = 0.602 * mKuadu * sqrt(num);
 		std::cout << "zuheliang L2': " << L2 << std::endl;
-		return mBoltALength + L2 + mBoltOutLength;
+		double L = mBoltALength + L2 + mBoltOutLength;
+		return DataChecker::RestrainBoltLength(L);
 	};
 
 	double GetBoltSpaceAndPitch() {
@@ -560,7 +573,7 @@ public:
 		double num_sqrt = sqrt((L2 * mKangjian) / (mTopSafeNumber * q * mKuadu));
 		double minBoltSpace = 1.4472 * mBoltDiameter * 0.001 * num_sqrt;
 		std::cout << "zuheliang space': " << minBoltSpace << std::endl;
-		return ceil(minBoltSpace * 10) / 10;
+		return DataChecker::RestrainBoltSpace(minBoltSpace) ;
 	};
 
 	virtual int GetTopBoltNumber() {
@@ -631,9 +644,7 @@ public:
 		std::cout << "lb3: " << lb3 << std::endl;
 		TopBoltLength = (TopBoltLength + lb3 + 0.1);
 		std::cout << "suxingqu: bang bolt length: " << TopBoltLength << std::endl;
-		if (TopBoltLength < 1.5) return 1.5;
-		else if (TopBoltLength > 2.8) return 2.8;
-		else return ceil(TopBoltLength * 10) / 10;
+		return DataChecker::RestrainBoltLength(TopBoltLength) ;
 	};
 
 	double GetBangBoltLength() {
@@ -646,9 +657,7 @@ public:
 		std::cout << "lb3: " << lb3 << std::endl;
 		BangBoltLength = (BangBoltLength + lb3 + 0.1);
 		std::cout << "suxingqu: bang bolt length: " << BangBoltLength << std::endl;
-		if (BangBoltLength < 1.5) return 1.5;
-		else if (BangBoltLength > 2.8) return 2.8;
-		else return ceil(BangBoltLength * 10) / 10;
+		return DataChecker::RestrainBoltLength(BangBoltLength);
 	};
 
 	double GetTopSpaceAndPitch() {
@@ -656,18 +665,14 @@ public:
 		double space = sqrt(pBoltDesignNumber / (mAvgGravity * (feitanxing - (h * 0.5))));
 		std::cout << "suxingqu: top space: " << space << std::endl;
 		//间排距0.6-1.0
-		if (space < 0.6) space = 0.6;
-		else if (space > 1) space = 1;
-		return space;
+		return DataChecker::RestrainBoltSpace(space);
 	};
 
 	double GetBangSpaceAndPitch() {
 		double feitanxing = GetFeitanxing();
 		double space = sqrt(pBoltDesignNumber / (mAvgGravity * (feitanxing - a)));
 		std::cout << "suxingqu: bang space: " << space << std::endl;
-		if (space < 0.6) space = 0.6;
-		else if (space > 1) space = 1;
-		return space;
+		return DataChecker::RestrainBoltSpace(space);
 	};
 	virtual int GetTopBoltNumber() {
 		double num = 2 * a / GetTopSpaceAndPitch();
@@ -693,7 +698,7 @@ public:
 		double la2 = mCableFreeLength /1000;
 		double cableLength = la3 + 0.2 + la2;
 		std::cout << "suxingqu: cable length: " << cableLength << std::endl;
-		return min(8, cableLength);
+		return DataChecker::RestrainCableLength(cableLength);
 	};
 	int GetCableNumber() {
 		double jianpaiju_top = GetTopSpaceAndPitch(),

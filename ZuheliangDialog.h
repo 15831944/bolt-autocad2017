@@ -39,7 +39,6 @@ private:
 	double mCoalFriction;
 	double mKangjian;
 	double mKangla;
-	double mKuadu;
 	double mStableNumber;
 	double mStoneHardNumber;
 	double mTopGravity;

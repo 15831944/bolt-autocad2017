@@ -52,6 +52,6 @@ public:
 	afx_msg void OnBnClickedButtonTunnelDialog();
 	virtual BOOL OnInitDialog();
 private:
-	CButton CEdtConThickcness;
+	CEdit CEdtConThickcness;
 	CEdit CEdtQiThickcness;
 };

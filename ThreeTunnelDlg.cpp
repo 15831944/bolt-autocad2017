@@ -146,7 +146,10 @@ void CThreeTunnelDlg::SetZhihuWay(int flag) {
 		mRadioConcreteQiWay.SetCheck(TRUE);
 		break;
 	default:
-		break;
+		mRadioDefaultWay.SetCheck(FALSE);
+		mRadioBoltConcreteWay.SetCheck(FALSE);
+		mRadioJetConcreteWay.SetCheck(FALSE);
+		mRadioConcreteQiWay.SetCheck(FALSE);
 	}
 }
 
@@ -193,6 +196,21 @@ void CThreeTunnelDlg::SetTunnelTypeRadio(int type)
 		mEdtTrapLeftAngle.SetWindowText(MFCUtil::itostr(pArc->GetTrapLeftAngle()));
 		mEdtTrapRightAngle.SetWindowText(MFCUtil::itostr(pArc->GetTrapRightAngle()));
 		break;
+	case 0:
+		mRecTunnelOption.SetCheck(FALSE);
+		mArcTunnelOption.SetCheck(FALSE);
+		mTrapTunnelOption.SetCheck(FALSE);
+
+		mEdtRecWidth.SetWindowText(_T(""));
+		mEdtRecHeight.SetWindowText(_T(""));
+		mEdtArcWidth.SetWindowText(_T(""));
+		mEdtArcWallHeight.SetWindowText(_T(""));
+		mEdtArcHeight.SetWindowText(_T(""));
+		mEdtTrapTopWidth.SetWindowText(_T(""));
+		mEdtTrapBottomWidth.SetWindowText(_T(""));
+		mEdtTrapHeight.SetWindowText(_T(""));
+		mEdtTrapLeftAngle.SetWindowText(_T(""));
+		mEdtTrapRightAngle.SetWindowText(_T(""));
 	default:
 		break;
 	}
@@ -231,7 +249,7 @@ int CThreeTunnelDlg::GetZhihuWayBtn() {
 }
 
 void CThreeTunnelDlg::UpdateUI() {
-	UpdateData(TRUE);
+//	UpdateData(TRUE);
 
 	int mTunnelType = CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType();
 	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
@@ -244,7 +262,7 @@ void CThreeTunnelDlg::UpdateUI() {
 	OnBnClickedCheckBoltAngle();
 	mLeftAngle = pArc->GetLeftAngle();
 	mRightAngle = pArc->GetRightAngle();
-	UpdateData(FALSE);
+	//UpdateData(FALSE);
 }
 
 void CThreeTunnelDlg::OnBnClickedCheckBoltAngle()
@@ -274,8 +292,8 @@ BOOL CThreeTunnelDlg::OnInitDialog()
 	SetIcon(hIcon, FALSE);
 
 	mRadioDefaultWay.SetCheck(TRUE);
-	//mArcTunnelOption.SetCheck(TRUE);
-	//setOptionDisabled();
+	mArcTunnelOption.SetCheck(TRUE);
+	setOptionDisabled();
 	mEdtBoltLeftAngle.SetWindowText(_T("90"));
 	mEdtBoltRightAngle.SetWindowText(_T("90"));
 	mRadioNormalToArc.SetCheck(TRUE);
@@ -385,7 +403,9 @@ void CThreeTunnelDlg::TunnelSavepm()
 
 	switch (type) {
 	case 0:
-		MessageBox(_T("请选择一种巷道类型"), _T("警告"), MB_ICONWARNING | MB_OK);
+
+			MessageBox(_T("请选择一种巷道类型"), _T("警告"), MB_ICONWARNING | MB_OK);
+		
 		break;
 	case 1:
 		CArcProjectBuilder::GetInstance()->GetTunnelProejct()->SetTunnelType(1);

@@ -112,6 +112,9 @@
     <ClInclude Include="SuxingquDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StoneClassDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCad.cpp">
@@ -174,6 +177,9 @@
     <ClCompile Include="SuxingquDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="StoneClassDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCad.rc">
@@ -221,6 +227,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="res\apc1u-r0ttq-004.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\stone-class.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\stone-class.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

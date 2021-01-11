@@ -51,4 +51,6 @@ private:
 
 	CEdit CEdtConThickcness;
 	CEdit CEdtQiThickcness;
+public:
+	afx_msg void OnBnClickedButtonCheckStoneType();
 };

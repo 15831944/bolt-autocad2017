@@ -9,6 +9,7 @@
 #include "ProjectBuilder.h"
 #include "DataChecker.h"
 #include "DialogManager.h"
+#include "StoneClassDialog.h"
 
 // CExperienceDialog 对话框
 
@@ -33,7 +34,20 @@ CExperienceDialog::CExperienceDialog(CWnd* pParent /*=NULL*/)
 	, mConcreteThickness(0)
 	, mQiThickness(0)
 {
-
+	mBoltLength = 1600;
+	mBoltSpace = 700;
+	mBoltPitch = 700;
+	mBoltDiameter = 16.8;
+	mBoltDeisgnNumber = 50;
+	mBoltAttach = 220;
+	mBoltShuLegnth = 350;
+	mCableLength = 4800;
+	mCableSpace = 2100;
+	mCablePitch = 2100;
+	mCableNumber = 2;
+	mCableDiameter = 22;
+	mCableAttach = 220;
+	mCableShuLength = 350;
 }
 
 CExperienceDialog::~CExperienceDialog()
@@ -114,6 +128,7 @@ BEGIN_MESSAGE_MAP(CExperienceDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CExperienceDialog::OnBnClickedOk)
 	ON_WM_MOVING()
 	ON_BN_CLICKED(IDC_BUTTON_EXP_SAVEPM, &CExperienceDialog::OnBnClickedButtonExpSavepm)
+	ON_BN_CLICKED(IDC_BUTTON_CHECK_STONE_TYPE, &CExperienceDialog::OnBnClickedButtonCheckStoneType)
 END_MESSAGE_MAP()
 
 
@@ -295,4 +310,13 @@ void CExperienceDialog::OnBnClickedButtonExpSavepm()
 
 	};
 
+}
+
+
+void CExperienceDialog::OnBnClickedButtonCheckStoneType()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	CStoneClassDialog td;
+	td.DoModal();
 }

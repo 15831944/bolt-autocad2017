@@ -215,6 +215,7 @@
     <ClInclude Include="SimpleIni.h" />
     <ClInclude Include="SkipDialog.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StoneClassDialog.h" />
     <ClInclude Include="SuxingquDialog.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TheoreticalDialog.h" />
@@ -243,6 +244,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StoneClassDialog.cpp" />
     <ClCompile Include="SuxingquDialog.cpp" />
     <ClCompile Include="TheoreticalDialog.cpp" />
     <ClCompile Include="ThreeTunnelDlg.cpp" />
@@ -271,6 +273,8 @@
     <Image Include="res\mainbg.png" />
     <Image Include="res\MFCad.ico" />
     <Image Include="res\skip.png" />
+    <Image Include="res\stone-class.bmp" />
+    <Image Include="res\stone-class.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

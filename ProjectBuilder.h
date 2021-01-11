@@ -336,7 +336,7 @@ public:
 		CString mBoltSafeNumber("BoltSafeNumber");
 		CString mCeyaliNumber("CeyaliNumber");
 		CString mCoalFriction("CoalFriction");
-		CString mKangjian("CoalFriction");
+		CString mKangjian("Kangjian");
 		CString mKangla("Kangla");
 		CString mKuadu("Kuadu");
 		CString mStableNumber("StableNumber");
@@ -364,7 +364,7 @@ public:
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mCoalFriction, zuheliang->GetCoalFriction());
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mKangjian, zuheliang->GetKangjian());
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mKangla, zuheliang->GetKangla());
-		mProjectIni.SetDoubleValue(strZuheliangMethod, mKuadu, zuheliang->GetKuadu());
+		mProjectIni.SetDoubleValue(strZuheliangMethod, mKuadu, zuheliang->GetKuadu() * 1000);
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mStableNumber, zuheliang->GetStableNumber());
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mStoneHardNumber, zuheliang->GetStableNumber());
 		mProjectIni.SetDoubleValue(strZuheliangMethod, mTopGravity, zuheliang->GetTopGravity());
@@ -826,7 +826,7 @@ public:
 			zuheliang->SetCoalFriction(mProjectIni.GetDoubleValue(strZuheliangMethod, mCoalFriction));
 			zuheliang->SetKangjian(mProjectIni.GetDoubleValue(strZuheliangMethod, mKangjian));
 			zuheliang->SetKangla(mProjectIni.GetDoubleValue(strZuheliangMethod, mKangla));
-			zuheliang->SetKuadu(mProjectIni.GetDoubleValue(strZuheliangMethod, mKuadu));
+			zuheliang->SetKuadu(mProjectIni.GetDoubleValue(strZuheliangMethod, mKuadu) / 1000);
 			zuheliang->SetStableNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mStableNumber));
 			zuheliang->SetStoneHardNumber(mProjectIni.GetDoubleValue(strZuheliangMethod, mStoneHardNumber));
 			zuheliang->SetTopGravity(mProjectIni.GetDoubleValue(strZuheliangMethod, mTopGravity));
@@ -946,18 +946,19 @@ public:
 
 		bool res = true;
 
+		std::cout << "save parameters to file!!\n" << std::endl;
 		res = SaveBoltToFile(CString("TopBolt"), mArcTunnel->GetTopBolt());
 		if (res == false) return res;
-
+		std::cout << "save topbolt to file!!\n" << std::endl;
 		res =  SaveBoltToFile(CString("LeftBolt"), mArcTunnel->GetLeftBolt());
 		if (res == false) return res;
-		
+		std::cout << "save left to file!!\n" << std::endl;
 		res = SaveBoltToFile(CString("RightBolt"), mArcTunnel->GetRightBolt());
 		if (res == false) return res;
-
+		std::cout << "save right to file!!\n" << std::endl;
 		res = SaveCableToFile(mArcTunnel->GetCable());
 		if (res == false) return res;
-
+		std::cout << "save cable to file!!\n" << std::endl;
 		CString strThickness("Thickness");
 		CString strConcreteThickness("ConcreteThickness");
 		CString strQiThickness("QiThickness");

@@ -12,7 +12,7 @@ CFileUtil::~CFileUtil()
 {
 }
 
-HANDLE CFileUtil::AddFile(CString filename)
+BOOL CFileUtil::AddFile(CString filename)
 {
 	HANDLE hFILE = NULL;
 	// 判断是否有重名文件夹
@@ -22,13 +22,21 @@ HANDLE CFileUtil::AddFile(CString filename)
 		// 创建一个新文件
 		hFILE = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		std::cout << " create new file successfully\n";
-		return hFILE;
+		if (hFILE == INVALID_HANDLE_VALUE)
+		{
+			std::cout << "hFile ERROR" << std::endl;
+			return FALSE;
+		}
+		CloseHandle(hFILE);
+		return TRUE;
 	}
 	else {
 		// 以写方式返回
 		 hFILE = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		 CloseHandle(hFILE);
+		 return TRUE;
 	}
-	return hFILE;
+
 }
 
 BOOL CFileUtil::CreateFoler(CString dir)
@@ -36,10 +44,6 @@ BOOL CFileUtil::CreateFoler(CString dir)
 	return FALSE;
 }
 
-BOOL CFileUtil::WriteConfigInfo(CString filename, CString section, CString key, CString value)
-{
-	return FALSE;
-}
 
 BOOL CFileUtil::DeleteTheFile(CString filename) {
 	USES_CONVERSION;

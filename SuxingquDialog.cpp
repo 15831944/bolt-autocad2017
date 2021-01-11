@@ -109,7 +109,7 @@ void CSuxingquDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_LOOSE_CABLE_BREAK_POWER, mCableBreakPower);
 	DDX_Text(pDX, IDC_EDIT_CONCRETE_THICKNESS, mConcreteThickness);
 	DDX_Text(pDX, IDC_EDIT_QI_THICKNESS, mQiThickness);
-	DDX_Control(pDX, IDCANCEL, CEdtConThickcness);
+	DDX_Control(pDX, IDC_EDIT_CONCRETE_THICKNESS, CEdtConThickcness);
 	DDX_Control(pDX, IDC_EDIT_QI_THICKNESS, CEdtQiThickcness);
 }
 
@@ -213,30 +213,30 @@ void CSuxingquDialog::OnBnClickedOk()
 		CSuxingquMethod* tmpMethod = static_cast<CSuxingquMethod *>(method);
 		CArcProjectBuilder::GetInstance()->SetMethod(tmpMethod);
 
-		CSuxingquMethod * zuheliang = CArcProjectBuilder::GetInstance()->GetSuxingquMethod();
+		CSuxingquMethod * suxingqu = CArcProjectBuilder::GetInstance()->GetSuxingquMethod();
 		CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
 
 		if (CArcProjectBuilder::GetInstance()->GetTunnelProejct()->GetTunnelType() == 3) {
-			zuheliang->SetA(pArc->GetTrapBottomWidth()/1000);
+			suxingqu->SetA(pArc->GetTrapBottomWidth()/1000);
 		}
 		else
 		{
-			zuheliang->SetA(pArc->GetWidth()/1000);
+			suxingqu->SetA(pArc->GetWidth()/1000);
 		}
-		zuheliang->SetH(pArc->GetHeight() / 1000);
-		zuheliang->SetInnerFriction(mInnerFriction);
-		zuheliang->SetAvgGravity(mAvgGravity);
-		zuheliang->SetMaiDepth(mMaiDepth);
-		zuheliang->SetMeiyanZhongdu(mMeiyanZhongdu);
-		zuheliang->SetNianPower(mNianPower);
-		zuheliang->SetShuLength(mShuLength);
-		zuheliang->SetBoltAttach(mBoltAttach);
-		zuheliang->SetBoltDesignNumber(mBoltDesignNumber);
-		zuheliang->SetBoltDiameter(mBoltDiameter);
-		zuheliang->SetCableDiameter(mCableDiameter);
-		zuheliang->SetCableFreeLength(mCableFreeLength);
-		zuheliang->SetCableAttach(mCableAttach);
-		zuheliang->SetCableBreakPower(mCableBreakPower);
+		suxingqu->SetH(pArc->GetHeight() / 1000);
+		suxingqu->SetInnerFriction(mInnerFriction);
+		suxingqu->SetAvgGravity(mAvgGravity);
+		suxingqu->SetMaiDepth(mMaiDepth);
+		suxingqu->SetMeiyanZhongdu(mMeiyanZhongdu);
+		suxingqu->SetNianPower(mNianPower);
+		suxingqu->SetShuLength(mShuLength);
+		suxingqu->SetBoltAttach(mBoltAttach);
+		suxingqu->SetBoltDesignNumber(mBoltDesignNumber);
+		suxingqu->SetBoltDiameter(mBoltDiameter);
+		suxingqu->SetCableDiameter(mCableDiameter);
+		suxingqu->SetCableFreeLength(mCableFreeLength);
+		suxingqu->SetCableAttach(mCableAttach);
+		suxingqu->SetCableBreakPower(mCableBreakPower);
 
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetConcreteThickness(mConcreteThickness);
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
