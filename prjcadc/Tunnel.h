@@ -32,6 +32,8 @@ public:
 	~CTunnel();
 	void DrawProject(CTunnelProject project);
 	void DrawTableBoltPm();
+	void DrawTopCastNet();
+	void DrawBangCastNet();
 	//绘制断面图形，三种巷道绘制断面方式各不相同
 	virtual void DrawTunnel();
 	//顶部锚杆托梁

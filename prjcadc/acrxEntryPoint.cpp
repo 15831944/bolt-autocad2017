@@ -114,6 +114,13 @@ public:
 		if (pRec->GetZhihuWay() > 1) {
 			pRec->DrawThickness();
 		}
+
+		if (pRec->GetTopNet() != 0) {
+			pRec->DrawTopCastNet();
+		}
+		if (pRec->GetBangNet() != 0) {
+			pRec->DrawBangCastNet();
+		}
 	}
 
 	static void DrawArcPaper(CTunnelProject* project) {
@@ -157,6 +164,13 @@ public:
 		if (pArc->GetZhihuWay() > 1) {
 			pArc->DrawThickness();
 		}
+
+		if (pArc->GetTopNet() != 0) {
+			pArc->DrawTopCastNet();
+		}
+		if (pArc->GetBangNet() != 0) {
+			pArc->DrawBangCastNet();
+		}
 	}
 
 	static void DrawTrapPaper(CTunnelProject* project) {
@@ -199,6 +213,13 @@ public:
 		// 若支护方式不是默认的锚杆（索）支护
 		if (pTrap->GetZhihuWay() > 1) {
 		pTrap->DrawThickness();
+		}
+
+		if (pTrap->GetTopNet() != 0) {
+			pTrap->DrawTopCastNet();
+		}
+		if (pTrap->GetBangNet() != 0) {
+			pTrap->DrawBangCastNet();
 		}
 	}
 	

@@ -218,8 +218,35 @@ void CTunnel::DrawTableBoltPm()
 	CDrawUtil::createTable(pMaterialTable, AcGePoint2d(250, 150), _T("Standard"), 13, 5);
 }
 
+void CTunnel::DrawTopCastNet() {
+	AcGePoint2d pt1Start(195, 210), pt1End(200, 207);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt1Start.x, pt1Start.y - i), AcGePoint2d(pt1End.x, pt1End.y - i), 0.05);
+	}
+	AcGePoint2d pt2Start(195, 207), pt2End(200, 210);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt2Start.x, pt2Start.y - i), AcGePoint2d(pt2End.x, pt2End.y - i), 0.05);
+	}
+}
 
-
+void CTunnel::DrawBangCastNet() {
+	AcGePoint2d pt1Start(75, 79), pt1End(80, 76);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt1Start.x, pt1Start.y - i), AcGePoint2d(pt1End.x, pt1End.y - i), 0.05);
+	}
+	AcGePoint2d pt2Start(75, 76), pt2End(80, 79);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt2Start.x, pt2Start.y - i), AcGePoint2d(pt2End.x, pt2End.y - i), 0.05);
+	}
+	AcGePoint2d pt3Start(310, 79), pt3End(315, 76);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt3Start.x, pt3Start.y - i), AcGePoint2d(pt3End.x, pt3End.y - i), 0.05);
+	}
+	AcGePoint2d pt4Start(310, 76), pt4End(315, 79);
+	for (int i = 0; i < 3; i++) {
+		CDrawUtil::AddPolyLine(AcGePoint2d(pt4Start.x, pt4Start.y - i), AcGePoint2d(pt4End.x, pt4End.y - i), 0.05);
+	}
+}
 void CTunnel::DrawTunnel()
 {
 }

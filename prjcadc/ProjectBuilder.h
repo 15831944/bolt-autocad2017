@@ -195,6 +195,13 @@ public:
 			mArcTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 		}
 
+		CString strCastnet("Castnet");
+		CString mTopnet("Topnet");
+		CString mBangnet("Bangnet");
+		CString mTopnetSize("TopnetSize");
+		CString mBangnetSize("BangnetSize");
+		mArcTunnel->SetTopNet(mProjectIni.GetLongValue(strCastnet, mTopnet));
+		mArcTunnel->SetBangNet(mProjectIni.GetLongValue(strCastnet, mBangnet));
 		return true;
 	};
 
@@ -277,6 +284,13 @@ public:
 			mRecTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 		}
 
+		CString strCastnet("Castnet");
+		CString mTopnet("Topnet");
+		CString mBangnet("Bangnet");
+		CString mTopnetSize("TopnetSize");
+		CString mBangnetSize("BangnetSize");
+		mRecTunnel->SetTopNet(mProjectIni.GetLongValue(strCastnet, mTopnet));
+		mRecTunnel->SetBangNet(mProjectIni.GetLongValue(strCastnet, mBangnet));
 		return true;
 	};
 
@@ -356,6 +370,13 @@ public:
 			mTrapTunnel->SetQiThickness(mProjectIni.GetLongValue(strThickness, strQiThickness));
 		}
 
+		CString strCastnet("Castnet");
+		CString mTopnet("Topnet");
+		CString mBangnet("Bangnet");
+		CString mTopnetSize("TopnetSize");
+		CString mBangnetSize("BangnetSize");
+		mTrapTunnel->SetTopNet(mProjectIni.GetLongValue(strCastnet, mTopnet));
+		mTrapTunnel->SetBangNet(mProjectIni.GetLongValue(strCastnet, mBangnet));
 		return true;
 	};
 
