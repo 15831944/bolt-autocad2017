@@ -50,6 +50,7 @@ void CParametersDialog::UpdateUI()
 	OnBnClickedCheckLeftBolt();
 	OnBnClickedCheckTopBolt();
 	OnBnClickedCheckRightBolt();
+	UpdateCastnetUI(CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetTopNet(), CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetBangNet());
 	std::cout << "set bolt info successfully!\n";
 }
 
@@ -65,6 +66,8 @@ void CParametersDialog::SetThikcnessEdit()
 		mEdtQiThickness.EnableWindow(FALSE);
 	}
 }
+
+
 
 void CParametersDialog::DoDataExchange(CDataExchange* pDX)
 {
@@ -141,6 +144,16 @@ void CParametersDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_RIGHT_BOLT_SPACE, mRightBoltSpace);
 	DDX_Text(pDX, IDC_EDIT_CABLE_NUMBER, mCableNumber);
 	DDX_Text(pDX, IDC_EDIT_CABLE_SPACE, mCableSpace);
+	DDX_Control(pDX, IDC_EDIT_TOP_NET_SIZE, mEdtTopNetSize);
+	DDX_Control(pDX, IDC_EDIT_LEFT_NET_SIZE, mEdtBangNetSize);
+	DDX_Control(pDX, IDC_RADIO_NO_TOPNET, mRadioNoTopnet);
+	DDX_Control(pDX, IDC_RADIO_NO_BANGNET, mRadioNoBangnet);
+	DDX_Control(pDX, IDC_RADIO_METAL_TOPNET, mRadioMetalTopnet);
+	DDX_Control(pDX, IDC_RADIO_REBAR_TOPNET, mRadioRebarTopnet);
+	DDX_Control(pDX, IDC_RADIO_PLASTIC_TOPNET, mRadioPlasticTopnet);
+	DDX_Control(pDX, IDC_RADIO_METAL_BANGNET, mRadioMetalBangnet);
+	DDX_Control(pDX, IDC_RADIO_REBAR_BANGNET, mRadioRebarBangnet);
+	DDX_Control(pDX, IDC_RADIO_PLASTIC_BANGNET, mRadioPlasticBangnet);
 }
 
 
@@ -654,7 +667,7 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetConcreteThickness(_ttoi(strConcrete));
 			//CArcProjectBuilder::GetInstance()->SetMethod(method);
 		}
-
+		SaveCastnetInfo();
 		MessageBox(_T("本页参数已保存"), _T("成功"));
 		pmLeagal = true;
 	}
@@ -678,6 +691,86 @@ void CParametersDialog::OnBnClickedButtonBackMethodChoose()
 	DialogManager::GetInstance().ShowMethodChooseDlg();
 }
 
+
+void CParametersDialog::SaveCastnetInfo()
+{
+	// 记录顶部网和帮部网的状态
+	int topnet = 0, bangnet = 0;
+	if (mRadioNoTopnet.GetCheck()) topnet = 0;
+	if (mRadioMetalTopnet.GetCheck()) topnet = 1;
+	if(mRadioRebarTopnet.GetCheck()) topnet = 2;
+	if(mRadioPlasticTopnet.GetCheck()) topnet = 3;
+	if(mRadioNoBangnet.GetCheck()) bangnet = 0;
+	if(mRadioMetalBangnet.GetCheck()) bangnet = 1;
+	if(mRadioRebarBangnet.GetCheck()) bangnet = 2;
+	if(mRadioPlasticBangnet.GetCheck()) bangnet = 3;
+	CArcTunnel *pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+	pArc->SetTopNet(topnet);
+	pArc->SetBangNet(bangnet);
+	mEdtTopNetSize.GetWindowText(pArc->GetTopnetSize());
+	mEdtBangNetSize.GetWindowText(pArc->GetBangnetSize());
+}
+
+void CParametersDialog::UpdateCastnetUI(int topnet, int bangnet)
+{
+	switch (topnet) {
+	case 0:
+		mRadioNoTopnet.SetCheck(TRUE);
+		mRadioMetalTopnet.SetCheck(FALSE);
+		mRadioRebarTopnet.SetCheck(FALSE);
+		mRadioPlasticTopnet.SetCheck(FALSE);
+		break;
+	case 1:
+		mRadioNoTopnet.SetCheck(FALSE);
+		mRadioMetalTopnet.SetCheck(TRUE);
+		mRadioRebarTopnet.SetCheck(FALSE);
+		mRadioPlasticTopnet.SetCheck(FALSE);
+		break;
+	case 2:
+		mRadioNoTopnet.SetCheck(FALSE);
+		mRadioMetalTopnet.SetCheck(FALSE);
+		mRadioRebarTopnet.SetCheck(TRUE);
+		mRadioPlasticTopnet.SetCheck(FALSE);
+		break;
+	case 3:
+		mRadioNoTopnet.SetCheck(FALSE);
+		mRadioMetalTopnet.SetCheck(FALSE);
+		mRadioRebarTopnet.SetCheck(FALSE);
+		mRadioPlasticTopnet.SetCheck(TRUE);
+		break;
+	default:
+		break;
+	}
+	switch (bangnet)
+	{
+	case 0:
+		mRadioNoBangnet.SetCheck(TRUE);
+		mRadioMetalBangnet.SetCheck(FALSE);
+		mRadioRebarBangnet.SetCheck(FALSE);
+		mRadioPlasticBangnet.SetCheck(FALSE);
+		break;
+	case 1:
+		mRadioNoBangnet.SetCheck(FALSE);
+		mRadioMetalBangnet.SetCheck(TRUE);
+		mRadioRebarBangnet.SetCheck(FALSE);
+		mRadioPlasticBangnet.SetCheck(FALSE);
+		break;
+	case 2:		
+		mRadioNoBangnet.SetCheck(FALSE);
+		mRadioMetalBangnet.SetCheck(FALSE);
+		mRadioRebarBangnet.SetCheck(TRUE);
+		mRadioPlasticBangnet.SetCheck(FALSE);
+		break;
+	case 3:		
+		mRadioNoBangnet.SetCheck(FALSE);
+		mRadioMetalBangnet.SetCheck(FALSE);
+		mRadioRebarBangnet.SetCheck(FALSE);
+		mRadioPlasticBangnet.SetCheck(TRUE);
+		break;
+	default:
+		break;
+	}
+}
 
 void CParametersDialog::OnMoving(UINT fwSide, LPRECT lpRect)
 {

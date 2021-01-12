@@ -121,6 +121,9 @@ private:
 	double mTopBoltNumber;
 	double mTopBoltPitch;
 	double mTopBoltALength;
+	void SaveCastnetInfo();
+	//根据单例中的巷道信息来更新UI
+	void UpdateCastnetUI(int topnet, int bangnet);
 public:
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 private:
@@ -133,4 +136,14 @@ private:
 	double mRightBoltSpace;
 	int mCableNumber;
 	double mCableSpace;
+	CEdit mEdtTopNetSize;
+	CEdit mEdtBangNetSize;
+	CButton mRadioNoTopnet;
+	CButton mRadioMetalTopnet;
+	CButton mRadioRebarTopnet;
+	CButton mRadioPlasticTopnet;
+	CButton mRadioNoBangnet;
+	CButton mRadioMetalBangnet;
+	CButton mRadioRebarBangnet;
+	CButton mRadioPlasticBangnet;
 };

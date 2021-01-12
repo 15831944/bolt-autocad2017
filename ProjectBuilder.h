@@ -256,14 +256,41 @@ public:
 
 		 CString strMeasureWay("MeasureWay");
 		 CString strLooseRange("LooseRange");
-
+		 CString strPushiNumber("PushiNumber");
+		 CString mInnerFriction("InnerFriction");
+		 CString mAvgGravity("AvgGravity");
+		 CString mMaiDepth("MaiDepth");
+		 CString mMeiyanZhongdu("MeiyanZhongdu");
+		 CString mNianPower("NianPower");
+		 CString mShuLength("ShuLength");
+		 CString mBoltAttach("BoltAttach");
+		 CString mBoltDesignNumber("BoltDesignNumber");
+		 CString mBoltDiameter("BoltDiameter");
+		 CString mCableDiameter("CableDiameter");
+		 CString mCableFreeLength("CableFreeLength");
+		 CString mCableAttach("CableAttach");
+		 CString mCableBreakPower("CableBreakPower");
 		 CSimpleIni mProjectIni;
 
 		 SI_Error rc = mProjectIni.LoadFile(fileUrl);
 		 if (rc < 0) return false; // 若加载文件出错，返回false
 
 		 mProjectIni.SetLongValue(strLooseRangeMethod, strMeasureWay, loose->GetMeasureWay());
-		 mProjectIni.SetLongValue(strLooseRangeMethod, strLooseRange, loose->GetLooseRange());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, strLooseRange, loose->GetLooseRange());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, strPushiNumber, loose->GetPushiNumber());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mAvgGravity, loose->GetAvgGravity());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mInnerFriction, loose->GetInnerFriction());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mMaiDepth, loose->GetMaiDepth());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mMeiyanZhongdu, loose->GetMeiyanZhongdu());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mNianPower, loose->GetNianPower());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mShuLength, loose->GetShuLength());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mBoltAttach, loose->GetBoltAttach());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mBoltDesignNumber, loose->GetBoltDesignNumber());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mBoltDiameter, loose->GetBoltDiameter());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mCableDiameter, loose->GetCableDiameter());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mCableFreeLength, loose->GetCableFreeLength());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mCableAttach, loose->GetCableAttach());
+		 mProjectIni.SetDoubleValue(strLooseRangeMethod, mCableBreakPower, loose->GetCableBreakPower());
 
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
@@ -518,6 +545,16 @@ public:
 		std::cout << "build left angle: " << mArcTunnel->GetLeftAngle() << std::endl;
 		mArcTunnel->SetRightAngle(mProjectIni.GetDoubleValue(strRevertAngle, _T("RightAngle")));
 
+
+		CString strCastnet("Castnet");
+		CString mTopnet("Topnet");
+		CString mBangnet("Bangnet");
+		CString mTopnetSize("TopnetSize");
+		CString mBangnetSize("BangnetSize");
+		mArcTunnel->SetTopNet(mProjectIni.GetLongValue(strCastnet, mTopnet));
+		mArcTunnel->SetBangNet(mProjectIni.GetLongValue(strCastnet, mBangnet));
+		mArcTunnel->SetTopnetSize(mProjectIni.GetValue(strCastnet, mTopnetSize));
+		mArcTunnel->SetBangnetSize(mProjectIni.GetValue(strCastnet, mBangnetSize));
 		return true;
 	};
 
@@ -609,7 +646,7 @@ public:
 		bolt->setBeamWidth(mProjectIni.GetDoubleValue(derection, strBeamWidth));
 		bolt->setBeamMaterial(mProjectIni.GetValue(derection, strBeamMaterial));
 		bolt->setPortBeamWidth(mProjectIni.GetDoubleValue(derection, strPortBeamWidth));
-		bolt->setPortBeamMaterial(mProjectIni.GetValue(derection, strPortBeamWidth));
+		bolt->setPortBeamMaterial(mProjectIni.GetValue(derection, strPortBeamMaterial));
 		bolt->setTrayLength(mProjectIni.GetValue(derection, strTrayLength));
 		bolt->setTrayMaterial(mProjectIni.GetValue(derection, strTrayMaterial));
 		return bolt;
@@ -631,6 +668,7 @@ public:
 		CString strBoltShuLength("BoltShuLength");
 		CString strCableShuLength("CableShuLength");
 		CString strStoneStrongNumber("StoneStrongNumber");
+		CString strPushiNumber("PushiNumber");
 		CString strBoltDiameter("BoltDiameter");
 		CString strBoltDesignNumber("BoltDesignNumber");
 		CString strBoltAttach("BoltAttach");
@@ -762,16 +800,26 @@ public:
 
 			loose = static_cast<CLooseRangeMethod *>(method);
 			loose->SetMeasureWay(mProjectIni.GetLongValue(strLoose, strMeasureWay));
-			switch(loose->GetMeasureWay() ) {
-			case 1:
+			
+			if (loose->GetMeasureWay() == 1) {
 				loose->SetLooseRange(mProjectIni.GetDoubleValue(strLoose, strLooseRange));
-				break;
-			case 2:
-				loose->SetStoneStrongNumber(mProjectIni.GetDoubleValue(strLoose, strStoneStrongNumber));
-				break;
-			default:
-				break;
 			}
+			else {
+				loose->SetPushiNumber(mProjectIni.GetDoubleValue(strLoose, strPushiNumber));
+			}
+			loose->SetInnerFriction(mProjectIni.GetDoubleValue(strLoose, mInnerFriction));
+			loose->SetAvgGravity(mProjectIni.GetDoubleValue(strLoose, strAvgGravity));
+			loose->SetMaiDepth(mProjectIni.GetDoubleValue(strLoose, mMaiDepth));
+			loose->SetMeiyanZhongdu(mProjectIni.GetDoubleValue(strLoose, _T("MeiyanZhongdu")));
+			loose->SetNianPower(mProjectIni.GetDoubleValue(strLoose, _T("NianPower")));
+			loose->SetShuLength(mProjectIni.GetDoubleValue(strLoose, strShuLength));
+			loose->SetBoltAttach(mProjectIni.GetDoubleValue(strLoose, strBoltAttach));
+			loose->SetBoltDesignNumber(mProjectIni.GetDoubleValue(strLoose, strBoltDesignNumber));
+			loose->SetBoltDiameter(mProjectIni.GetDoubleValue(strLoose, strBoltDiameter));
+			loose->SetCableDiameter(mProjectIni.GetDoubleValue(strLoose, strCableDiameter));
+			loose->SetCableFreeLength(mProjectIni.GetDoubleValue(strLoose, _T("CableFreeLength")));
+			loose->SetCableAttach(mProjectIni.GetDoubleValue(strLoose, strCableAttach));
+			loose->SetCableBreakPower(mProjectIni.GetDoubleValue(strLoose, _T("CableBreakPower")));
 			break;
 		case 4:
 			factory = new CTheroyMethodFactory();
@@ -1036,6 +1084,12 @@ public:
 		CString strHasRightBolt("HasRightBolt");
 		CString strHasCable("HasCable");
 
+		CString strCastnet("Castnet");
+		CString mTopnet("Topnet");
+		CString mBangnet("Bangnet");
+		CString mTopnetSize("TopnetSize");
+		CString mBangnetSize("BangnetSize");
+
 		std::cout << "bridge file zhihu way: " << strZhihuWay << std::endl;
 		mProjectIni.SetLongValue(strFlag, strZhihuWay, mArcTunnel->GetZhihuWay());
 		mProjectIni.SetBoolValue(strFlag, strHasRevertAngle, mArcTunnel->GetRevertAngle());
@@ -1052,6 +1106,10 @@ public:
 		std::cout << "the save left angle value: " << mArcTunnel->GetLeftAngle() << std::endl;
 		mProjectIni.SetDoubleValue(strRevertAngle, _T("RightAngle"), mArcTunnel->GetRightAngle());
 
+		mProjectIni.SetLongValue(strCastnet, mTopnet, mArcTunnel->GetTopNet());
+		mProjectIni.SetValue(strCastnet, mTopnetSize, mArcTunnel->GetTopnetSize());
+		mProjectIni.SetLongValue(strCastnet, mBangnet, mArcTunnel->GetBangNet());
+		mProjectIni.SetValue(strCastnet, mBangnetSize, mArcTunnel->GetBangnetSize());
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	};
@@ -1101,10 +1159,8 @@ public:
 			return res++;
 		return res;
 	};
-
 	bool SaveBridgeFile() {
 		return SaveProjectToFile() && SaveTunnelFlagToFile() && SaveTunnelInfoToFile() && SaveParametersToFile();
 	};
-
 };
 

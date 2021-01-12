@@ -292,24 +292,127 @@ class CLooseRangeMethod : public CMethod {
 private:
 	int mMeasureWay;
 	double mLooseRange;
-	double mStoneStrongNumber; //岩石坚固系数
+	double mPushiNumber; //岩石坚固系数
+
+	double mInnerFriction;
+	double mAvgGravity;
+	double mMaiDepth;
+	double mMeiyanZhongdu;
+	double mNianPower;
+	double mShuLength;
+	double mCableFreeLength;
 public:
+	void SetInnerFriction(double t) { mInnerFriction = t; };
+	double GetInnerFriction() const { return mInnerFriction; };
+	void SetAvgGravity(double t) { mAvgGravity = t; };
+	double GetAvgGravity() const { return mAvgGravity; };
+	void SetMaiDepth(double t) { mMaiDepth = t; };
+	double GetMaiDepth() const { return mMaiDepth; };
+	void SetMeiyanZhongdu(double t) { mMeiyanZhongdu = t; };
+	double GetMeiyanZhongdu() const { return mMeiyanZhongdu; };
+	void SetNianPower(double t) { mNianPower = t; };
+	double GetNianPower() const { return mNianPower; };
+	void SetShuLength(double t) { mShuLength = t; };
+	double GetShuLength() const { return mShuLength; };
+	void SetCableFreeLength(double t) { mCableFreeLength = t; };
+	double GetCableFreeLength() const { return mCableFreeLength; };
 	CLooseRangeMethod() {};
 	~CLooseRangeMethod() {};
 	void SetMeasureWay(int way) { mMeasureWay = way; };
 	int GetMeasureWay() const { return mMeasureWay; };
 	void SetLooseRange(double t) { mLooseRange = t; };
 	double GetLooseRange() const { return mLooseRange; };
-	void SetStoneStrongNumber(double t) { mStoneStrongNumber = t; };
-	double GetStoneStrongNumber() const { return mStoneStrongNumber; };
+	void SetPushiNumber(double t) { mPushiNumber = t; };
+	double GetPushiNumber() const { return mPushiNumber; };
 
-	// 获取顶部锚杆的根数
-	int GetTopBoltNumber() {
-		return pBoltNumber;
-	};
 	// 获取顶部锚杆的长度
 	double GetTopBoltLength() {
-		return mLooseRange + 0.4;
+
+		double pi = asin(0.5) * 6;
+		double fi = mInnerFriction * pi / 180;
+		
+
+		double lb2; // 锚杆有效长度
+		if (mMeasureWay == 1) {
+			lb2 = mLooseRange / 1000;
+		}
+		else if (mMeasureWay == 2) {
+			if (mPushiNumber >= 3)
+				lb2 = a / mPushiNumber;
+			else lb2 = (a + h * tan(pi / 4 - fi / 2)) / mPushiNumber;
+		}
+		double lb3 = GetTopBoltAlength();
+		std::cout << "loose range: top bolt length: " << lb2 + lb3 + 0.1 << std::endl;
+		return DataChecker::RestrainBoltLength(lb2 + lb3 + 0.1);
+	};
+
+	double GetTopBoltAlength() {
+		double pi = asin(0.5) * 6;
+		double lb3 = pBoltDesignNumber / (pi * mNianPower * pBoltDiameter);
+		if (int(lb3 * 100) * (int)mShuLength != 0) {
+			lb3 = (int(lb3 * 1000 / mShuLength) + 1) * mShuLength / 1000;
+		}
+		std::cout << "loose range bolt a length: " << lb3 << std::endl;
+		return lb3;
+	};
+
+	double GetTopBoltSpacePitch() {
+		double pi = asin(0.5) * 6;
+		double fi = mInnerFriction * pi / 180;
+		double lb2; // 锚杆有效长度
+		if (mMeasureWay == 1) {
+			lb2 = mLooseRange / 1000;
+		}
+		else if (mMeasureWay == 2) {
+			if (mPushiNumber >= 3)
+				lb2 = a / mPushiNumber;
+			else lb2 = (a + h * tan(pi / 4 - fi / 2)) / mPushiNumber;
+		}
+		double space = sqrt(pBoltDesignNumber / (mAvgGravity * lb2));
+		std::cout << "loose range bolt space pitch: " << space << std::endl;
+		return DataChecker::RestrainBoltSpace(space);
+	};
+
+	int GetTopBoltNumber() {
+		return ceil(a * 2 / GetTopBoltSpacePitch());
+	};
+	int GetBangBoltNumber() {
+		return ceil(h / GetTopBoltSpacePitch());
+	};
+	// 锚索锚固长度
+	double GetCableAlength() {
+		double pi = asin(0.5) * 6;
+		double la3 = pCableBreakPower / (pi * pCableDiameter *pCableAttach);
+		if (int(la3 * 100) * (int)mShuLength != 0) {
+			la3 = (int(la3 * 1000 / mShuLength) + 1) * mShuLength / 1000;
+		}
+		std::cout << "loose range cable a length: " << la3 << std::endl;
+		return la3;
+	}
+	double GetCableLength() {
+		double la3 = GetCableAlength();
+		std::cout << "loose range cable length: " << mCableFreeLength * 0.001 + 0.15 + la3 << std::endl;
+		return DataChecker::RestrainCableLength(mCableFreeLength * 0.001 + 0.15 + la3);
+	};
+	double GetCableNumber() {
+		double lb2;
+		double pi = asin(0.5) * 6;
+		double fi = mInnerFriction * pi / 180;
+		if (mMeasureWay == 1) {
+			lb2 = mLooseRange / 1000;
+		}
+		else if (mMeasureWay == 2) {
+			if (mPushiNumber >= 3)
+				lb2 = a / mPushiNumber;
+			else lb2 = (a + h * tan(pi / 4 - fi / 2)) / mPushiNumber;
+		}
+		double num = mMeiyanZhongdu * 2 * a * 3 * GetTopBoltSpacePitch() * lb2 / pCableBreakPower;
+		return ceil(num);
+	};
+	double GetCableSpace() {
+		double space = 2 * a / (GetCableNumber() + 1);
+		std::cout << "loose range cable space: " << space << std::endl;
+		return DataChecker::RestrainCableSpace(space);
 	};
 
 };

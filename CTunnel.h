@@ -173,6 +173,8 @@ protected:
 	bool pHasCable = false; // 要锚索
 	int pTopNet = 0; // 顶部网
 	int pBangNet = 0; // 帮部网 
+	CString pTopnetSize;
+	CString pBangnetSize;
 	int pConcreteThickness = 0; //混凝土厚度
 	int pQiThickness = 0; // 砌煊参数
 	CCable * pCable;
@@ -234,6 +236,10 @@ public:
 	int GetTopNet() const { return pTopNet; };
 	void SetBangNet(int m) { pBangNet = m; };
 	int GetBangNet() const { return pBangNet; };
+	void SetTopnetSize(CString v) { pTopnetSize = v; };
+	CString GetTopnetSize() const { return pTopnetSize; };
+	void SetBangnetSize(CString v) { pBangnetSize = v; };
+	CString GetBangnetSize() const { return pBangnetSize; };
 	void SetConcreteThickness(int m) { pConcreteThickness = m; };
 	int GetConcreteThickness() const { return pConcreteThickness; };
 	void SetQiThickness(int m) { pQiThickness = m; };

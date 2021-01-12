@@ -249,7 +249,7 @@ void CBalanceMethodDialog::OnBnClickedOk()
 		CheckThickness();
 		pmLeagal = true;
 	}
-
+	
 	if (pmLeagal) {
 		DialogManager::GetInstance().setHasCalculated(true);
 		CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetHasLeftBolt(true);
@@ -323,4 +323,3 @@ void CBalanceMethodDialog::SetThicknessEdit()
 		CEdtQiThickcness.EnableWindow(FALSE);
 	}
 }
-

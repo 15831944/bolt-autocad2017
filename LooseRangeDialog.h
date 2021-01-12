@@ -1,6 +1,6 @@
 #pragma once
 #include "afxwin.h"
-
+#include <vector>
 
 // CLooseRangeDialog 对话框
 
@@ -12,6 +12,7 @@ public:
 	CLooseRangeDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CLooseRangeDialog();
 	void UpdateUI();
+	void SetThicknessEdit();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
@@ -28,30 +29,41 @@ public:
 private:
 	double mLooseRange;
 	CEdit mEdtLooseRange;
-	CEdit mEdtStoneStrongNumber;
+	double mPushiNumber;
+	CEdit mEdtPushiNumber;
 	CEdit mEdtAvgGrivity;
-	CEdit mEdtCompressive;
 	CEdit mEdtDepth;
 	CEdit mEdtFriction;
-	CEdit mEdtAttach;
+	CEdit mMeiyanZhongdu;
+	CEdit mEdtNianPower;
 	CEdit mEdtShuLength;
-	CEdit mEdtBoltSpace;
-	CEdit mEdtBoltPitch;
 	CEdit mEdtBoltDiameter;
 	CEdit mEdtBoltDesignNumber;
 	CEdit mEdtBoltAttach;
 	CEdit mCalbeFreeLength;
-	CEdit mCableSpace;
-	CEdit mEdtCablePitch;
 	CEdit mEdtCableDiameter;
 	CEdit mCableBreakPower;
 	CEdit mEdtCableAttach;
+
+	CEdit mEdtConThickness;
+	CEdit mEdtQiThickness;
+	double mConThickness;
+	double mQiThickness;
+	CButton mRadioMaoluo;
+	CButton mRadioLooseRange;
+
+	bool pmLeagal = false;
+	std::vector<CEdit * > mVectorEdt;
+	void InitEdtVector();
+	void CheckThickness();
+	void SetExpertValue();
+
+	int GetMeasureWay();
+	void SetMeasureButton(int type);
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedRadioMaoluoMeasure();
-private:
-	CButton mRadioLooseRange;
-public:
 	afx_msg void OnBnClickedRadioLooseMeasure();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
+
 };

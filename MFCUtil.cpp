@@ -95,3 +95,10 @@ double MFCUtil::AngleToArc(double angle)
 	double pi = asin(0.5) * 6;
 	return angle *pi / 180;
 }
+
+double MFCUtil::GetDoubleEdtValue(CEdit *mEdt)
+{
+	CString str;
+	mEdt->GetWindowText(str);
+	return _ttof(str);
+}

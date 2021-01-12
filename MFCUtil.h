@@ -15,5 +15,7 @@ public:
 	static int GetCheckedRadioButton(CButton IDC_FIRST, CButton IDC_LAST);
 	static CTime * CStringToCTime(CString str);
 	static double AngleToArc(double angle);
+	// 获取 CEdit 中的值并转为 double 变量
+	static double GetDoubleEdtValue(CEdit* mEdt);
 };
 
