@@ -292,7 +292,7 @@ BOOL CThreeTunnelDlg::OnInitDialog()
 	SetIcon(hIcon, FALSE);
 
 	mRadioDefaultWay.SetCheck(TRUE);
-	mArcTunnelOption.SetCheck(TRUE);
+	
 	setOptionDisabled();
 	mEdtBoltLeftAngle.SetWindowText(_T("90"));
 	mEdtBoltRightAngle.SetWindowText(_T("90"));

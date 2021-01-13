@@ -68,7 +68,6 @@ void CParametersDialog::SetThikcnessEdit()
 }
 
 
-
 void CParametersDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -475,11 +474,16 @@ void CParametersDialog::OnBnClickedOk()
 
 			//向桥接文件写入参数
 			CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
-
+			CString dir = CFileUtil::GetAppRegeditPath() + _T("ini");
+			if (!PathIsDirectory(dir))
+			{
+				::CreateDirectory(dir, NULL);//创建目录,已有的话不影响
+			}
 			if (CFileUtil::AddFile(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini")) == TRUE) {
 				if (CArcProjectBuilder::GetInstance()->SaveBridgeFile() == true) {
 					//MessageBox(_T("桥接文件保存成功！"));
 					CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
+					CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
 				}
 				else {
 					MessageBox(_T("桥接文件保存失败！"), _T("错误"));

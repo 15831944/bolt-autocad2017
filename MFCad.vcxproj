@@ -266,10 +266,12 @@
     <Image Include="arc.bmp" />
     <Image Include="res\apc1u-r0ttq-004.ico" />
     <Image Include="res\apc1u-r0ttq-005.ico" />
+    <Image Include="res\arc.bmp" />
     <Image Include="res\bg.bmp" />
     <Image Include="res\bg.jpg" />
     <Image Include="res\bg_limpid.bmp" />
     <Image Include="res\bg_limpid.png" />
+    <Image Include="res\class.bmp" />
     <Image Include="res\mainbg.png" />
     <Image Include="res\MFCad.ico" />
     <Image Include="res\skip.png" />

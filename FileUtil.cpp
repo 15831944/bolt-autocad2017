@@ -18,7 +18,7 @@ BOOL CFileUtil::AddFile(CString filename)
 	// 判断是否有重名文件夹
 	if (!PathFileExists(filename))
 	{
-		//  无对应文件夹则创建
+		// 无对应文件夹则创建
 		// 创建一个新文件
 		hFILE = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		std::cout << " create new file successfully\n";
@@ -41,7 +41,11 @@ BOOL CFileUtil::AddFile(CString filename)
 
 BOOL CFileUtil::CreateFoler(CString dir)
 {
-	return FALSE;
+	if (!PathIsDirectory(dir))
+	{
+		::CreateDirectory(dir, NULL);//创建目录,已有的话不影响
+	}
+	return true;
 }
 
 

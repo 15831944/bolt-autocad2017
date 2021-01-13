@@ -235,5 +235,11 @@
     <Image Include="res\stone-class.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\arc.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\class.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

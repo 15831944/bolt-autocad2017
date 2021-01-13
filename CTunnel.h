@@ -182,28 +182,18 @@ protected:
 	CBolt * pLeftBolt;
 	CBolt * pRightBolt;
 
-	//CTheoryCalMethod * pTheoryMethod;
-	//CProExpMethod *pExperienceMethod;
-	//CLooseRangeMethod * pLooseRangeMethod;
-
 public:
 	CTunnel() {
 		pCable = new CCable();
 		pTopBolt = new CBolt();
 		pLeftBolt = new CBolt();
 		pRightBolt = new CBolt();
-		//pTheoryMethod = new CTheoryCalMethod();
-		//pExperienceMethod = new CProExpMethod();
-		//pLooseRangeMethod = new CLooseRangeMethod();
 	}
 	~CTunnel() {
 		delete pCable;
 		delete pTopBolt;
 		delete pLeftBolt;
 		delete pRightBolt;
-//		delete pTheoryMethod;
-		//delete pExperienceMethod;
-		//delete pLooseRangeMethod;
 	}
 
 	void SetZhihuWay(int way) { pZhihuWay = way; };
