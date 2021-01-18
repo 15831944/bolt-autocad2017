@@ -115,6 +115,9 @@
     <ClInclude Include="StoneClassDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ThicknessDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCad.cpp">
@@ -178,6 +181,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StoneClassDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ThicknessDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

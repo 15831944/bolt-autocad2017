@@ -9,6 +9,7 @@
 #include "MFCUtil.h"
 #include "DialogManager.h"
 #include "ProjectBuilder.h"
+#include "ThicknessDialog.h"
 
 
 // CThreeTunnelDlg 对话框
@@ -342,7 +343,6 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 		MessageBox(_T("请选择一种支护方式"), _T("警告"), MB_ICONWARNING | MB_OK);
 		isPmLeagal = false;
 	}
-
 	else{
 
 		UpdateData(TRUE);
@@ -383,7 +383,12 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 void CThreeTunnelDlg::SuccessToMethodChooseDlg() {
 
 	ShowWindow(SW_HIDE);
-	DialogManager::GetInstance().ShowMethodChooseDlg();
+	if (GetZhihuWayBtn() == 4) {
+		DialogManager::GetInstance().ShowThicknessDlg();
+	}
+	else {
+		DialogManager::GetInstance().ShowMethodChooseDlg();
+	}
 
 }
 

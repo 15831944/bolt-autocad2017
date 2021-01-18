@@ -48,8 +48,6 @@ CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
 {
 }
 
-
-
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -60,9 +58,6 @@ END_MESSAGE_MAP()
 
 
 // CMFCadDlg ¶Ô»°¿ò
-
-
-
 CMFCadDlg::CMFCadDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_MFCAD_DIALOG, pParent)
 {

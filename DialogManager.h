@@ -9,6 +9,7 @@
 #include "BalanceMethodDialog.h"
 #include "ZuheliangDialog.h"
 #include "SuxingquDialog.h"
+#include "ThicknessDialog.h"
 class DialogManager
 {
 public:
@@ -36,6 +37,7 @@ public:
 		delete mResultDlg;
 		delete mBalanceDlg;
 		delete mSuxingquDlg;
+		delete mThicknessDlg;
 	};
 
 	void NewProjectDialog() {
@@ -148,6 +150,14 @@ public:
 		mSuxingquDlg->ShowWindow(SW_HIDE);
 	};
 
+	void ShowThicknessDlg() {
+		mThicknessDlg->ShowWindow(SW_SHOW);
+	};
+
+	void HideThicknessDlg() {
+		mThicknessDlg->ShowWindow(SW_HIDE);
+	}
+
 	void ShowResultDlg() {
 		
 		if (hasCurrentFile == true || hasCalculated == true)
@@ -209,6 +219,9 @@ private:
 		mZuheliangDlg->Create(IDD_ZUHELIANG_METHOD_DIALOG, 0);
 		mSuxingquDlg = new CSuxingquDialog();
 		mSuxingquDlg->Create(IDD_SUXINGQU_METHOD_DIALOG, 0);
+
+		mThicknessDlg = new CThicknessDialog();
+		mThicknessDlg->Create(IDD_THICKNESS_DIALOG, 0);
 	}
 
 	CProjectDialog *mProjectDlg;
@@ -221,6 +234,7 @@ private:
 	CBalanceMethodDialog *mBalanceDlg;
 	CZuheliangDialog *mZuheliangDlg;
 	CSuxingquDialog *mSuxingquDlg;
+	CThicknessDialog *mThicknessDlg;
 
 	bool hasCurrentFile = false;
 	bool hasCalculated = false;

@@ -219,6 +219,7 @@
     <ClInclude Include="SuxingquDialog.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TheoreticalDialog.h" />
+    <ClInclude Include="ThicknessDialog.h" />
     <ClInclude Include="ThreeTunnelDlg.h" />
     <ClInclude Include="TunnelChooseDialog.h" />
     <ClInclude Include="TunnelFeature.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="StoneClassDialog.cpp" />
     <ClCompile Include="SuxingquDialog.cpp" />
     <ClCompile Include="TheoreticalDialog.cpp" />
+    <ClCompile Include="ThicknessDialog.cpp" />
     <ClCompile Include="ThreeTunnelDlg.cpp" />
     <ClCompile Include="TunnelChooseDialog.cpp" />
     <ClCompile Include="TunnelFeature.cpp" />
