@@ -45,9 +45,15 @@ void CTrapzoidTunnel::DrawTunnel()
 	AcGePoint2d ptWidthLine(ptRightBottom.x, ptLeftBottom.y - 5); //标注线经过的点
 	CDrawUtil::CreateDimAligned(ptLeftBottom, ptRightBottom, ptWidthLine, bottomWidth * 100, 0);
 
-	AcGePoint2d ptRightTop(ptRightBottom.x - (height / tan(CDrawUtil::angleToArc(rightAngle))), ptLeftBottom.y + height); 
+	AcGePoint2d ptRightTop(ptRightBottom.x - (height / tan(CDrawUtil::angleToArc(rightAngle))), ptLeftBottom.y + height);
 	AcGePoint2d ptHeightDimEnd(ptRightTop.x, ptLeftBottom.y);
 	AcGePoint2d ptHeightDimLine(ptHeightDimEnd.x - 5, ptLeftBottom.y);
+	if (pZhihuWay > 1)
+	{
+		double conThickness = pConcreteThickness / pScaleNumber;
+		double qiThickness = pQiThickness / pScaleNumber;
+		ptHeightDimLine.x = ptHeightDimEnd.x - 10 - conThickness - qiThickness;
+	}
 	CDrawUtil::CreateDimAligned(ptRightTop, ptHeightDimEnd, ptHeightDimLine, height * 100, 0);
 
 	AcGePoint2d ptLeftTop(ptLeftBottom.x + (height / tan(CDrawUtil::angleToArc(rightAngle))), ptLeftBottom.y + height);
@@ -212,15 +218,14 @@ void CTrapzoidTunnel::DrawLeftBolt(CBolt bolt)
 		// 偶数根锚杆,
 		for (int i = 1; i <= (number / 2); i++)
 		{
-			AcGePoint2d ptUp(ptLeftMid.x +(space  * (i - 0.5) / sin(CDrawUtil::angleToArc(leftAngle))), ptLeftMid.y + (0.5 * i * space));
-			AcGePoint2d ptBottom(ptLeftMid.x- (space  * (i - 0.5) / sin(CDrawUtil::angleToArc(leftAngle))), ptLeftMid.y + (0.5 * i * space));
+			AcGePoint2d ptUp(ptLeftMid.x +(space  * (i - 0.5) / tan(CDrawUtil::angleToArc(leftAngle))), ptLeftMid.y + (0.5 * i * space));
+			AcGePoint2d ptBottom(ptLeftMid.x - (space  * (i - 0.5) / tan(CDrawUtil::angleToArc(leftAngle))), ptLeftMid.y - (0.5 * i * space));
 			mLeftBoltArr->append(ptUp);
 			mLeftBoltArr->append(ptBottom);
 		}
 	}
 	else
 	{
-
 		mLeftBoltArr->append(ptLeftMid);
 		for (int i = 1; i <= (number / 2); i++)
 		{
@@ -378,8 +383,8 @@ void CTrapzoidTunnel::DrawRightBolt(CBolt bolt)
 		// 偶数根锚杆,
 		for (int i = 1; i <= (number / 2); i++)
 		{
-			AcGePoint2d ptUp(ptRightMid.x - (space  * (i - 0.5) / sin(CDrawUtil::angleToArc(rightAngle))), ptRightMid.y + (0.5 * i * space));
-			AcGePoint2d ptBottom(ptRightMid.x + (space  * (i - 0.5) / sin(CDrawUtil::angleToArc(rightAngle))), ptRightMid.y + (0.5 * i * space));
+			AcGePoint2d ptUp(ptRightMid.x - (space  * (i - 0.5) / tan(CDrawUtil::angleToArc(rightAngle))), ptRightMid.y + (0.5 * i * space));
+			AcGePoint2d ptBottom(ptRightMid.x + (space  * (i - 0.5) / tan(CDrawUtil::angleToArc(rightAngle))), ptRightMid.y - (0.5 * i * space));
 			mRightBoltArr->append(ptUp);
 			mRightBoltArr->append(ptBottom);
 		}
@@ -545,11 +550,11 @@ void CTrapzoidTunnel::DrawThickness()
 
 	//绘制厚度批注
 	if (conThickness != 0) {
-		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), conThickness * pScaleNumber);
+		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), pConcreteThickness);
 	}
 	if (qiThickness != 0) {
 		CDrawUtil::CreateDimAligned(AcGePoint2d(ptQiLeftBottom.x + qiBottomWidth, ptLeftBottom.y),
-			AcGePoint2d(ptConLeftBottom.x + conBottomWidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), qiThickness * pScaleNumber);
+			AcGePoint2d(ptConLeftBottom.x + conBottomWidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), pQiThickness);
 	}
 
 }

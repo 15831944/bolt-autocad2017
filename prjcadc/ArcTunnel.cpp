@@ -52,7 +52,7 @@ void CArcTunnel::DrawTunnel()
 		double qiThickness = pQiThickness / pScaleNumber;
 		
 		CDrawUtil::CreateDimAligned(ptA, *ptTunnelStart, 
-			AcGePoint2d(ptA.x + +conThickness + qiThickness+ 5, ptA.y), 
+			AcGePoint2d(ptA.x +conThickness + qiThickness+ 5, ptA.y), 
 			wallHeight * pScaleNumber, 0);
 	}
 	
@@ -483,10 +483,10 @@ void CArcTunnel::DrawThickness()
 	if (conThickness != 0) {
 		CDrawUtil::CreateDimAligned(*ptTunnelStart, AcGePoint2d(ptLeftBottomLine.x, ptTunnelStart->y) ,
 			AcGePoint2d(ptTunnelStart->x, ptTunnelStart->y - 3), 
-			conThickness * pScaleNumber);
+			pConcreteThickness);
 	}
 	if (qiThickness != 0) {
 		CDrawUtil::CreateDimAligned(AcGePoint2d(ptRightBottomLine.x, ptTunnelStart->y), 
-			AcGePoint2d(ptQiRightBottomLine.x, ptTunnelStart->y), AcGePoint2d(ptQiLeftBottomLine.x, ptTunnelStart->y - 3), qiThickness * pScaleNumber);
+			AcGePoint2d(ptQiRightBottomLine.x, ptTunnelStart->y), AcGePoint2d(ptQiLeftBottomLine.x, ptTunnelStart->y - 3), pQiThickness);
 	}
 }

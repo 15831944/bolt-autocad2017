@@ -853,11 +853,11 @@ void CRectangleTunnel::DrawThickness()
 
 	//»æÖÆºñ¶ÈÅú×¢
 	if (conThickness != 0) {
-		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), conThickness * pScaleNumber);
+		CDrawUtil::CreateDimAligned(ptLeftBottom, AcGePoint2d(ptConLeftBottom.x, ptLeftBottom.y), AcGePoint2d(ptLeftBottom.x, ptLeftBottom.y - 3), pConcreteThickness);
 	}
 	if (qiThickness != 0) {
 		CDrawUtil::CreateDimAligned(AcGePoint2d(ptQiLeftBottom.x + qiwidth, ptLeftBottom.y),
-			AcGePoint2d(ptConLeftBottom.x+conwidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), qiThickness * pScaleNumber);
+			AcGePoint2d(ptConLeftBottom.x+conwidth, ptLeftBottom.y), AcGePoint2d(ptQiLeftBottom.x, ptLeftBottom.y - 3), pQiThickness);
 	}
 }
 

@@ -340,6 +340,7 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 		mRadioConcreteQiWay.GetDlgCtrlID()) == 0)
 	{
 		MessageBox(_T("请选择一种支护方式"), _T("警告"), MB_ICONWARNING | MB_OK);
+		isPmLeagal = false;
 	}
 
 	else{
@@ -349,10 +350,10 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 		if (mLeftAngle > 90 || mLeftAngle < 0 || mRightAngle > 90
 			|| mRightAngle < 0) {
 			MessageBox(_T("与帮的夹角应介于于0和90之间"), _T("警告"), MB_ICONWARNING | MB_OK);
+			isPmLeagal = false;
 		}
 		else {
 			TunnelSavepm();
-			//MessageBox(_T("本页参数保存成功"));
 			// 设置巷道支护方式
 			CArcProjectBuilder::GetInstance()->GetArcTunnel()
 				->SetZhihuWay(GetZhihuWayBtn());
@@ -371,7 +372,9 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 
 			std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
 			CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
-			SuccessToMethodChooseDlg();
+			
+			if(isPmLeagal == true)
+				SuccessToMethodChooseDlg();
 		}
 		
 	}
@@ -403,9 +406,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 
 	switch (type) {
 	case 0:
-
-			MessageBox(_T("请选择一种巷道类型"), _T("警告"), MB_ICONWARNING | MB_OK);
-		
+		MessageBox(_T("请选择一种巷道类型"), _T("警告"), MB_ICONWARNING | MB_OK);
 		break;
 	case 1:
 		CArcProjectBuilder::GetInstance()->GetTunnelProejct()->SetTunnelType(1);
@@ -419,6 +420,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 			pTunnel->SetWidth(_ttof(strWidth));
 			pTunnel->SetWallHeight(_ttof(strWallHeight));
 			pTunnel->SetArcHeight(0);
+			isPmLeagal = true;
 		}
 		break;
 	case 2:
@@ -438,6 +440,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 			pTunnel->SetNormalToArc(
 				mRadioNormalToArc.GetCheck() == TRUE ? true : false
 			);
+			isPmLeagal = true;
 			break;
 	case 3:
 		CArcProjectBuilder::GetInstance()->GetTunnelProejct()->SetTunnelType(3);
@@ -457,6 +460,7 @@ void CThreeTunnelDlg::TunnelSavepm()
 			pTunnel->SetTrapBottomWidth(_ttof(strTrapBottomWidth));
 			pTunnel->SetTrapLeftAngle(_ttoi(strTrapLeftAngle));
 			pTunnel->SetTrapRightAngle(_ttoi(strTrapRightAngle));
+			isPmLeagal = true;
 		}
 		break;
 	default:

@@ -22,7 +22,6 @@ public:
 	afx_msg void OnBnClickedChooseOk();
 	void SuccessToMethodChooseDlg();
 	void TunnelSavepm();
-	void SaveFlagInfo();
 	void OnBnClickedButtonProjectDialog();
 
 // 对话框数据
@@ -63,6 +62,7 @@ private:
 
 	double mLeftAngle;
 	double mRightAngle;
+	bool isPmLeagal = false;
 
 	std::vector<CEdit*> mRectEdtArray;
 	std::vector<CEdit*> mArcEdtArray;
