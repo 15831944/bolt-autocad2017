@@ -87,10 +87,10 @@ void CRectangleTunnel::DrawTopBolt(CBolt bolt)
 	if (number % 2 == 0)
 	{
 		// 偶数根锚杆,
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
-			AcGePoint2d ptLeft(ptTopMid.x - (0.5 * i * space), ptTopMid.y);
-			AcGePoint2d ptRight(ptTopMid.x + (0.5 * i * space), ptTopMid.y);
+			AcGePoint2d ptLeft(ptTopMid.x - ((0.5 *space) + (i * space)), ptTopMid.y);
+			AcGePoint2d ptRight(ptTopMid.x + ((0.5 *space) + (i * space)), ptTopMid.y);
 			mTopBoltsArr->append(ptLeft);
 			mTopBoltsArr->append(ptRight);
 		}
@@ -318,10 +318,10 @@ void CRectangleTunnel::DrawTongLeftBolt(CBolt bolt)
 	if (number % 2 == 0)
 	{
 		// 偶数根锚杆,
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
-			AcGePoint2d ptTop(ptLeftMid.x, ptLeftMid.y + (0.5 * i * space));
-			AcGePoint2d ptBottom(ptLeftMid.x, ptLeftMid.y - (0.5 * i * space));
+			AcGePoint2d ptTop(ptLeftMid.x, ptLeftMid.y + ((0.5 * space) + (i * space)));
+			AcGePoint2d ptBottom(ptLeftMid.x, ptLeftMid.y - ((0.5 *space) + (i * space)));
 			mLeftBoltArr->append(ptTop);
 			mLeftBoltArr->append(ptBottom);
 		}
@@ -534,7 +534,7 @@ void CRectangleTunnel::DrawRightBolt(CBolt bolt)
 	if (number % 2 == 0)
 	{
 		// 偶数根锚杆,
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
 			AcGePoint2d ptTop(ptRightMid.x, ptRightMid.y + (0.5 * i * space));
 			AcGePoint2d ptBottom(ptRightMid.x, ptRightMid.y - (0.5 * i * space));
@@ -588,10 +588,10 @@ void CRectangleTunnel::DrawTongRightBolt(CBolt bolt)
 	if (number % 2 == 0)
 	{
 		// 偶数根锚杆,
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
-			AcGePoint2d ptTop(ptRightMid.x, ptRightMid.y + (0.5 * i * space));
-			AcGePoint2d ptBottom(ptRightMid.x, ptRightMid.y - (0.5 * i * space));
+			AcGePoint2d ptTop(ptRightMid.x, ptRightMid.y + ((0.5 *space) + (i * space)));
+			AcGePoint2d ptBottom(ptRightMid.x, ptRightMid.y - ((0.5 *space) + (i * space)));
 			mRightBoltArr->append(ptTop);
 			mRightBoltArr->append(ptBottom);
 		}

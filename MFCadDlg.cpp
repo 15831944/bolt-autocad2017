@@ -186,6 +186,7 @@ void CMFCadDlg::OnNewProject()
 		CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
 		CTunnelProject * pInfo = new CTunnelProject();
 		pInfo->SetPaperTitle(_T("锚杆支护设计图"));
+		pInfo->SetPaperDescription(_T("XXX巷道断面图"));
 		pInfo->SetScaleNumber(_T("100"));
 		pInfo->SetTunnelType(0);
 		CTime time;
@@ -216,6 +217,7 @@ void CMFCadDlg::OnNewProject()
 			CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
 			CTunnelProject * pInfo = new CTunnelProject() ;
 			pInfo->SetPaperTitle(_T("锚杆支护设计图"));
+			pInfo->SetPaperDescription(_T("XXX巷道断面图"));
 			pInfo->SetScaleNumber(_T("100"));
 			pInfo->SetTunnelType(0);
 			CTime time;

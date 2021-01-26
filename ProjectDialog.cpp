@@ -155,7 +155,7 @@ BOOL CProjectDialog::OnInitDialog()
 	mEdtPaperTitle.SetWindowText(_T("锚杆支护设计图"));
 	mEdtDevelopApart.SetWindowText(_T("西安科技大学"));
 	mEdtChecker.SetWindowText(pInfo->GetChecker());
-	mEdtDescription.SetWindowText(pInfo->GetPaperDescription());
+	mEdtDescription.SetWindowText(_T("XXX巷道断面图"));
 	mEdtDesignApart.SetWindowText(pInfo->GetDesignApart());
 	mEdtDesigner.SetWindowText(pInfo->GetDesigner());
 	mEdtPaperNumber.SetWindowText(pInfo->GetPaperNumber());

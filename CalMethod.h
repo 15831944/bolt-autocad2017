@@ -397,7 +397,7 @@ public:
 	double GetCableNumber() {
 		double lb2;
 		double pi = asin(0.5) * 6;
-		double fi = mInnerFriction * pi / 180;
+		double fi = MFCUtil::AngleToArc(mInnerFriction);
 		if (mMeasureWay == 1) {
 			lb2 = mLooseRange / 1000;
 		}
@@ -406,7 +406,10 @@ public:
 				lb2 = a / mPushiNumber;
 			else lb2 = (a + h * tan(pi / 4 - fi / 2)) / mPushiNumber;
 		}
-		double num = mMeiyanZhongdu * 2 * a * 3 * GetTopBoltSpacePitch() * lb2 / pCableBreakPower;
+		double jianpaiju_top = GetTopBoltSpacePitch();
+		std::cout << "loose range jianpaiju_top: " << jianpaiju_top << std::endl;
+		double num = mMeiyanZhongdu * 2 * a * 3 * jianpaiju_top * lb2 / pCableBreakPower;
+		std::cout << "loose range cable number: " << num << std::endl;
 		return ceil(num);
 	};
 	double GetCableSpace() {

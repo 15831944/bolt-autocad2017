@@ -30,7 +30,5 @@ public:
 
 		else printf("the file was not opened!\n");
 	};
-
-
 };
 

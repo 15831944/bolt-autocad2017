@@ -340,6 +340,20 @@ BOOL CLooseRangeDialog::OnInitDialog()
 	mRadioLooseRange.SetCheck(TRUE);
 	OnBnClickedRadioLooseMeasure();
 
+	mEdtAvgGrivity.SetWindowText(_T("26"));
+	 mEdtDepth.SetWindowText(_T("400"));
+	 mEdtFriction.SetWindowText(_T("25"));
+	 mMeiyanZhongdu.SetWindowText(_T("26"));
+	 mEdtNianPower.SetWindowText(_T("3"));
+	 mEdtShuLength.SetWindowText(_T("350"));
+	 mEdtBoltDiameter.SetWindowText(_T("25"));
+	 mEdtBoltDesignNumber.SetWindowText(_T("50"));
+	 mEdtBoltAttach.SetWindowText(_T("7"));
+	 mCalbeFreeLength.SetWindowText(_T("3000"));
+	 mEdtCableDiameter.SetWindowText(_T("40"));
+	 mCableBreakPower.SetWindowText(_T("260"));
+	 mEdtCableAttach.SetWindowText(_T("3"));
+
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE

@@ -631,7 +631,7 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 			pmLeagal = false;
 			break;
 		case 4:
-			MessageBox(_T("请调整锚杆间距或根数"), _T("警告"), MB_ICONWARNING);
+			MessageBox(_T("请调整锚索间距或根数"), _T("警告"), MB_ICONWARNING);
 			pmLeagal = false;
 			break;
 		default:

@@ -89,12 +89,12 @@ void CArcTunnel::DrawTopBolt(CBolt bolt)
 	if (number % 2 == 0)
 	{
 		// 偶数根锚杆
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
-			AcGePoint2d ptLeft(ptArcMid.x - (0.5 * i * space),
-				ptCenter->y + sqrt((radius * radius) - ((0.5 * i * space) * (0.5 * i * space))) );
-			AcGePoint2d ptRight(ptArcMid.x + (0.5 * i * space),
-				ptCenter->y + sqrt((radius * radius) - ((0.5 * i * space) * (0.5 * i * space))));
+			AcGePoint2d ptLeft(ptArcMid.x - ((0.5 *space) + (i * space)),
+				ptCenter->y + sqrt((radius * radius) - (((0.5 *space) + (i * space)) * ((0.5 *space) + (i * space)))) );
+			AcGePoint2d ptRight(ptArcMid.x + ((0.5 *space) + (i * space)),
+				ptCenter->y + sqrt((radius * radius) - (((0.5 *space) + (i * space)) * ((0.5 *space) + (i * space)))));
 			mTopBoltsArr->append(ptLeft);
 			mTopBoltsArr->append(ptRight);
 		}
@@ -310,13 +310,12 @@ void CArcTunnel::DrawCable()
 	if (number % 2 == 0)
 	{
 		// 偶数根锚索
-		for (int i = 1; i <= (number / 2); i++)
+		for (int i = 0; i < (number / 2); i++)
 		{
-
-			AcGePoint2d ptLeft(ptArcMid.x - (0.5 * i * space),
-				ptCenter->y + sqrt((radius * radius) - ((0.5 * i * space) * (0.5 * i * space))));
-			AcGePoint2d ptRight(ptArcMid.x + (0.5 * i * space),
-				ptCenter->y + sqrt((radius * radius) - ((0.5 * i * space) * (0.5 * i * space))));
+			AcGePoint2d ptLeft(ptArcMid.x - ((0.5 *space) + (i * space)),
+				ptCenter->y + sqrt((radius * radius) - (((0.5 *space) + (i * space)) * ((0.5 *space) + (i * space)))));
+			AcGePoint2d ptRight(ptArcMid.x + ((0.5 *space) + (i * space)),
+				ptCenter->y + sqrt((radius * radius) - (((0.5 *space) + (i * space)) * ((0.5 *space) + (i * space)))));
 			mCableArr->append(ptLeft);
 			mCableArr->append(ptRight);
 		}
