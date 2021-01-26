@@ -54,10 +54,12 @@ void CTrapzoidTunnel::DrawTunnel()
 		double qiThickness = pQiThickness / pScaleNumber;
 		ptHeightDimLine.x = ptHeightDimEnd.x - 10 - conThickness - qiThickness;
 	}
+
 	CDrawUtil::CreateDimAligned(ptRightTop, ptHeightDimEnd, ptHeightDimLine, height * 100, 0);
 
 	AcGePoint2d ptLeftTop(ptLeftBottom.x + (height / tan(CDrawUtil::angleToArc(rightAngle))), ptLeftBottom.y + height);
-
+	// 梯形上底的长度标注
+	CDrawUtil::CreateDimAligned(ptLeftTop, ptRightTop, AcGePoint2d(ptLeftTop.x, ptLeftTop.y - 5), topWidth * 100, 0);
 	CDrawUtil::CreateDimRotated(ptLeftBottom, ptRightBottom, 
 		ptLeftBottom, ptLeftTop, ptLeftBottom ,CDrawUtil::angleToArc(leftAngle));
 	CDrawUtil::CreateDimRotated(ptRightBottom, ptLeftBottom,
@@ -151,6 +153,14 @@ void CTrapzoidTunnel::DrawTopTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptNewLeftBottom(ptLeftBottom.x, ptNetCrossBase.y + i * (pitch)-0.5);
 		CDrawUtil::AddRectangle(ptNewLeftBottom, space*(number - 1) + 4, beamWidth * 2, 0.1);
+		if (i == 0) {
+			AcGePoint2d ptLine1Start(ptNewLeftBottom.x + beamWidth + space + 5, ptNewLeftBottom.y + beamWidth);
+			AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 20);
+			AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 }
 
@@ -199,6 +209,14 @@ void CTrapzoidTunnel::DrawTopViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(mTopBoltsArr->at(i).x - beamWidth, ptNetCrossBase.y - beamWidth + (j * pitch));
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 15);
+				AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -284,6 +302,14 @@ void CTrapzoidTunnel::DrawLeftTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptBeamLeftBottom(ptCrossBase.x - (i * pitch) - beamWidth, ptLeftBottom.y);
 		CDrawUtil::AddRectangle(ptBeamLeftBottom, beamWidth * 2, space * (number - 1) + 4, 0.1);
+		if (i == 1) {
+			AcGePoint2d ptLine1Start(ptBeamLeftBottom.x + beamWidth, ptBeamLeftBottom.y + 5);
+			AcGePoint2d ptLine1End(ptLine1Start.x + pitch + 10, space * (bolt.getNumber() - 1) + ptLine1Start.y + 15);
+			AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 
 }
@@ -336,6 +362,15 @@ void CTrapzoidTunnel::DrawLeftViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(ptCrossBase.x - beamWidth - (j*pitch), mLeftBoltArr->at(i).y - beamWidth);
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			//绘制锚杆标注
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x + 10, space * (bolt.getNumber() - 1) + ptLine1Start.y);
+				AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -451,6 +486,14 @@ void CTrapzoidTunnel::DrawRightTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptBeamLeftBottom(ptCrossBase.x + (i * pitch) - beamWidth, ptLeftBottom.y);
 		CDrawUtil::AddRectangle(ptBeamLeftBottom, beamWidth * 2, space * (number - 1) + 4, 0.1);
+		if (i == 1) {
+			AcGePoint2d ptLine1Start(ptBeamLeftBottom.x + beamWidth, ptBeamLeftBottom.y + 5);
+			AcGePoint2d ptLine1End(ptLine1Start.x - pitch - 10, space * (bolt.getNumber() - 1) + ptLine1Start.y + 15);
+			AcGePoint2d ptLine2End(ptLine1End.x - 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine2End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 }
 
@@ -468,12 +511,18 @@ void CTrapzoidTunnel::DrawRightViewNet(CBolt bolt)
 		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
 	}
+	int minId = GetMinPointId(mRightBoltArr);
 	// 绘制与锚杆对应的横线，直接调用mRightBoltArr 的纵坐标即可
 	for (int i = 0; i < mRightBoltArr->length(); i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - 5, mRightBoltArr->at(i).y);
 		AcGePoint2d ptEnd(ptStart.x + (6 * pitch) + 5, ptStart.y);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
+		if (i != minId)
+		{
+			CDrawUtil::CreateDimAligned(ptStart, AcGePoint2d(ptStart.x, ptStart.y - space),
+				AcGePoint2d(ptStart.x - 5, ptStart.y), space * pScaleNumber, 0);
+		}
 	}
 	// 绘制竖线，竖线长度为巷道宽度 + 10,间隔为排距
 	for (int i = 0; i < 6; i++)
@@ -481,6 +530,11 @@ void CTrapzoidTunnel::DrawRightViewNet(CBolt bolt)
 		AcGePoint2d ptStart(ptCrossBase.x + (i * pitch), ptCrossBase.y - 5);
 		AcGePoint2d ptEnd(ptStart.x, ptStart.y + height + 10);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
+		if (i != 5)
+		{
+			CDrawUtil::CreateDimAligned(ptStart, AcGePoint2d(ptStart.x + pitch, ptStart.y),
+				AcGePoint2d(ptStart.x, ptStart.y - 5), pitch * pScaleNumber, 0);
+		}
 	}
 
 	// 在右视图中绘制锚杆托盘小矩形
@@ -491,6 +545,15 @@ void CTrapzoidTunnel::DrawRightViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(ptCrossBase.x - beamWidth + (j*pitch), mLeftBoltArr->at(i).y - beamWidth);
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			//绘制锚杆标注
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x - 10, space * (bolt.getNumber() - 1) + ptLine1Start.y);
+				AcGePoint2d ptLine2End(ptLine1End.x - 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine2End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }

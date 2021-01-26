@@ -146,4 +146,6 @@ private:
 	CButton mRadioMetalBangnet;
 	CButton mRadioRebarBangnet;
 	CButton mRadioPlasticBangnet;
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

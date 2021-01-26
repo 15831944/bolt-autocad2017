@@ -166,6 +166,7 @@ BEGIN_MESSAGE_MAP(CParametersDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE_PM, &CParametersDialog::OnBnClickedButtonSavePm)
 	ON_BN_CLICKED(IDC_BUTTON_BACK_METHOD_CHOOSE, &CParametersDialog::OnBnClickedButtonBackMethodChoose)
 	ON_WM_MOVING()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -466,11 +467,6 @@ void CParametersDialog::OnBnClickedOk()
 		OnBnClickedButtonSavePm();
 
 		if (pmLeagal == true) {
-			
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetTopBolt(InitBoltInfo(1));
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetLeftBolt(InitBoltInfo(2));
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetRightBolt(InitBoltInfo(3));
-			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetCable(InitCableInfo());
 
 			//向桥接文件写入参数
 			CArcProjectBuilder::GetInstance()->SetFileUrl(CFileUtil::GetAppRegeditPath() + _T("ini\\bridge.ini"));
@@ -484,14 +480,13 @@ void CParametersDialog::OnBnClickedOk()
 					//MessageBox(_T("桥接文件保存成功！"));
 					CArcProjectBuilder::GetInstance()->SetFileUrl(_T(""));
 					CArcProjectBuilder::GetInstance()->SetSavedToFile(FALSE);
+					CADService::WriteAcadRx();
+					CADService::LaunchACad();
+					MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
 				}
 				else {
 					MessageBox(_T("桥接文件保存失败！"), _T("错误"));
 				}
-				CADService::WriteAcadRx();
-				CADService::LaunchACad();
-
-				MessageBox(_T("绘制成功，AutoCad已启动！"), _T("绘图成功"));
 			}
 		}
 		else {
@@ -644,7 +639,6 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 		}
 	}
 	else {
-
 		// 检查无错误
 		CArcProjectBuilder::GetInstance()
 			->GetArcTunnel()->SetHasTopBolt(mCheckTopBolt.GetCheck() == TRUE ? true : false);
@@ -662,20 +656,16 @@ void CParametersDialog::OnBnClickedButtonSavePm()
 
 		if (CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetZhihuWay() > 1)
 		{
-			//CMethod * method = new CTheoryCalMethod();
-
 			CString strQi, strConcrete;
 			mEdtConcreteThickness.GetWindowText(strConcrete);
 			mEdtQiThickness.GetWindowText(strQi);
 			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetQiThickness(_ttoi(strQi));
 			CArcProjectBuilder::GetInstance()->GetArcTunnel()->SetConcreteThickness(_ttoi(strConcrete));
-			//CArcProjectBuilder::GetInstance()->SetMethod(method);
 		}
 		SaveCastnetInfo();
 		MessageBox(_T("本页参数已保存"), _T("成功"));
 		pmLeagal = true;
 	}
-
 }
 
 void CParametersDialog::OnOK()
@@ -794,4 +784,40 @@ void CParametersDialog::OnMoving(UINT fwSide, LPRECT lpRect)
 	CDialogEx::OnMoving(fwSide, lpRect);
 
 	// TODO: 在此处添加消息处理程序代码
+}
+
+
+HBRUSH CParametersDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  在此更改 DC 的任何特性
+	switch (pWnd->GetDlgCtrlID()) {
+		case IDC_EDIT_TOP_BOLT_LENGTH:
+		case IDC_EDIT_TOP_BOLT_NUMBER:
+		case IDC_EDIT_TOP_BOLT_SPACE:
+		case IDC_EDIT_TOP_BOLT_PITCH:
+		case IDC_EDIT_TOP_BOLT_ALENGTH:
+		case IDC_EDIT_LEFT_BOLT_LENGTH:
+		case IDC_EDIT_LEFT_BOLT_NUMBER:
+		case IDC_EDIT_LEFT_BOLT_SPACE:
+		case IDC_EDIT_LEFT_BOLT_PITCH:
+		case IDC_EDIT_LEFT_BOLT_ALENGTH:
+		case IDC_EDIT_RIGHT_BOLT_LENGTH:
+		case IDC_EDIT_RIGHT_BOLT_NUMBER:
+		case IDC_EDIT_RIGHT_BOLT_SPACE:
+		case IDC_EDIT_RIGHT_BOLT_PITCH:
+		case IDC_EDIT_RIGHT_BOLT_ALENGTH:
+		case IDC_EDIT_CABLE_LENGTH:
+		case IDC_EDIT_CABLE_NUMBER:
+		case IDC_EDIT_CABLE_SPACE:
+		case IDC_EDIT_CABLE_PITCH:
+		case IDC_EDIT_CABLE_ALENGTH:
+			pDC->SetTextColor(RGB(255, 0, 0));
+			break;
+	}
+
+
+	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
+	return hbr;
 }

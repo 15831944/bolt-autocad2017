@@ -189,6 +189,14 @@ void CArcTunnel::DrawTopTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptTopViewTrayLeftBottom(ptA.x, ptNetCrossBase.y + (i*pitch) - 0.5);
 		CDrawUtil::AddRectangle(ptTopViewTrayLeftBottom, space*(number - 1) + 4, beamWidth * 2, 0.07);
+		if (i == 0) {
+			AcGePoint2d ptLine1Start(ptTopViewTrayLeftBottom.x + beamWidth + space + 5, ptTopViewTrayLeftBottom.y + beamWidth);
+			AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 20);
+			AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 }
 
@@ -259,6 +267,14 @@ void CArcTunnel::DrawTopViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(mTopBoltsArr->at(i).x - beamWidth, ptNetCrossBase.y - beamWidth + (j * pitch));
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 15);
+				AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -363,7 +379,6 @@ void CArcTunnel::DrawCable()
 		CDrawUtil::AddPolyLine(ptEnd, ptAEnd, 0.5); //绘制锚固长
 		
 		
-		
 		if (i == 0)
 		{
 			// 经过标注线的点，设置为锚杆横坐标 - 2
@@ -374,17 +389,12 @@ void CArcTunnel::DrawCable()
 			CDrawUtil::CreateDimAligned(ptEnd, ptAEnd, ptADimLine, pCable->getALength());
 		}
 
-		
-		
-
 		// 在顶视图中绘制锚索视图
-
 		AcGePoint2d ptNetCrossBase(170, 170);
 		double yMid = ptNetCrossBase.y + (56 / 2);
 		double radius = 0.5;
 		for (int i = 0; i < mCableArr->length(); i++)
 		{
-
 			for (int j = 0; j < 2; j++)
 			{
 				AcGePoint2d ptCenter(mCableArr->at(i).x, yMid + (j * pitch));
@@ -394,8 +404,15 @@ void CArcTunnel::DrawCable()
 				ptCenter.y = yMid - (j * pitch);
 				CDrawUtil::AddCircle(ptCenter, radius);
 				CDrawUtil::AddRectangle(AcGePoint2d(ptCenter.x - 2.5, ptCenter.y - 1.25), 5, 2.5, 0.05);
+				if (i == 0 && j == 1) {
+					AcGePoint2d ptLine1Start = ptCenter;
+					AcGePoint2d ptLine1End(ptLine1Start.x + 5, ptLine1Start.y - 20);
+					AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+					CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+					CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+					CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚索"), 1.5);
+				}
 			}
-
 		}
 		AcGePoint2d ptMidCenter(mCableArr->at(0).x, yMid);
 		CDrawUtil::CreateDimAligned(ptMidCenter, AcGePoint2d(mCableArr->at(0).x, yMid + pitch),

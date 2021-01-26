@@ -652,7 +652,7 @@ public:
 		std::cout << "zuheliang q: " << q << std::endl;
 		//巷道所受水平应力
 		double SigmaH = 1.2 * mCeyaliNumber * mTopGravity * mTopThickness;
-		SigmaH /= 10;
+		SigmaH *= 0.001;
 		std::cout << "zuheliang sigmaH: " << SigmaH << std::endl;
 		double div_top = mBoltSafeNumber * q,
 			div_bottom = mZhejianNumber * (mKangla + SigmaH);

@@ -47,6 +47,9 @@ void CTunnel::DrawProject(CTunnelProject project)
 	CDrawUtil::AddText(AcGePoint2d(296, 16),project.GetDate());
 	CDrawUtil::AddText(AcGePoint2d(330, 8),project.GetPaperDescription());
 
+	CDrawUtil::AddText(AcGePoint2d(162, 43), project.GetPaperDescription() + " 1: " + project.GetScaleNumber(), 4.0);
+	CDrawUtil::AddPolyLine(AcGePoint2d(162, 37), AcGePoint2d(225, 37), 0.5);
+	CDrawUtil::AddPolyLine(AcGePoint2d(162, 35), AcGePoint2d(225, 35), 0.1);
 }
 
 void CTunnel::DrawTableBoltPm()

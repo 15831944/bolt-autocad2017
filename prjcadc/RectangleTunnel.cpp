@@ -163,6 +163,14 @@ void CRectangleTunnel::DrawTopTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptTopViewTrayLeftBottom(ptLeftBottom.x, ptNetCrossBase.y + (i*pitch)-0.5);
 		CDrawUtil::AddRectangle(ptTopViewTrayLeftBottom, space*(number - 1) + 4, beamWidth * 2, 0.07);
+		if (i == 0) {
+			AcGePoint2d ptLine1Start(ptTopViewTrayLeftBottom.x + beamWidth + space + 5, ptTopViewTrayLeftBottom.y + beamWidth);
+			AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 20);
+			AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 }
 
@@ -233,6 +241,14 @@ void CRectangleTunnel::DrawTopViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(mTopBoltsArr->at(i).x - beamWidth, ptNetCrossBase.y - beamWidth + (j * pitch));
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x + 10, ptLine1Start.y - 15);
+				AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -398,6 +414,15 @@ void CRectangleTunnel::DrawLeftTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptBeamLeftBottom(ptCrossBase.x - (i * pitch) - beamWidth, ptLeftBottom.y);
 		CDrawUtil::AddRectangle(ptBeamLeftBottom, beamWidth * 2, space * (number - 1) + 4, 0.1);
+		
+		if (i == 1) {
+			AcGePoint2d ptLine1Start(ptBeamLeftBottom.x + beamWidth, ptBeamLeftBottom.y + 5);
+			AcGePoint2d ptLine1End(ptLine1Start.x + pitch + 10, space * (bolt.getNumber() - 1) + ptLine1Start.y + 15);
+			AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 }
 
@@ -431,13 +456,13 @@ void CRectangleTunnel::DrawLeftViewNet(CBolt bolt)
 		}
 	}
 
-
 	// 绘制竖线，竖线长度为巷道宽度 + 10,间隔为排距
 	for (int i = 0; i < 6; i++)
 	{
 		AcGePoint2d ptStart(ptCrossBase.x - (i * pitch), ptCrossBase.y - 5);
 		AcGePoint2d ptEnd(ptStart.x, ptStart.y + height + 10);
 		CDrawUtil::AddPolyLine(ptStart, ptEnd, 0.05);
+		// 绘制下面的标注
 		if (i != 0)
 		{
 			CDrawUtil::CreateDimAligned(ptStart, AcGePoint2d(ptStart.x + pitch, ptStart.y),
@@ -453,6 +478,15 @@ void CRectangleTunnel::DrawLeftViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(ptCrossBase.x - beamWidth - (j*pitch), mLeftBoltArr->at(i).y -beamWidth);
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			//绘制锚杆标注
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x + 10, space * (bolt.getNumber() - 1) + ptLine1Start.y);
+				AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -645,11 +679,17 @@ void CRectangleTunnel::DrawRightTuoLiang(CBolt bolt)
 	{
 		AcGePoint2d ptBeamLeftBottom(ptCrossBase.x + (i * pitch) - beamWidth, ptLeftBottom.y);
 		CDrawUtil::AddRectangle(ptBeamLeftBottom, beamWidth * 2, space * (number - 1) + 4, 0.1);
+		if (i == 1) {
+			AcGePoint2d ptLine1Start(ptBeamLeftBottom.x + beamWidth, ptBeamLeftBottom.y + 5);
+			AcGePoint2d ptLine1End(ptLine1Start.x - pitch - 10, space * (bolt.getNumber() - 1) + ptLine1Start.y + 15);
+			AcGePoint2d ptLine2End(ptLine1End.x - 10, ptLine1End.y);
+			CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+			CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+			CDrawUtil::AddText(AcGePoint2d(ptLine2End.x + 1, ptLine1End.y + 0.5), _T("锚杆托梁"), 1.5);
+		}
 	}
 
 }
-
-
 
 void CRectangleTunnel::DrawRightViewNet(CBolt bolt)
 {
@@ -676,9 +716,8 @@ void CRectangleTunnel::DrawRightViewNet(CBolt bolt)
 		if (i != minId)
 		{
 			CDrawUtil::CreateDimAligned(ptStart, AcGePoint2d(ptStart.x, ptStart.y - space),
-				AcGePoint2d(ptStart.x + 5, ptStart.y), space * pScaleNumber, 0);
+				AcGePoint2d(ptStart.x - 5, ptStart.y), space * pScaleNumber, 0);
 		}
-		
 	}
 	// 绘制竖线，竖线长度为巷道宽度 + 10,间隔为排距
 	for (int i = 0; i < 6; i++)
@@ -701,6 +740,14 @@ void CRectangleTunnel::DrawRightViewNet(CBolt bolt)
 		{
 			AcGePoint2d ptLeftBottom(ptCrossBase.x - beamWidth + (j*pitch), mLeftBoltArr->at(i).y - beamWidth);
 			CDrawUtil::AddRectangle(ptLeftBottom, beamWidth * 2, beamWidth * 2, 0.05);
+			if (i == 0 && j == 0) {
+				AcGePoint2d ptLine1Start(ptLeftBottom.x + beamWidth, ptLeftBottom.y + beamWidth);
+				AcGePoint2d ptLine1End(ptLine1Start.x - 10, space * (bolt.getNumber() - 1) + ptLine1Start.y);
+				AcGePoint2d ptLine2End(ptLine1End.x - 10, ptLine1End.y);
+				CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+				CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+				CDrawUtil::AddText(AcGePoint2d(ptLine2End.x + 1, ptLine1End.y + 0.5), _T("锚杆"), 1.5);
+			}
 		}
 	}
 }
@@ -796,6 +843,14 @@ void CRectangleTunnel::DrawCable(CCable cable)
 				ptCenter.y = yMid - (j * pitch);
 				CDrawUtil::AddCircle(ptCenter, radius);
 				CDrawUtil::AddRectangle(AcGePoint2d(ptCenter.x - 2.5, ptCenter.y - 1.25), 5, 2.5, 0.05);
+				if (i == 0 && j == 1) {
+					AcGePoint2d ptLine1Start = ptCenter;
+					AcGePoint2d ptLine1End(ptLine1Start.x + 5, ptLine1Start.y - 20);
+					AcGePoint2d ptLine2End(ptLine1End.x + 10, ptLine1End.y);
+					CDrawUtil::AddPolyLine(ptLine1Start, ptLine1End, 0.02);
+					CDrawUtil::AddPolyLine(ptLine1End, ptLine2End, 0.02);
+					CDrawUtil::AddText(AcGePoint2d(ptLine1End.x + 1, ptLine1End.y + 0.5), _T("锚索"), 1.5);
+				}
 			}
 
 		}
