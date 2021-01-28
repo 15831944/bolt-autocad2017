@@ -294,6 +294,8 @@ BOOL CThreeTunnelDlg::OnInitDialog()
 
 	mRadioDefaultWay.SetCheck(TRUE);
 	
+	mEdtRecWidth.SetWindowText(_T("5200"));
+	mEdtRecHeight.SetWindowText(_T("3200"));
 	setOptionDisabled();
 	mEdtBoltLeftAngle.SetWindowText(_T("90"));
 	mEdtBoltRightAngle.SetWindowText(_T("90"));

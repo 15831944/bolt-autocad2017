@@ -65,7 +65,7 @@ public:
 			length = 1.6;
 		}
 		else if (length > 2.8) {
-			length = 1.8;
+			length = 2.8;
 		}
 		else {
 			length = ceil(length * 10) / 10;

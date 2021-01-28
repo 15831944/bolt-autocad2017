@@ -319,6 +319,7 @@ public:
 		 CString mStoneToughNumber("StoneToughNumber");
 		 CString mStableNumber("StableNumber");
 		 CString mTopAvgGravity("TopAvgGravity");
+		 CString mBoltALength("BoltALength");
 		 CSimpleIni mProjectIni;
 
 		 SI_Error rc = mProjectIni.LoadFile(fileUrl);
@@ -345,6 +346,7 @@ public:
 		 mProjectIni.SetDoubleValue(strBalanceMethod, mStableNumber, balance->GetStableNumber());
 		 mProjectIni.SetDoubleValue(strBalanceMethod, mTopAvgGravity, balance->GetTopAvgGravity());
 		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltOutLength, balance->GetBoltOutLength());
+		 mProjectIni.SetDoubleValue(strBalanceMethod, mBoltALength, balance->GetBoltALength());
 		 SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		 return rc2 < 0 ? false : true;
 	 };
@@ -852,7 +854,7 @@ public:
 			balance->SetCableStoneHeight(mProjectIni.GetDoubleValue(strBalanceMethod, mCableStoneHeight));
 			balance->SetMinBreakLoader(mProjectIni.GetDoubleValue(strBalanceMethod, mMinBreakPower));
 			balance->SetCableSafeNumber(mProjectIni.GetDoubleValue(strBalanceMethod, mCableSafeNumber));
-		
+			balance->SetBoltALength(mProjectIni.GetDoubleValue(strBalanceMethod, mBoltALength));
 			break;
 
 		case 6:

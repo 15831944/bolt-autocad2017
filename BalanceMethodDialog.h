@@ -61,4 +61,5 @@ private:
 	void SetExpertValue();
 	CEdit CEdtConThickcness;
 	CEdit CEdtQiThickcness;
+	double mBoltAlength;
 };

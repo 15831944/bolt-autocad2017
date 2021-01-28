@@ -432,6 +432,7 @@ private:
 	double mStableNumber; // 待锚岩层稳定性系数
 	double mStoneHardNumber;//锚固岩层硬度
 	double mCoalAngle; //煤岩倾角
+	double mBoltALength;
 	double mBoltOutLength; //锚杆外露长度
 	double mBoltSpace;
 	double mBoltYieldNumber; // 锚杆屈服强度
@@ -505,7 +506,8 @@ public:
 	double GetMinBreakLoader() const { return mMinBreakLoader; };
 	void SetCableSafeNumber(double t) { mCableSafeNumber = t; };
 	double GetCableSafeNumber() const { return mCableSafeNumber; };
-
+	void SetBoltALength(double t) { mBoltALength = t; };
+	double GetBoltALength() const { return mBoltALength; };
 	// 获取顶部锚杆的根数
 	int GetTopBoltNumber() {
 		if (mBoltNumber * mBoltSpace * 0.001 > a * 2) {
@@ -517,12 +519,12 @@ public:
 
 	// 获取顶部锚杆的长度
 	double GetTopBoltLength() {
-		double L =  GetTopBreakDepth() + mBoltOutLength;
+		double L =  GetTopBreakDepth() + (mBoltOutLength * 0.001) + (mBoltALength * 0.001);
 		return DataChecker::RestrainBoltLength(L) ;
 	};
 
 	double GetBangBoltLength() {
-		double L = GetBangBreakDepth() + mBoltOutLength;
+		double L = GetBangBreakDepth() + (mBoltOutLength * 0.001) + (mBoltALength * 0.001);
 		return DataChecker::RestrainBoltLength(L);
 	};
 
@@ -684,12 +686,12 @@ public:
 
 	virtual int GetTopBoltNumber() {
 		double space = GetBoltSpaceAndPitch();
-		return ceil(a * 2 / space);
+		return floor(a * 2 / space);
 	};
 
 	int GetBangBoltNumber() {
 		double space = GetBoltSpaceAndPitch();
-		return ceil(h / space);
+		return floor(h / space);
 	};
 
 };
@@ -817,10 +819,10 @@ public:
 	};
 	double GetCableSpace() {
 		std::cout << "suxingqu: cable sapce: " << 2 * a / GetCableNumber() << std::endl;
-		return 2 * a / GetCableNumber();
+		return DataChecker::RestrainCableSpace(2 * a / GetCableNumber());
 	};
 	double GetCablePitch() {
-		return 3 * GetTopSpaceAndPitch();
+		return DataChecker::RestrainCableSpace(3 * GetTopSpaceAndPitch());
 	};
 };
 

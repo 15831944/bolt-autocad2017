@@ -38,6 +38,7 @@ CBalanceMethodDialog::CBalanceMethodDialog(CWnd* pParent /*=NULL*/)
 	, mTopAvgGravity(0)
 	, mConcreteThickness(0)
 	, mQiThickness(0)
+	, mBoltAlength(0)
 {
 
 	mGroundAvgGravity = 24.9;
@@ -49,7 +50,8 @@ CBalanceMethodDialog::CBalanceMethodDialog(CWnd* pParent /*=NULL*/)
 	mCoalFriction = 6;
 	mStableNumber = 0.5;
 	mStoneToughNumber = 5;
-	mBoltOutLength = 0.6;
+	mBoltOutLength = 100;
+	mBoltAlength = 500;
 	mBoltPower = 50;
 	mBoltNumber = 7;
 	mBoltSafeNumber = 3;
@@ -60,7 +62,7 @@ CBalanceMethodDialog::CBalanceMethodDialog(CWnd* pParent /*=NULL*/)
 	mCableOutLength = 0.3;
 	mCableStoneHeight = 5;
 	mCableAlength = 1.4;
-	mCableSafeNumber = 0.2;
+	mCableSafeNumber = 1;
 	mMinBreakPower = 260;
 }
 
@@ -80,6 +82,7 @@ void CBalanceMethodDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_CABLE_SAFE_NUMBER, mCableSafeNumber);
 	DDX_Text(pDX, IDC_EDIT_BOLT_NUMBER, mBoltNumber);
 	DDX_Text(pDX, IDC_EDIT_BOLT_OUT_LENGTH, mBoltOutLength);
+	DDX_Text(pDX, IDC_EDIT_BOLT_ALENGTH, mBoltAlength);
 	DDX_Text(pDX, IDC_EDIT_BOLT_POWER, mBoltPower);
 	DDX_Text(pDX, IDC_EDIT_BOLT_SAFE_NUMBER, mBoltSafeNumber);
 	DDX_Text(pDX, IDC_EDIT_BOLT_SPACE, mBoltSpace);
@@ -142,12 +145,14 @@ void CBalanceMethodDialog::SetExpertValue()
 	topBolt->setDiameter(balance->GetBoltDiameter());
 	topBolt->setPitch(balance->GetBoltPitch() * tmp);
 	topBolt->setSpace(balance->GetBoltSpace());
+	topBolt->setALength(balance->GetBoltALength());
 	
 	leftBolt->setLength(balance->GetBangBoltLength()* tmp);
 	leftBolt->setDiameter(balance->GetBoltDiameter());
 	leftBolt->setPitch(balance->GetBoltPitch() * tmp);
 	leftBolt->setSpace(balance->GetBoltSpace());
 	leftBolt->setNumber(balance->GetBangBoltNumber());
+	leftBolt->setALength(balance->GetBoltALength());
 
 	cable->setLength(balance->GetCableLength()* tmp);
 	cable->setSpace(balance->GetCableSpaceAndPitch()* tmp);
@@ -239,6 +244,7 @@ void CBalanceMethodDialog::OnBnClickedOk()
 		balance->SetCableOutLength(mCableOutLength);
 		balance->SetCableSafeNumber(mCableSafeNumber);
 		balance->SetMinBreakLoader(mMinBreakPower);
+		balance->SetBoltALength(mBoltAlength);
 
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetConcreteThickness(mConcreteThickness);
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
@@ -304,6 +310,7 @@ void CBalanceMethodDialog::UpdateUI()
 	mCableOutLength = balance->GetCableOutLength();
 	mCableSafeNumber = balance->GetCableSafeNumber();
 	mMinBreakPower = balance->GetMinBreakLoader();
+	mBoltAlength = balance->GetBoltALength();
 
 	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
 	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
