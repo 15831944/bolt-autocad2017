@@ -436,6 +436,10 @@ public:
 		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableFreeLength, suxingqu->GetCableFreeLength());
 		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableAttach, suxingqu->GetCableAttach());
 		mProjectIni.SetDoubleValue(strSuxingquMethod, mCableBreakPower, suxingqu->GetCableBreakPower());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, _T("Poisson"), suxingqu->GetPoisson());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, _T("DanzhouKangya"), suxingqu->GetDanzhouKangya());
+		mProjectIni.SetDoubleValue(strSuxingquMethod, _T("QingFriction"), suxingqu->GetQingFriction());
+
 		SI_Error rc2 = mProjectIni.SaveFile(fileUrl);
 		return rc2 < 0 ? false : true;
 	};
@@ -902,6 +906,9 @@ public:
 			suxingqu->SetCableFreeLength(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("CableFreeLength"))) ;
 			suxingqu->SetCableAttach(mProjectIni.GetDoubleValue(strSuxingquMethod, strCableAttach)) ;
 			suxingqu->SetCableBreakPower(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("CableBreakPower"))) ;
+			suxingqu->SetPoisson(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("Poisson")));
+			suxingqu->SetDanzhouKangya(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("DanzhouKangya")));
+			suxingqu->SetQingFriction(mProjectIni.GetDoubleValue(strSuxingquMethod, _T("QingFriction")));
 			break;
 		default:
 			break;

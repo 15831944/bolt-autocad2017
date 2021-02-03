@@ -41,10 +41,10 @@ void CTunnel::DrawProject(CTunnelProject project)
 
 	CDrawUtil::AddText(AcGePoint2d(260, 8),_T("审核者"));
 	CDrawUtil::AddText(AcGePoint2d(275, 8),project.GetChecker());
-	CDrawUtil::AddText(AcGePoint2d(296, 8),project.GetCheckDate());
+	CDrawUtil::AddText(AcGePoint2d(296, 8),project.GetCheckDate(), 2.0);
 	CDrawUtil::AddText(AcGePoint2d(260, 16),_T("设计者"));
 	CDrawUtil::AddText(AcGePoint2d(275, 16),project.GetDesigner());
-	CDrawUtil::AddText(AcGePoint2d(296, 16),project.GetDate());
+	CDrawUtil::AddText(AcGePoint2d(296, 16),project.GetDate(), 2.0);
 	CDrawUtil::AddText(AcGePoint2d(330, 8),project.GetPaperDescription());
 
 	CDrawUtil::AddText(AcGePoint2d(162, 43), project.GetPaperDescription() + " 1: " + project.GetScaleNumber(), 4.0);

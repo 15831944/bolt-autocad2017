@@ -39,19 +39,35 @@ private:
 	double mCableFreeLength;
 	double mCableAttach;
 	double mCableBreakPower;
+	double mQingFriction;
+	double mDanzhouKangya;
+	double mPoisson;
+	CEdit CEdtQingFriction;
+	CEdit CEdtDanzhouKangya;
+	CEdit CEdtPoisson;
 
+	CEdit CEdtConThickcness;
+	CEdit CEdtQiThickcness;
+
+
+	CStatic mSuxingquTitle;
+	CStatic mStaticQingjiao;
+	CStatic mStaticDu;
+	CStatic mStaticDanzhou;
+	CStatic mStaticMPa;
+	CStatic mStaticPosong;
 	double mConcreteThickness;
 	double mQiThickness;
 	bool pmLeagal = false;
 
 	void CheckThickness();
 	void SetExpertValue();
+
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedButtonTunnelDialog();
 	virtual BOOL OnInitDialog();
-private:
-	CEdit CEdtConThickcness;
-	CEdit CEdtQiThickcness;
+	void UpdateBigEditDiasabler();
+
 };

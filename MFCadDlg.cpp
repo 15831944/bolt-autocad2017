@@ -93,8 +93,8 @@ END_MESSAGE_MAP()
 BOOL CMFCadDlg::OnInitDialog()
 {
 
-	//CSkipDialog *dlgSkip = new CSkipDialog();
-	//dlgSkip->DoModal();
+	CSkipDialog *dlgSkip = new CSkipDialog();
+	dlgSkip->DoModal();
 
 	CDialogEx::OnInitDialog();
 	// 将“关于...”菜单项添加到系统菜单中。

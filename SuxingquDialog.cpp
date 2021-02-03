@@ -29,6 +29,9 @@ CSuxingquDialog::CSuxingquDialog(CWnd* pParent /*=NULL*/)
 	, mCableFreeLength(0)
 	, mCableAttach(0)
 	, mCableBreakPower(0)
+	, mQingFriction(0)
+	, mDanzhouKangya(0)
+	, mPoisson(0)
 {
 	// 容重是围岩平均重度
 	mAvgGravity = 26;
@@ -45,6 +48,10 @@ CSuxingquDialog::CSuxingquDialog(CWnd* pParent /*=NULL*/)
 	mCableBreakPower = 250;
 	mCableAttach = 16;
 	mCableFreeLength = 3000;
+
+	mQingFriction = 6;
+	mPoisson = 0.5;
+	mDanzhouKangya = 26;
 }
 
 CSuxingquDialog::~CSuxingquDialog()
@@ -71,10 +78,12 @@ void CSuxingquDialog::UpdateUI()
 	mCableFreeLength = suxingqu->GetCableFreeLength();
 	mCableAttach = suxingqu->GetCableAttach();
 	mCableBreakPower = suxingqu->GetCableBreakPower();
+	mPoisson = suxingqu->GetPoisson();
+	mDanzhouKangya = suxingqu->GetDanzhouKangya();
+	mQingFriction = suxingqu->GetQingFriction();
 
 	mConcreteThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetConcreteThickness();
 	mQiThickness = CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetQiThickness();
-
 	UpdateData(FALSE);
 }
 
@@ -111,6 +120,47 @@ void CSuxingquDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_QI_THICKNESS, mQiThickness);
 	DDX_Control(pDX, IDC_EDIT_CONCRETE_THICKNESS, CEdtConThickcness);
 	DDX_Control(pDX, IDC_EDIT_QI_THICKNESS, CEdtQiThickcness);
+	DDX_Control(pDX, IDC_EDIT_POISSON, CEdtPoisson);
+	DDX_Control(pDX, IDC_EDIT_QING_FRICTION, CEdtQingFriction);
+	DDX_Control(pDX, IDC_EDIT_DANZHOU, CEdtDanzhouKangya);
+	DDX_Text(pDX, IDC_EDIT_POISSON, mPoisson);
+	DDX_Text(pDX, IDC_EDIT_QING_FRICTION, mQingFriction);
+	DDX_Text(pDX, IDC_EDIT_DANZHOU, mDanzhouKangya);
+	DDX_Control(pDX, IDC_STATIC_SUXINGQU_TITLE, mSuxingquTitle);
+	DDX_Control(pDX, IDC_STATIC_MEIQING, mStaticQingjiao);
+	DDX_Control(pDX, IDC_STATIC_DU, mStaticDu);
+	DDX_Control(pDX, IDC_STATIC_DANZHOU, mStaticDanzhou);
+	DDX_Control(pDX, IDC_STATIC_MPA, mStaticMPa);
+	DDX_Control(pDX, IDC_STATIC_POSONG, mStaticPosong);
+}
+
+
+void CSuxingquDialog::UpdateBigEditDiasabler() {
+	CArcTunnel * pArc = CArcProjectBuilder::GetInstance()->GetArcTunnel();
+
+	std::cout << "UpdateBigEditDiasabler: " << pArc->GetWallHeight() << " " << pArc->GetWidth() / 2 << std::endl;
+	if (pArc->GetWallHeight() <= pArc->GetWidth() / 2) {
+		CEdtQingFriction.ShowWindow(TRUE);
+		CEdtDanzhouKangya.ShowWindow(TRUE);
+		CEdtPoisson.ShowWindow(TRUE);
+		mStaticQingjiao.ShowWindow(TRUE);
+		mStaticDu.ShowWindow(TRUE);
+		mStaticDanzhou.ShowWindow(TRUE);
+		mStaticMPa.ShowWindow(TRUE);
+		mStaticPosong.ShowWindow(TRUE);
+		mSuxingquTitle.SetWindowText(_T("输入大跨度矩形巷道计算参数(物理力学参数)"));
+	}
+	else {
+		CEdtQingFriction.ShowWindow(FALSE);
+		CEdtDanzhouKangya.ShowWindow(FALSE);
+		CEdtPoisson.ShowWindow(FALSE);
+		mStaticQingjiao.ShowWindow(FALSE);
+		mStaticDu.ShowWindow(FALSE);
+		mStaticDanzhou.ShowWindow(FALSE);
+		mStaticMPa.ShowWindow(FALSE);
+		mStaticPosong.ShowWindow(FALSE);
+		mSuxingquTitle.SetWindowText(_T("输入计算参数（物理力学参数）"));
+	}
 }
 
 void CSuxingquDialog::CheckThickness()
@@ -238,6 +288,9 @@ void CSuxingquDialog::OnBnClickedOk()
 		suxingqu->SetCableFreeLength(mCableFreeLength);
 		suxingqu->SetCableAttach(mCableAttach);
 		suxingqu->SetCableBreakPower(mCableBreakPower);
+		suxingqu->SetDanzhouKangya(mDanzhouKangya);
+		suxingqu->SetPoisson(mPoisson);
+		suxingqu->SetQingFriction(mQingFriction);
 
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetConcreteThickness(mConcreteThickness);
 		CArcProjectBuilder::GetInstance()->GetMethod()->SetQiThickness(mQiThickness);
@@ -289,7 +342,7 @@ BOOL CSuxingquDialog::OnInitDialog()
 
 	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_FOLDER));
 	SetIcon(hIcon, FALSE);
-
+	mSuxingquTitle.SetFont(MFCUtil::GetTitleFont());
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }

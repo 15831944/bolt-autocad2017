@@ -375,8 +375,10 @@ void CThreeTunnelDlg::OnBnClickedChooseOk()
 			std::cout << "instance left angle: " << CArcProjectBuilder::GetInstance()->GetArcTunnel()->GetLeftAngle() << std::endl;
 			CArcProjectBuilder::GetInstance()->SetTunnelSaveToInstance(TRUE);
 			
-			if(isPmLeagal == true)
+			if (isPmLeagal == true) {
+				DialogManager::GetInstance().GetSuxingquDlg()->UpdateBigEditDiasabler();
 				SuccessToMethodChooseDlg();
+			}
 		}
 		
 	}

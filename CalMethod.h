@@ -705,6 +705,10 @@ private:
 	double mNianPower;
 	double mShuLength;
 	double mCableFreeLength;
+	double mQingFriction;
+	double mDanzhouKangya;
+	double mPoisson;
+
 public:
 	void SetInnerFriction(double t) { mInnerFriction = t; };
 	double GetInnerFriction() const { return mInnerFriction; };
@@ -720,6 +724,12 @@ public:
 	double GetShuLength() const { return mShuLength; };
 	void SetCableFreeLength(double t) { mCableFreeLength = t; };
 	double GetCableFreeLength() const { return mCableFreeLength; };
+	void SetQingFriction(double t) { mQingFriction = t; };
+	double GetQingFriction() const { return mQingFriction; };
+	void SetPoisson(double t) { mPoisson = t; };
+	double GetPoisson() const { return mPoisson; };
+	void SetDanzhouKangya(double t) { mDanzhouKangya = t; };
+	double GetDanzhouKangya() const { return mDanzhouKangya; };
 
 	double GetFeitanxing() {
 		double r0 = std::sqrt((a * a) + ((h / 2) * (h / 2)));
@@ -748,11 +758,30 @@ public:
 		double TopBoltLength = feitanxing - (h / 2);
 		//double boltLength = max(TopBoltLength, BangBoltLength);
 
+		if (h <= a) {
+			double wzxs = 0.5, yljzxs = 2.5,
+				cyl = mPoisson / (1 - mPoisson);
+			double temp0 = cyl * h / (2 * tan(MFCUtil::AngleToArc(mInnerFriction))),
+				P = mAvgGravity * mMaiDepth / 1000;
+			double temp1 = yljzxs * P * tan(MFCUtil::AngleToArc(mInnerFriction)) / mNianPower,
+				temp7 = log(temp1 + 1),
+				Lp = temp0 * temp7;
+			//¶¥°åÆÆ»µ¸ß¶È
+			temp0 = 4 * (a + Lp) * cos(MFCUtil::AngleToArc(mQingFriction)) / (wzxs * mDanzhouKangya);
+
+			temp1 = cyl + wzxs * mDanzhouKangya / 10;
+			temp7 = 1 + wzxs * mDanzhouKangya / 10;
+
+			double Lb = temp0 * (temp1 / temp7);
+			TopBoltLength = Lb;
+			std::cout << "suxingqu: Lb " << Lb << std::endl;
+		}
+
 		double lb3 = GetBoltALength();
 		std::cout << "lb3: " << lb3 << std::endl;
 		TopBoltLength = (TopBoltLength + lb3 + 0.1);
-		std::cout << "suxingqu: bang bolt length: " << TopBoltLength << std::endl;
-		return DataChecker::RestrainBoltLength(TopBoltLength) ;
+		std::cout << "suxingqu: top bolt length: " << TopBoltLength << std::endl;
+		return DataChecker::RestrainBoltLength(TopBoltLength);
 	};
 
 	double GetBangBoltLength() {
@@ -761,6 +790,17 @@ public:
 		double BangBoltLength = feitanxing - a;
 		//double boltLength = max(TopBoltLength, BangBoltLength);
 		double pi = asin(0.5) * 6;
+
+		if (h <= a) {
+			double wzxs = 0.5, yljzxs = 2.5,
+				cyl = mPoisson / (1 - mPoisson);
+			double temp0 = cyl * h / (2 * tan(MFCUtil::AngleToArc(mInnerFriction))),
+				P = mAvgGravity * mMaiDepth / 1000;
+			double temp1 = yljzxs * P * tan(MFCUtil::AngleToArc(mInnerFriction)) / mNianPower,
+				temp7 = log(temp1 + 1),
+				Lp = temp0 * temp7;
+			std::cout << "suxingqu: Lp " << Lp << std::endl;
+		}
 		double lb3 = GetBoltALength();
 		std::cout << "lb3: " << lb3 << std::endl;
 		BangBoltLength = (BangBoltLength + lb3 + 0.1);
